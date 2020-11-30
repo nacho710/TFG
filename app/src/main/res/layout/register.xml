@@ -122,13 +122,13 @@
 
     <Spinner
         android:id="@+id/Dietas"
-        android:layout_width="212dp"
+        android:layout_width="209dp"
         android:layout_height="39dp"
         android:layout_marginBottom="39dp"
         android:entries="@array/Dietas"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal2" />
 
