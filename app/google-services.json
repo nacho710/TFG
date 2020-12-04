@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1081286364712",
+    "firebase_url": "https://tfg-bed5d.firebaseio.com",
+    "project_id": "tfg-bed5d",
+    "storage_bucket": "tfg-bed5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081286364712:android:a10a3f49ef4cc365de6f1d",
+        "android_client_info": {
+          "package_name": "com.example.tfg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081286364712-il3msu932qdiup7q1utvvdo6e6tpovvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRrsY0Luu-5xitIu1ZN9W2IoAVKkSxl1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081286364712-il3msu932qdiup7q1utvvdo6e6tpovvp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081286364712:android:62a22497c027207dde6f1d",
+        "android_client_info": {
+          "package_name": "tfg.baena.artene"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081286364712-il3msu932qdiup7q1utvvdo6e6tpovvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRrsY0Luu-5xitIu1ZN9W2IoAVKkSxl1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081286364712-il3msu932qdiup7q1utvvdo6e6tpovvp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

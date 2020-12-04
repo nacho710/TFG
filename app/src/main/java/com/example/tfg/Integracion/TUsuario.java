@@ -7,11 +7,11 @@ public class TUsuario {
     private  String email;
     private String  password;
     private String phone;
-    private Date birthDate;
+    private Integer birthDate;
     private Double weight;
     private Double height;
 
-    public TUsuario(String userName, String email, String password, String phone, Date birthDate, Double weight, Double height) {
+    public TUsuario(String userName, String email, String password, String phone, Integer birthDate, Double weight, Double height) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -19,6 +19,15 @@ public class TUsuario {
         this.birthDate = birthDate;
         this.weight = weight;
         this.height = height;
+    }
+    public TUsuario() {
+        this.userName = "";
+        this.email = "";
+        this.password = "";
+        this.phone = "";
+        this.birthDate = 0;
+        this.weight = 0.0;
+        this.height = 0.0;
     }
 
     public String getUserName() {
@@ -53,11 +62,11 @@ public class TUsuario {
         this.phone = phone;
     }
 
-    public Date getBirthDate() {
+    public Integer getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Integer birthDate) {
         this.birthDate = birthDate;
     }
 
