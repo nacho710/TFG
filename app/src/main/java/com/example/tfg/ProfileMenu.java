@@ -65,6 +65,11 @@ public class ProfileMenu extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void gotoUpdateUser(View view){
+        Intent i =  new Intent(this,UpdateUser.class);
+        startActivity(i);
+
+    }
 
     public void cerrarSesion(View view){
         mAuth.signOut();

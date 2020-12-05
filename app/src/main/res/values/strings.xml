@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aplicación de dietas</string>
+    <string name="app_name">PersonalDiet</string>
 
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
@@ -95,9 +95,14 @@
 
     <string name="error_sign_in_failed">Sign in failed, see logs for details.</string>
     <string name="multi_factor_signed_out">You are not signed in. To use this sample, first navigate to the Email/Password example to sign in and then return here to enroll in multi-factor auth.</string>
-    <string name="edad">Edad</string>
+
     <string name="actualizar">Actualizar</string>
     <string name="ej_74_1">ej. 74.1</string>
     <string name="cu_nto_pesas_hoy">¿Cuánto pesas hoy?</string>
+    <string name="actualiza_todos_tus_datos">Actualiza todos tus datos</string>
+    <string name="nombre_y_apellidos">Nombre y apellidos</string>
+    <string name="tel_fono">Teléfono</string>
+    <string name="edad">Edad</string>
+    <string name="altura">Altura</string>
 
 </resources>

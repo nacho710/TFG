@@ -61,7 +61,7 @@ public class Register extends AppCompatActivity {
 */
         System.out.println(email);
         System.out.println(mAuth);
-        System.out.println( FirebaseAuth.getInstance());
+        System.out.println(FirebaseAuth.getInstance());
         signUp(email,pass);
         Intent i =  new Intent(this,Login.class);
         startActivity(i);

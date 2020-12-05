@@ -34,6 +34,9 @@
         <activity android:name=".UpdateWeight">
 
         </activity>
+        <activity android:name=".UpdateUser">
+
+        </activity>
     </application>
 
 </manifest>
