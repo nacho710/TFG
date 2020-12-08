@@ -1,0 +1,30 @@
+{
+  "name": "TFG",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon web/src/index.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nacho710/TFG.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nacho710/TFG/issues"
+  },
+  "homepage": "https://github.com/nacho710/TFG#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "firebase-admin": "^9.4.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
