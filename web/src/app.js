@@ -27,6 +27,18 @@ app.use(express.urlencoded({extended:false})); // es para aceptar los datos de u
 //routes
 
 app.use(require('./routes/index'));
+app.use(require('./routes/adminGetRoutes'));
+app.use(require('./routes/adminPostRoutes'));
+app.use(require('./routes/dieticianGetRoutes'));
+app.use(require('./routes/dieticianPostRoutes'));
+
+
+
+// app.use(require('./routes/adminGetRoutes'));
+// app.use(require('./routes/adminPostRoutes'));
+// app.use(require('./routes/dieticianGetRoutes'));
+// app.use(require('./routes/dieticianGetRoutes'));
+
 
 
 //static files
