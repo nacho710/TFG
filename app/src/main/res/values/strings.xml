@@ -104,5 +104,7 @@
     <string name="tel_fono">Teléfono</string>
     <string name="edad">Edad</string>
     <string name="altura">Altura</string>
+    <string name="ya_casi_est_s_elige_tu_dietista">Elige tu dietista personal</string>
+    <string name="confirmar">Confirmar</string>
 
 </resources>

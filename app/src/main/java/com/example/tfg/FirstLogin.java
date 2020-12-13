@@ -86,7 +86,7 @@ public class FirstLogin extends AppCompatActivity {
                             // TYPE 2 = DIETISTA
 
                             mydb.child("Users").child(id).updateChildren(map);
-                        startActivity(new Intent(FirstLogin.this, ProfileMenu.class));
+                        startActivity(new Intent(FirstLogin.this, ChooseDietist.class));
                         finish();
 
 
