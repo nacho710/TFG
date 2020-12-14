@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         if(mAuth.getCurrentUser() != null){
 
             String id = mAuth.getCurrentUser().getUid();
-            mydb.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+            mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()) {

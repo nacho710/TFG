@@ -96,6 +96,14 @@
                 android:textAlignment="center"
                 android:textSize="30sp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToChooseDietician"
+            android:text="@string/solicitar_dietista"
+            android:theme="@style/AppTheme" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

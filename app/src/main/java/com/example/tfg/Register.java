@@ -104,7 +104,7 @@ public class Register extends AppCompatActivity {
                             System.out.println(map);
                             System.out.println(mydb.getRef());
                             String id = mAuth.getCurrentUser().getUid();
-                            mydb.child("Users").child(id).setValue(map);
+                            mydb.child("Patient").child(id).setValue(map);
                             finish();
 
                         }else{

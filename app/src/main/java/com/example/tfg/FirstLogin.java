@@ -71,7 +71,7 @@ public class FirstLogin extends AppCompatActivity {
         else {
 
             String id = mAuth.getCurrentUser().getUid();
-            mydb.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+            mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
@@ -85,7 +85,7 @@ public class FirstLogin extends AppCompatActivity {
                             //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 
-                            mydb.child("Users").child(id).updateChildren(map);
+                            mydb.child("Patient").child(id).updateChildren(map);
                         startActivity(new Intent(FirstLogin.this, ChooseDietist.class));
                         finish();
 

@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
 
                             Toast.makeText(Login.this,"Login correcto: "+email,Toast.LENGTH_LONG).show();
                             String id = mAuth.getCurrentUser().getUid();
-                            mydb.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+                            mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()) {

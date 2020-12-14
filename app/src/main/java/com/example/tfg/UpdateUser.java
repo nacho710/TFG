@@ -53,7 +53,7 @@ public class UpdateUser extends AppCompatActivity {
         altura = (EditText) findViewById(R.id.editTextNumberDecimalUpdate);
 
         String id = mAuth.getCurrentUser().getUid();
-        mydb.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
@@ -99,7 +99,7 @@ public class UpdateUser extends AppCompatActivity {
             //TYPE 1 = PACIENTE
             // TYPE 2 = DIETISTA
 
-            mydb.child("Users").child(id).updateChildren(map);
+            mydb.child("Patient").child(id).updateChildren(map);
             startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
             finish();
 
