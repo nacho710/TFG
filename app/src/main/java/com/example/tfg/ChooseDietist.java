@@ -120,6 +120,8 @@ public class ChooseDietist extends AppCompatActivity {
 
             DatabaseReference dba = FirebaseDatabase.getInstance().getReference().child("Request");
             dba.push().setValue(map);
+            startActivity(new Intent(ChooseDietist.this, ProfileMenu.class));
+            finish();
 //            mydb.child("Request").child(idRequest).addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -45,6 +45,8 @@ public class Register extends AppCompatActivity {
         String email = emailRegister.getText().toString();
         final EditText passText = (EditText) findViewById(R.id.fieldPassword);
         String pass = passText.getText().toString();
+        final EditText secondPassText = (EditText) findViewById(R.id.fieldPassword2);
+        String pass2 = secondPassText.getText().toString();
 
       /*  final EditText pass2Text = (EditText) findViewById(R.id.pass2Register);
         String pass2 = pass2Text.getText().toString();
@@ -62,12 +64,29 @@ public class Register extends AppCompatActivity {
         System.out.println(email);
         System.out.println(mAuth);
         System.out.println(FirebaseAuth.getInstance());
-        signUp(email,pass);
+        if(verificarEmail(email,pass,pass2)){
+            signUp(email,pass);
         Intent i =  new Intent(this,Login.class);
         startActivity(i);
+        }
     }
 
-
+private boolean verificarEmail(String email,String pass,String pass2){
+    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    if(!email.matches(emailPattern)){
+        Toast.makeText(this,"El formato de email es incorrecto",Toast.LENGTH_LONG).show();
+        return false;
+    }
+    if(pass.length()<6) {
+        Toast.makeText(this,"La contraseña tiene que tener mínimo 6 caracteres",Toast.LENGTH_LONG).show();
+        return false;
+    }
+    if(!pass.equals(pass2)){
+        Toast.makeText(this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
+        return false;
+    }
+    return true;
+}
 
 
     private void signUp(String email, String password) {
