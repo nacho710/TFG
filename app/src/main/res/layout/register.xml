@@ -16,14 +16,16 @@
         <ImageView
             android:id="@+id/icon"
             style="@style/ThemeOverlay.FirebaseIcon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="254dp"
+            android:layout_height="208dp"
+            android:layout_gravity="center"
             android:contentDescription="@string/desc_firebase_lockup"
-            android:src="@drawable/firebase_lockup_400" />
+            android:forceHasOverlappingRendering="false"
+            android:src="@drawable/allfruit_preview_rev_1" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="98dp" />
+            android:layout_height="11dp" />
 
         <EditText
             android:id="@+id/fieldEmail"
@@ -55,17 +57,21 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="92dp" />
+            android:layout_height="75dp" />
 
         <Button
             android:id="@+id/emailCreateAccountButton"
-            android:layout_width="397dp"
+            android:layout_width="372dp"
             android:layout_height="8dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/button_horizontal_margin"
             android:layout_marginEnd="@dimen/button_horizontal_margin"
             android:layout_weight="1"
+            android:forceHasOverlappingRendering="false"
             android:onClick="createUser"
             android:text="@string/crear_cuenta"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             android:theme="@style/AppTheme"
             android:visibility="visible" />
 
