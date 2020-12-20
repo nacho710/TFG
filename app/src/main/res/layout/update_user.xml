@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fondo">
 
     <LinearLayout
         android:layout_width="367dp"
@@ -38,8 +39,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/fullName"
-            android:inputType="textPersonName"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textPersonName" />
 
         <Space
             android:layout_width="match_parent"
@@ -57,8 +58,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/phone"
-            android:inputType="phone"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="phone" />
 
         <Space
             android:layout_width="match_parent"
@@ -76,8 +77,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/edad"
-            android:inputType="number"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="number" />
 
         <Space
             android:layout_width="match_parent"
@@ -96,8 +97,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/height"
-            android:inputType="numberDecimal"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal" />
 
         <Space
             android:layout_width="match_parent"

@@ -21,6 +21,7 @@ public class ProfileMenu extends AppCompatActivity {
     DatabaseReference mydb;
     private TextView peso;
     private TextView imc;
+    private TextView imcText;
     private TextView nombre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ProfileMenu extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         peso = (TextView) findViewById(R.id.pesoView);
+        imcText = (TextView) findViewById(R.id.imcTextView);
         imc = (TextView) findViewById(R.id.imcView);
         nombre = (TextView) findViewById(R.id.nombreView);
         getInfoUser();
@@ -88,6 +90,28 @@ public class ProfileMenu extends AppCompatActivity {
         System.out.println((Double.valueOf(altura) /100));
         Double imcValue = (Double.valueOf(peso) / ((Double.valueOf(altura) /100)*(Double.valueOf(altura)/100)));
         imcValue = Math.floor(imcValue * 100) / 100;
+        if(imcValue<18.5){
+            imcText.setText("Peso insuficiente");
+        } else  if(imcValue>=18.5 &&imcValue<24.9 ){
+            imcText.setText("Normopeso");
+        }else  if(imcValue>=25 &&imcValue<26.9 ){
+            imcText.setText("Sobrepeso grado I");
+        }
+        else  if(imcValue>=27 &&imcValue<29.9 ){
+            imcText.setText("Sobrepeso grado II (preobesidad)");
+        }else  if(imcValue>=30 &&imcValue<34.9 ){
+            imcText.setText("Obesidad de tipo I");
+        }
+        else  if(imcValue>=35 &&imcValue<39.9 ){
+            imcText.setText("Obesidad de tipo II");
+        }
+        else  if(imcValue>=40 &&imcValue<49.9 ){
+            imcText.setText("Obesidad de tipo III (mórbida)");
+        }
+        else  imcText.setText("Obesidad de tipo IV (extrema)");
+
+
+
         return imcValue.toString();
     }
 
