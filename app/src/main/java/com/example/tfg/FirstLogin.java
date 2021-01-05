@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,8 @@ public class FirstLogin extends AppCompatActivity {
     private EditText edad;
     private EditText peso;
     private EditText altura;
+    private String sexo;
+    private String actividad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +55,40 @@ public class FirstLogin extends AppCompatActivity {
         edad = (EditText) findViewById(R.id.editTextNumber);
         peso = (EditText) findViewById(R.id.editTextNumberDecimal);
         altura = (EditText) findViewById(R.id.editTextNumberDecimal2);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                sexo = (String) adapterView.getItemAtPosition(position);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                // vacio
+
+            }
+        });
+        Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                actividad = (String) adapterView.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                // vacio
+
+            }
+        });
 
         usuario = new TUsuario();
 
@@ -82,6 +118,9 @@ public class FirstLogin extends AppCompatActivity {
                             map.put("age", edadd);
                             map.put("weight", pesoo);
                             map.put("height", alturaa);
+                            map.put("sex", sexo);
+                            map.put("activity", actividad);
+
                             //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 

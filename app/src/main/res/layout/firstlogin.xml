@@ -7,8 +7,8 @@
     android:background="@color/fondo">
 
     <LinearLayout
-        android:layout_width="367dp"
-        android:layout_height="734dp"
+        android:layout_width="351dp"
+        android:layout_height="699dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,14 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="367dp"
+            android:layout_width="351dp"
             android:layout_height="wrap_content"
             android:text="@string/textFirstLogin"
             android:textSize="24sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="62dp" />
+            android:layout_height="34dp" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -82,15 +82,39 @@
         <EditText
             android:id="@+id/editTextNumberDecimal2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="59dp"
             android:ems="10"
             android:hint="@string/height"
             android:importantForAutofill="no"
             android:inputType="numberDecimal" />
 
+        <TextView
+            android:id="@+id/labelSexo"
+            android:layout_width="354dp"
+            android:layout_height="wrap_content"
+            android:text="Sexo" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:entries="@array/sexo" />
+
+        <TextView
+            android:id="@+id/labelFrecuencia"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:text="Frecuencia de Actividad Deportiva" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:entries="@array/actividad" />
+
         <Space
             android:layout_width="match_parent"
-            android:layout_height="97dp" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnConfirmar"

@@ -115,5 +115,15 @@
     <string name="descripci_n">Descripción</string>
     <string name="valoraci_n_sobre_5">Valoración (sobre 5)</string>
     <string name="peso_actual">Peso actual</string>
-
+    <string-array name="sexo">
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="actividad">
+        <item>1 vez al mes</item>
+        <item>1 vez a la semana</item>
+        <item>4 veces a la semanas</item>
+        <item>Más de 4 veces a la semana</item>
+    </string-array>
 </resources>
