@@ -1,0 +1,125 @@
+{{> navbar }}
+
+{{!-- BOOTSTRAP REGISTER --}}
+<link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+<link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+<!-- Font special for pages-->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+    rel="stylesheet">
+
+<!-- Vendor CSS-->
+<link href="/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+<link href="/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+<!-- Main CSS-->
+<link href="css/mainRegister.css" rel="stylesheet" media="all">
+<link href="/main.css" rel="stylesheet" media="all">
+
+<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
+    <div class="wrapper wrapper--w960">
+        <div class="card card-2">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <h2 class="title">Regístrate</h2>
+                <form action="/registroDietician" method="POST">
+                    <div class="form-group">
+                        <p>Nombre: <input type="text" name="nombre" required="true" class="form-control" autofocus></p>
+                    </div>
+                    <div class="form-group">
+                        <p>Apellidos: <input type="text" name="apellidos" required="true" class="form-control"></p>
+                    </div>
+                    <div class="form-group">
+                        <p>Contraseña: <input type="password" id="password" pattern=".{6,}" title="Contraseña con más de 6 caracteres"
+                                name="password" required="true" class="form-control"></p>
+                    </div>
+                    <div class="form-group">
+                        <p>Repite la contraseña: <input type="password" id="password_confirm"  oninput="check(this)"
+                                pattern=".{6,}" name="password_confirm" required="true" class="form-control"></p>
+                    </div>
+                    <script language='javascript' type='text/javascript'>
+                        function check(input) {
+                            if (input.value != document.getElementById('password').value) {
+                                input.setCustomValidity('Las contraseñas no coinciden');
+                            } else {
+                                // input is valid -- reset the error message
+                                input.setCustomValidity('');
+                            }
+                        }
+                    </script> 
+                        <div class="form-group">
+                            <p>Email: <input type="email" name="email" required="true" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <p>Telefono: <input type="tel" name="phone" required="true" class="form-control"></p>
+                        </div>
+                        <div class="form-group">
+                            <p>Descripción dietista: <input type="text" name="description" required="true"
+                                    class="form-control"></p>
+                        </div>
+                        <button class="btn btn-primary btn-block">
+                            Darse de alta
+                        </button>
+                        {{!-- <div class="input-group">
+                            <input class="input--style-2" type="text" placeholder="Name" name="name">
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-2 js-datepicker" type="text" placeholder="Birthdate"
+                                        name="birthday">
+                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender">
+                                            <option disabled="disabled" selected="selected">Gender</option>
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                            <option>Other</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="class">
+                                    <option disabled="disabled" selected="selected">Class</option>
+                                    <option>Class 1</option>
+                                    <option>Class 2</option>
+                                    <option>Class 3</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-2" type="text" placeholder="Registration Code"
+                                        name="res_code">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-t-30">
+                            <button class="btn btn--radius btn--green" type="submit">Search</button>
+                        </div> --}}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Jquery JS-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<!-- Vendor JS-->
+<script src="/vendor/select2/select2.min.js"></script>
+<script src="/vendor/datepicker/moment.min.js"></script>
+<script src="/vendor/datepicker/daterangepicker.js"></script>
+<!-- Main JS-->
+<script src="js/global.js"></script>

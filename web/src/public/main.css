@@ -40,13 +40,65 @@ body {
 	;
 	background-color: #F9D8D4;
 	background-size: 180px 210px;
-	animation: animatedBackground .5s cubic-bezier(.61,-0.64,.58,1.46) forwards;
+	/* animation: animatedBackground .5s cubic-bezier(.61,-0.64,.58,1.46) forwards; */
+}
+list-dieticians{
+	position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 2px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.125);
+
+}
+/*STARS worthStars*/
+.worthStars {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.worthStars:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.worthStars:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.worthStars:not(:checked) > label:before {
+    content: '★ ';
+}
+.worthStars > input:checked ~ label {
+    color: #ffc700;    
+}
+.worthStars:not(:checked) > label:hover,
+.worthStars:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.worthStars > input:checked + label:hover,
+.worthStars > input:checked + label:hover ~ label,
+.worthStars > input:checked ~ label:hover,
+.worthStars > input:checked ~ label:hover ~ label,
+.worthStars > label:hover ~ input:checked ~ label {
+    color: #c59b08;
 }
 
 
+select {
+	width: 100%;
+	padding: 16px 20px;
+	border: none;
+	border-radius: 4px;
+	background-color: #f1f1f1;
+  }
 /* Animation */
 
-@keyframes animatedBackground {
+/* @keyframes animatedBackground {
 	from { background-position: 0 50%; }
 	to { background-position: 0 0; }
-}
+} */

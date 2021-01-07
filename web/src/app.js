@@ -4,18 +4,44 @@
 //archivoi que arranca la app  
 const express = require('express'); //importar el modulo
 const morgan= require('morgan'); //middleware
-const exphbs = require('express-handlebars'); //modulo express handlebars que es apra que el html tenga condicionales y cosas asi HBS
+const hbs = require('express-handlebars'); //modulo express handlebars que es apra que el html tenga condicionales y cosas asi HBS
 const path= require('path');//permite trabajr con los directorios
-
 const app = express(); //ejecutar el modulo
+
+//FIREBASE
+
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+require("firebase/firestore");
+var firebaseConfig = {
+    apiKey: "AIzaSyDwQ_xg8NmGEmPwj3Oj0sRrE_R_8qhC2cc",
+    authDomain: "tfg-bed5d.firebaseapp.com",
+    databaseURL: "https://tfg-bed5d.firebaseio.com",
+    projectId: "tfg-bed5d",
+    storageBucket: "tfg-bed5d.appspot.com",
+    messagingSenderId: "1081286364712",
+    appId: "1:1081286364712:web:3782a5e9c03bc46bde6f1d",
+    measurementId: "G-TNC92QC113"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const fs = firebase.firestore();
 
 //settings
 
 app.set('port',process.env.PORT || 4000); //usar el puerto predefinido por el pc(si tiene) o si no en el 3000
 app.set('views',path.join(__dirname,'views'));
-app.engine('.hbs',exphbs({ //defino el motor
+app.engine('.hbs',hbs({ //defino el motor
     defaultLayout: 'main', //archivo que va a tener codigo HTML en comun
-    extname: '.hbs' //extension de los archivos
+    extname: '.hbs', //extension de los archivos
+    partialsDir: __dirname + '/views/layouts/partials/'
+
 }))
 app.set('view engine', '.hbs'); //digo cual es el motor a usar
 
@@ -27,17 +53,11 @@ app.use(express.urlencoded({extended:false})); // es para aceptar los datos de u
 //routes
 
 app.use(require('./routes/index'));
-app.use(require('./routes/adminGetRoutes'));
-app.use(require('./routes/adminPostRoutes'));
-app.use(require('./routes/dieticianGetRoutes'));
-app.use(require('./routes/dieticianPostRoutes'));
+app.use(require('./routes/adminRoutes'));
+app.use(require('./routes/dieticianRoutes'));
+app.use(require('./routes/userRoutes'));
 
 
-
-// app.use(require('./routes/adminGetRoutes'));
-// app.use(require('./routes/adminPostRoutes'));
-// app.use(require('./routes/dieticianGetRoutes'));
-// app.use(require('./routes/dieticianGetRoutes'));
 
 
 

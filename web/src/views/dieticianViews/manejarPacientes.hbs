@@ -1,0 +1,51 @@
+{{> navbarLoggedDietician }} 
+
+<div class="col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-header">
+            <h1>Pacientes registrados</h1>
+        </div>
+        <div class="card-body">
+            {{#if patient}}
+            <ul class="list-group">
+                {{#each patient}}
+                <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
+                    <p class="info-patient">Nombre y apellidos: <br></br>{{username}}</p> 
+                    <p class="info-patient">Email: <br></br> {{email}} </p>
+                    <p class="info-patient">Telefono: <br></br>{{phone}} </p>
+                    <p class="info-patient">Edad: <br></br>{{age}} </p> 
+                    <p class="info-patient">Altura: {{height}} <br></br></p> 
+                    <p class="info-patient">Peso: <br></br>{{weight}} </p>
+                    <a href="/delete-patient/{{@key}}" class="btn btn-danger">Delete</a>
+                </li>
+                {{/each}}
+            </ul>
+            {{else}}
+                <p>No tienes pacientes registrados</p>
+            {{/if}}
+        </div>
+        <div class="card-footer">
+            {{!-- <form action="/registro" method="POST">
+                <div class="form-group">
+                   <p>Nombre: <input type="text" name="nombre"  required="true" class="form-control" autofocus></p>
+                </div>
+                <div class="form-group">
+                    <p>Apellidos: <input type="text" name="apellidos" required="true" class="form-control"></p>
+                </div>
+                <div class="form-group">
+                    <p>Email: <input type="email" name="email" required="true" class="form-control"></p>
+                </div>
+                <div class="form-group">
+                    <p>Telefono: <input type="tel" name="phone" required="true" class="form-control"></p>
+                </div>
+                <div class="form-group">
+                    <p>Descripción dietista: <input type="text" name="description" required="true" class="form-control"></p>
+                </div>
+                
+                <button class="btn btn-primary btn-block">
+                    Añadir usuario
+                </button>
+            </form> --}}
+        </div>
+    </div>
+</div>
