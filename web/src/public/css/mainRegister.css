@@ -528,4 +528,16 @@ input {
     display: block;
     padding: 60px 50px;
   }
+
+  .card-2 .card-heading2 {
+    background: url("../filete.png") top left/cover no-repeat;
+    width: 29.1%;
+    display: table-cell;
+  }
+  .card-2 .card-heading2 {
+    width: 100%;
+    display: block;
+    padding-top: 300px;
+    background-position: left center;
+  }
 }

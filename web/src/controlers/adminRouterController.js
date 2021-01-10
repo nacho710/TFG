@@ -801,13 +801,24 @@ function borrarPacientesAdmin(request, response) {
 
 //SACAR LA VISTA DEL PERFIL DEL ADMIN
 function perfilAdmin(request, response) {
+
+
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
 
 
             if (user.email == "personaldiet@admin.es") {
 
-                response.render('./adminViews/perfilAdmin');
+                console.log('EAA user: ' + JSON.stringify(user));
+                //var statusDietician=getEstadoDietista(user.uid);
+                var userId =user.uid;
+                // var dataDietician=getDataDietista(user.uid);
+                //console.log('EAAinfo: '+JSON.stringify(dataDietician));
+                db.ref('Administrador/' + userId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                    const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                    response.render('./adminViews/perfilAdmin', { admin: data });
+                })
+                
             }
             else {
                 response.render("noAdminView", {
