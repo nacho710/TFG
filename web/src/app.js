@@ -7,6 +7,8 @@ const morgan= require('morgan'); //middleware
 const hbs = require('express-handlebars'); //modulo express handlebars que es apra que el html tenga condicionales y cosas asi HBS
 const path= require('path');//permite trabajr con los directorios
 const app = express(); //ejecutar el modulo
+const bodyParser = require('body-parser');
+
 
 //FIREBASE
 
@@ -35,12 +37,25 @@ var firebaseConfig = {
 
 //settings
 
+var hbsHelper = hbs.create({});
+
+hbsHelper.handlebars.registerHelper('ifeq', function (a, b, options) {
+  if (a == b) { return options.fn(this); }
+  return options.inverse(this);
+});
+
+hbsHelper.handlebars.registerHelper('ifnoteq', function (a, b, options) {
+  if (a != b) { return options.fn(this); }
+  return options.inverse(this);
+});
+
 app.set('port',process.env.PORT || 4000); //usar el puerto predefinido por el pc(si tiene) o si no en el 3000
 app.set('views',path.join(__dirname,'views'));
 app.engine('.hbs',hbs({ //defino el motor
     defaultLayout: 'main', //archivo que va a tener codigo HTML en comun
     extname: '.hbs', //extension de los archivos
-    partialsDir: __dirname + '/views/layouts/partials/'
+    partialsDir: __dirname + '/views/layouts/partials/',
+    helpers: __dirname+'/views/hbsHelper.js'
 
 }))
 app.set('view engine', '.hbs'); //digo cual es el motor a usar
@@ -49,6 +64,7 @@ app.set('view engine', '.hbs'); //digo cual es el motor a usar
 
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false})); // es para aceptar los datos de un formualrio html
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 //routes
 

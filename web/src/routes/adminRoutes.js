@@ -7,19 +7,22 @@ const auth = admin.auth();
 
 //GET ADMIN
 router.get('/perfilAdmin',adminRouterController.perfilAdmin);
+router.get('/indexAdmin',adminRouterController.indexAdmin);
+
 
 //GET DIETISTAS
 router.get('/delete-dietician/:id',adminRouterController.borrarDietista);
-router.get('/manejarDietistas',adminRouterController.getDietistas);
+router.get('/modify-dietician/:id',adminRouterController.modificarDietistaView);
+router.get('/modify-dietician-stateAprobado/:id',adminRouterController.modificarEstadoDietistaAprobado);
+router.get('/modify-dietician-stateDenegado/:id',adminRouterController.modificarEstadoDietistaDenegado);
+router.get('/estadoDietistas',adminRouterController.getDietistas);
+router.get('/manejarDietistas',adminRouterController.getAllDietistas);
 router.get('/nuevoDietistaView',adminRouterController.nuevoDietistaView);
 
 //GET PACIENTES
 router.get('/nuevoPacienteView',adminRouterController.nuevoPacienteView);
 router.get('/manejarPacientesAdmin',adminRouterController.getPacientesAdmin);
 router.get('/delete-patient-admin/:id',adminRouterController.borrarPacientesAdmin);
-
-
-
 
 //POST DIETISTAS
 router.post('/nuevoDietista',adminRouterController.nuevoDietista);
