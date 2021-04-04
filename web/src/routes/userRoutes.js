@@ -8,6 +8,7 @@ const userRouterController= require('../controlers/userRouterController');
 
 //GET
 router.get("/",userRouterController.root);
+router.get("/noLoggedView",userRouterController.noLoggedView);
 router.get("/registroView",userRouterController.registroView);
 router.get('/login',userRouterController.loginView);
 router.get('/logout',userRouterController.logout);

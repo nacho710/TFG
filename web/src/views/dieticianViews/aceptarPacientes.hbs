@@ -1,9 +1,9 @@
-{{> navbarLoggedAdmin }} 
+{{> navbarLoggedDietician }} 
 
 <div class="col-md-6 offset-md-3">
     <div class="card">
         <div class="card-header">
-            <h1>Pacientes registrados</h1>
+            <h1>Pacientes que requieren tus servicios</h1>
         </div>
         <div class="card-body">
             {{#if patient}}
@@ -16,19 +16,17 @@
                     <p class="info-patient">Edad: <br></br>{{age}} </p> 
                     <p class="info-patient">Altura: {{height}} <br></br></p> 
                     <p class="info-patient">Peso: <br></br>{{weight}} </p>
-                    <a href="/modify-patient/{{@key}}" class="btn myButtonVerde">Modificar paciente</a>
-                    <a href="/delete-patient-admin/{{@key}}" class="btn btn-danger">Delete</a>
-
+                    <a href="/rechazar-patient/{{@key}}" class="btn btn-danger">Rechazar paciente</a>
+                    <a href="/aceptar-patient/{{@key}}" class="btn myButtonVerde">Aceptar paciente</a>
 
                 </li>
                 {{/each}}
             </ul>
             {{else}}
-                <p>No existen pacientes registrados</p>
+                <p>No tienes solicitudes de pacientes</p>
             {{/if}}
         </div>
         <div class="card-footer">
-            
         </div>
     </div>
 </div>

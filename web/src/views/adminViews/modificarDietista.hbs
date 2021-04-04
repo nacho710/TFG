@@ -20,7 +20,8 @@
         <div class="card card-2">
             <div class="card-heading"></div>
             <div class="card-body">
-                <h2 class="title">Registra un dietista</h2>
+                 {{#if dietician}}
+                <h2 class="title">Modifica los datos del dietista</h2>
                 <form action="/nuevoDietista" method="POST">
                     <div class="form-group">
                         <p>Nombre: <input type="text" name="nombre" required="true" class="form-control" autofocus></p>
@@ -28,25 +29,6 @@
                     <div class="form-group">
                         <p>Apellidos: <input type="text" name="apellidos" required="true" class="form-control"></p>
                     </div>
-                    <div class="form-group">
-                        <p>Contraseña: <input type="password" id="password" pattern=".{6,}"
-                                title="Contraseña con más de 6 caracteres" name="password" required="true"
-                                class="form-control"></p>
-                    </div>
-                    <div class="form-group">
-                        <p>Repite la contraseña: <input type="password" id="password_confirm" oninput="check(this)"
-                                pattern=".{6,}" name="password_confirm" required="true" class="form-control"></p>
-                    </div>
-                    <script language='javascript' type='text/javascript'>
-                        function check(input) {
-                            if (input.value != document.getElementById('password').value) {
-                                input.setCustomValidity('Las contraseñas no coinciden');
-                            } else {
-                                // input is valid -- reset the error message
-                                input.setCustomValidity('');
-                            }
-                        }
-                    </script>
                     <div class="form-group">
                         <p>Email: <input type="email" name="email" required="true" class="form-control"></p>
                     </div>
@@ -75,10 +57,13 @@
                         <label for="star1" title="text">1 star</label>
                     </div>
                     <button class="btn btn-primary btn-block">
-                        Dar de alta dietista
+                        Modificar dietista
                     </button>
                     
                 </form>
+                 {{else}}
+                 <h2 class="title">Ha habido un error con el dietista</h2>
+                  {{/if}}
             </div>
         </div>
     </div>

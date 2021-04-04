@@ -18,6 +18,7 @@ function root(request, response) {
             // https://firebase.google.com/docs/reference/js/firebase.User
 
             var uid = user.uid;
+            console.log('EAA emailroot:'+user.email);
             if (user.email == "personaldiet@admin.es") response.render('./adminViews/indexAdmin');
             else response.render('./dieticianViews/indexDietician');
         }
@@ -25,11 +26,17 @@ function root(request, response) {
             response.render("index", {
                 msg: null
             });
-
+            console.log('EAA NO ESTOY LOGUEADO');
         }
     });
 
 
+}
+function noLoggedView(request, response) {
+    response.status(200);
+    response.render("noLoggedView", {
+        msg: null
+    });
 }
 
 function registroView(request, response) {
@@ -46,7 +53,21 @@ function registroDietician(request, response) {
     var password = request.body.password;
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
-            const newDietician = {
+            // const newDietician = {
+            //     username: request.body.nombre + " " + request.body.apellidos,
+            //     email: request.body.email,
+            //     password: request.body.password,
+            //     phone: request.body.phone,
+            //     description: request.body.description,
+            //     rol: "dietista",
+            //     status: "Pendiente de aprobar",
+            //     worth: "3.5"
+            // }
+            // console.log('EAA USER: '+JSON.stringify(user));
+            // console.log('EAA ID: '+user.user.uid);
+
+            // db.ref('Dietician').push(newDietician); //nombre de la tabla --db.ref('Dietician')
+            db.ref('Dietician/' + user.user.uid).set({
                 username: request.body.nombre + " " + request.body.apellidos,
                 email: request.body.email,
                 password: request.body.password,
@@ -55,8 +76,7 @@ function registroDietician(request, response) {
                 rol: "dietista",
                 status: "Pendiente de aprobar",
                 worth: "3.5"
-            }
-            db.ref('Dietician').push(newDietician); //nombre de la tabla --db.ref('Dietician')
+              });
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
                     response.render('./dieticianViews/perfilDietician');
@@ -111,10 +131,14 @@ function loginUser(request, response) {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((user) => {
-            if (email == "personaldiet@admin.es")
-                response.render('./adminViews/perfilAdmin');
-            else
-                response.render('./dieticianViews/perfilDietician');
+            if (email == "personaldiet@admin.es"){
+                response.render('./adminViews/indexAdmin');
+            }
+                
+            else{
+                 response.render('./dieticianViews/indexDietician');
+            }
+               
 
         })
         .catch((error) => {
@@ -158,6 +182,7 @@ module.exports = {
     registroView,
     loginView,
     loginUser,
-    logout
+    logout,
+    noLoggedView
 }
 
