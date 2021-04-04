@@ -7,8 +7,8 @@
     android:background="@color/fondo">
 
     <LinearLayout
-        android:layout_width="356dp"
-        android:layout_height="432dp"
+        android:layout_width="348dp"
+        android:layout_height="608dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,6 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.675">
+
+        <ImageView
+            android:id="@+id/imagenPerfil"
+            android:layout_width="156dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:srcCompat="@tools:sample/avatars"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/nombreView"
