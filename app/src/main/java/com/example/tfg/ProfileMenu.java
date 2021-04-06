@@ -74,6 +74,9 @@ public class ProfileMenu extends AppCompatActivity {
             case R.id.darseDeBaja:
                 darseDeBaja();
                 return true;
+            case R.id.misFotos:
+                misFotos();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -166,6 +169,11 @@ public class ProfileMenu extends AppCompatActivity {
     }
     public void goToRegister(View view){
         Intent i =  new Intent(this,Register.class);
+        startActivity(i);
+        finish();
+    }
+    public void misFotos(){
+        Intent i =  new Intent(this,MyPics.class);
         startActivity(i);
         finish();
     }

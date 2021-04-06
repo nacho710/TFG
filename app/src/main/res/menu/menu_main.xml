@@ -12,6 +12,11 @@
         android:orderInCategory="100"
         android:title="Darse de baja"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/misFotos"
+        android:orderInCategory="100"
+        android:title="Mis fotos"
+        app:showAsAction="never" />
 
 
 </menu>

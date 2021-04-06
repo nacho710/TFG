@@ -1,0 +1,167 @@
+package com.example.tfg;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tfg.Integracion.TUsuario;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public class UploadPhoto extends AppCompatActivity {
+    FirebaseStorage storage;
+    StorageReference storageReference;
+    FirebaseAuth mAuth;
+    DatabaseReference mydb;
+    private Uri filePath;
+    private ImageView imagen;
+    private Integer numpic;
+    private List<String> picIds;
+
+    private final int PICK_IMAGE_REQUEST = 22;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        setContentView(R.layout.upload_photo);
+        mAuth = FirebaseAuth.getInstance();
+        mydb = FirebaseDatabase.getInstance().getReference();
+        imagen =  (ImageView) findViewById(R.id.imagen_uploadLayout);
+        String id = mAuth.getCurrentUser().getUid();
+        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                      numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
+                    picIds =  (List<String>) snapshot.child("picIds").getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void SelectImage( View view)
+    {
+
+        // Defining Implicit Intent to mobile gallery
+        Intent intent = new Intent();
+
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
+
+                System.out.println(" filePath");System.out.println(filePath);
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imagen.setImageBitmap(bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    // UploadImage method
+    public void uploadImage(View view) {
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+            String id = mAuth.getCurrentUser().getUid();
+            String key = UUID.randomUUID().toString();
+            StorageReference ref = storageReference.child(id+"/images/bodyimages/"+  key);
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(UploadPhoto.this, "Uploaded", Toast.LENGTH_SHORT).show();
+
+                            if(numpic==0){
+                                picIds.set(0,key);
+                            }else
+                                picIds.add(key);
+                            Integer suma= numpic+1;
+//                        String nombre = snapshot.child("username").getValue().toString();
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("numpics", suma);
+                                map.put("picIds", picIds);
+                                //TYPE 1 = PACIENTE
+                                // TYPE 2 = DIETISTA
+                                mydb.child("Patient").child(id).updateChildren(map);
+
+                                //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
+
+
+
+                        }
+
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(UploadPhoto.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+
+
+        }
+    }
+}

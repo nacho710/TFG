@@ -40,6 +40,12 @@
         <activity android:name=".ChooseDietist">
 
         </activity>
+        <activity android:name=".MyPics">
+
+        </activity>
+        <activity android:name=".UploadPhoto">
+
+        </activity>
     </application>
 
 </manifest>

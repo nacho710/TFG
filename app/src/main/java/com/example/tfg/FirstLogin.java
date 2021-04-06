@@ -22,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirstLogin extends AppCompatActivity {
@@ -111,6 +113,8 @@ public class FirstLogin extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
+                        List<String> array = new ArrayList<String>(){};
+                        array.add("nuevo");
 //                        String nombre = snapshot.child("username").getValue().toString();
                             Map<String,Object> map = new HashMap<>();
                             map.put("username", nombree);
@@ -120,7 +124,8 @@ public class FirstLogin extends AppCompatActivity {
                             map.put("height", alturaa);
                             map.put("sex", sexo);
                             map.put("activity", actividad);
-
+                            map.put("numpics",0);
+                            map.put("picIds",array);
                             //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 

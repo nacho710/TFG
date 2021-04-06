@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -119,6 +121,7 @@ private boolean verificarEmail(String email,String pass,String pass2){
                             map.put("weight", 0.0);
                             map.put("height", 0.0);
                             map.put("userType",1);
+
 
                             System.out.println(map);
                             System.out.println(mydb.getRef());
