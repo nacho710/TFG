@@ -126,6 +126,8 @@ public class FirstLogin extends AppCompatActivity {
                             map.put("activity", actividad);
                             map.put("numpics",0);
                             map.put("picIds",array);
+                            map.put("dietId","null");
+                            map.put("dieticianId","null");
                             //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 

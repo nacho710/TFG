@@ -77,6 +77,9 @@ public class ProfileMenu extends AppCompatActivity {
             case R.id.misFotos:
                 misFotos();
                 return true;
+            case R.id.AlarmSet:
+                setAlarm();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -175,7 +178,12 @@ public class ProfileMenu extends AppCompatActivity {
     public void misFotos(){
         Intent i =  new Intent(this,MyPics.class);
         startActivity(i);
-        finish();
+
+    }
+    public void setAlarm(){
+        Intent i =  new Intent(this,AlarmSet.class);
+        startActivity(i);
+
     }
     public void goToChooseDietician(View view){
         Intent i =  new Intent(this,ChooseDietist.class);
@@ -189,6 +197,11 @@ public class ProfileMenu extends AppCompatActivity {
     }
     public void gotoUpdateUser(View view){
         Intent i =  new Intent(this,UpdateUser.class);
+        startActivity(i);
+
+    }
+    public void gotoDietFollow(View view){
+        Intent i =  new Intent(this,DietFollow.class);
         startActivity(i);
 
     }

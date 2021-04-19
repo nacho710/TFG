@@ -17,6 +17,11 @@
         android:orderInCategory="100"
         android:title="Mis fotos"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/AlarmSet"
+        android:orderInCategory="100"
+        android:title="Recordatorio"
+        app:showAsAction="never" />
 
 
 </menu>

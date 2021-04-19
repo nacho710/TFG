@@ -126,4 +126,8 @@
         <item>4 veces a la semanas</item>
         <item>Más de 4 veces a la semana</item>
     </string-array>
+    <string name="titlulo_pickers">Obtener fecha y hora</string>
+
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
 </resources>

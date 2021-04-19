@@ -139,6 +139,13 @@
             android:onClick="goToChooseDietician"
             android:text="@string/solicitar_dietista"
             android:theme="@style/AppTheme" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:onClick="gotoDietFollow"
+            android:text="Seguimiento de dieta" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
