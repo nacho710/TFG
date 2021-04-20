@@ -102,20 +102,9 @@ function nuevoDietista(request, response) {
                             status: "Aprobado",
                             worth: worthStars
                         });
-                        // const newDietician = {
-                        //     username: request.body.nombre + " " + request.body.apellidos,
-                        //     email: request.body.email,
-                        //     password: request.body.password,
-                        //     phone: request.body.phone,
-                        //     description: request.body.description,
-                        //     rol: "dietista",
-                        //     status: "Aprobado",
-                        //     worth: request.body.worthStars
-                        // }
-                        // db.ref('Dietician').push(newDietician); //nombre de la tabla --db.ref('Dietician')
                         db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                             const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                            response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                            response.render('./adminViews/manejarDietistas', { patient: data }); //refrescamos la vista de index ahora con esos valores
 
                         })
 
@@ -496,7 +485,7 @@ function getAllDietistas(request, response) {
 
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-
+            
 
             if (user.email == "personaldiet@admin.es") {
 

@@ -79,7 +79,7 @@ function registroDietician(request, response) {
               });
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
-                    response.render('./dieticianViews/perfilDietician');
+                    response.render('./dieticianViews/indexDietician');
 
                 })
                 .catch((error) => {
@@ -176,6 +176,15 @@ function logout(request, response) {
             console.error('Sign Out Error', error);
         });
 }
+
+function darseDeBaja(request, response) {
+    firebase.auth().signOut().
+        then(function () {
+            response.redirect("/");
+        }, function (error) {
+            console.error('Sign Out Error', error);
+        });
+}
 module.exports = {
     root,
     registroDietician,
@@ -183,6 +192,7 @@ module.exports = {
     loginView,
     loginUser,
     logout,
-    noLoggedView
+    noLoggedView,
+    darseDeBaja
 }
 

@@ -2,7 +2,7 @@ const  { Router } = require('express');
 const router = Router();
 const admin= require('firebase-admin'); //llamar el modulo
 const db = admin.database(); //variable de nuestra base de datos
-const adminRouterController= require('../controlers/adminRouterController');
+const adminRouterController= require('../controllers/adminRouterController');
 const auth = admin.auth();
 
 //GET ADMIN
