@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="350dp"
+        android:layout_height="669dp"
         android:background="@color/fondo"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,54 +22,54 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/dayIdPop"
+                android:id="@+id/dayIdPopas"
                 android:layout_width="233dp"
                 android:layout_height="109dp"
                 android:gravity="center"
                 android:text="Texto descripcion" />
 
             <LinearLayout
-                android:layout_width="380dp"
-                android:layout_height="305dp"
+                android:layout_width="312dp"
+                android:layout_height="266dp"
                 android:layout_weight="0.570"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="260dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.04"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/comidaPop1"
+                        android:id="@+id/comida1"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
                         android:text="TextView" />
 
                     <TextView
-                        android:id="@+id/comidaPop2"
+                        android:id="@+id/comida2"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
                         android:text="TextView" />
 
                     <TextView
-                        android:id="@+id/comidaPop3"
+                        android:id="@+id/comida3"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
                         android:text="TextView" />
 
                     <TextView
-                        android:id="@+id/comidaPop4"
+                        android:id="@+id/comida4"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
                         android:text="TextView" />
 
                     <TextView
-                        android:id="@+id/comidaPop5"
+                        android:id="@+id/comida5"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
@@ -78,76 +78,67 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="31dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.40"
                     android:orientation="vertical">
 
                     <CheckBox
-                        android:id="@+id/comida1CheckPop"
+                        android:id="@+id/comida1Check"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.20" />
+                        android:layout_weight="0.20"
+                        android:enabled="false" />
 
                     <CheckBox
-                        android:id="@+id/comida2CheckPop"
+                        android:id="@+id/comida2Check"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.20" />
+                        android:layout_weight="0.20"
+                        android:enabled="false" />
 
                     <CheckBox
-                        android:id="@+id/comida3CheckPop"
+                        android:id="@+id/comida3Check"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.20" />
+                        android:layout_weight="0.20"
+                        android:enabled="false" />
 
                     <CheckBox
-                        android:id="@+id/comida4CheckPop"
+                        android:id="@+id/comida4Check"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.20" />
+                        android:layout_weight="0.20"
+                        android:enabled="false" />
 
                     <CheckBox
-                        android:id="@+id/comida5CheckPop"
+                        android:id="@+id/comida5Check"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.20" />
+                        android:layout_weight="0.20"
+                        android:enabled="false" />
 
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/comentarioIdPop"
+                android:id="@+id/comentarioIdPopadad"
                 android:layout_width="377dp"
                 android:layout_height="37dp"
                 android:layout_weight="0.20"
+                android:enabled="false"
                 android:text="TextView" />
 
             <EditText
-                android:id="@+id/descripcionViewPop"
-                android:layout_width="match_parent"
+                android:id="@+id/descripcionViewPopa"
+                android:layout_width="332dp"
                 android:layout_height="95dp"
                 android:ems="10"
+                android:enabled="false"
                 android:gravity="start|top"
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="235dp"
-                android:layout_height="62dp"
-                android:layout_weight="0.570"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.570"
-                android:onClick="uploadFollow"
-                android:text="Validar datos" />
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Calendar;
+
 
 public class ProfileMenu extends AppCompatActivity {
     FirebaseStorage storage;
@@ -170,6 +172,11 @@ public class ProfileMenu extends AppCompatActivity {
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
+    public void gotoFollowList(View view) {
+        Intent i = new Intent(this, FollowList.class);
+        startActivity(i);
+    }
+
     public void goToRegister(View view){
         Intent i =  new Intent(this,Register.class);
         startActivity(i);
@@ -199,10 +206,37 @@ public class ProfileMenu extends AppCompatActivity {
         Intent i =  new Intent(this,UpdateUser.class);
         startActivity(i);
 
+
     }
     public void gotoDietFollow(View view){
-        Intent i =  new Intent(this,DietFollow.class);
-        startActivity(i);
+        final int[] check = {0};
+            String id = mAuth.getCurrentUser().getUid();
+            final boolean[] result = new boolean[1];
+            Intent i =  new Intent(this,DietFollow.class);
+            Calendar currentTime = Calendar.getInstance();
+            String dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
+            mydb.child("Patient").child(id).child("Follow").child(dayID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()) {
+                        if(check[0] ==0) {
+                            Toast.makeText(ProfileMenu.this, "Seguimiento realizado anteriormente, revise sus seguimientos anteriores", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                    else { startActivity(i); finish();
+                        check[0] +=1;
+                        }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
 
     }
     private void cerrarSesion(){

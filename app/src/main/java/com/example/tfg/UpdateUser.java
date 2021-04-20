@@ -119,8 +119,7 @@ public class UpdateUser extends AppCompatActivity {
 
             mydb.child("Patient").child(id).updateChildren(map);
             uploadImage();
-          //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
-            finish();
+
 
 
 

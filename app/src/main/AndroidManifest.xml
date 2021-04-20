@@ -53,6 +53,12 @@
         <activity android:name=".DietFollow">
 
         </activity>
+        <activity android:name=".FollowList">
+
+        </activity>
+        <activity android:name=".PopUpFollow">
+
+        </activity>
     </application>
 
 </manifest>

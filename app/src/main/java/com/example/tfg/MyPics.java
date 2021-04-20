@@ -64,7 +64,7 @@ public class MyPics extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                     numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
+                    numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
                     picIds =  (List<String>) snapshot.child("picIds").getValue();
                     final long ONE_MEGABYTE =  1024 * 1024;
                     for( int i = 0 ; i < numpic ;i++){
