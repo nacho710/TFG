@@ -163,6 +163,7 @@ public class DietFollow extends AppCompatActivity {
                             map.put("food4", d);
                             map.put("food5", e);
                             map.put("descripcion", descripcionView.getText().toString());
+                            map.put("coment",  comentView.getText().toString());
 
                             mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
 

@@ -3,8 +3,10 @@ package com.example.tfg;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,7 +60,8 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
     private TextView  comida3View      ;
     private TextView comida4View       ;
     private TextView comida5View       ;
-
+    private TextView  comentView;
+    private TextView  descripcionView;
 
 
 
@@ -142,75 +145,87 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if(snapshot.exists()) {
-
-
-                    HashMap<String,List<String>> mapa =  (HashMap<String,List<String>>) snapshot.child("Follow").getValue();
-                    ArrayList<String> lista = new ArrayList<>(mapa.keySet()) ;
-
-                    LayoutInflater inflater = (LayoutInflater)
-                            getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = inflater.inflate(R.layout.popup_follow, null);
-                    int ide= v.getId();
-                    String value= lista.get(ide);
-                    // create the popup window
-                    int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    boolean focusable = true;
-                    final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                    // lets taps outside the popup also dismiss it
-                    comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.comida1);
-                    comida2View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida2);
-                    comida3View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida3);
-                    comida4View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida4);
-                    comida5View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida5);
-
-                    comida1Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida1Check);
-                    comida2Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida2Check);
-                    comida3Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida3Check);
-                    comida4Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida4Check);
-                    comida5Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida5Check);
-                    mydb.child("Patient").child(id).child("Follow").child(value).addValueEventListener(new ValueEventListener() {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshots) {
-                            if(snapshots.exists()) {
+                        public void run() {
+                            HashMap<String,List<String>> mapa =  (HashMap<String,List<String>>) snapshot.child("Follow").getValue();
+                            ArrayList<String> lista = new ArrayList<>(mapa.keySet()) ;
 
-                                String valor = snapshots.child("food1").child("0").getValue().toString();
-                                System.out.println(valor);
-                                comida1View.setText(valor);
-                                comida1Check.setChecked(Boolean.valueOf(snapshots.child("food1").child("1").getValue().toString()));
-                                comida2View.setText(snapshots.child("food2").child("0").getValue().toString());
-                                comida2Check.setChecked(Boolean.valueOf(snapshots.child("food2").child("1").getValue().toString()));
-                                comida3View.setText(snapshots.child("food3").child("0").getValue().toString());
-                                comida3Check.setChecked(Boolean.valueOf(snapshots.child("food3").child("1").getValue().toString()));
-                                comida4View.setText(snapshots.child("food4").child("0").getValue().toString());
-                                comida4Check.setChecked(Boolean.valueOf(snapshots.child("food4").child("1").getValue().toString()));
-                                comida5View.setText(snapshots.child("food5").child("0").getValue().toString());
-                                comida5Check.setChecked(Boolean.valueOf(snapshots.child("food5").child("1").getValue().toString()));
+                            LayoutInflater inflater = (LayoutInflater)
+                                    getSystemService(LAYOUT_INFLATER_SERVICE);
+                            View popupView = inflater.inflate(R.layout.popup_follow, null);
+                            int ide= v.getId();
+                            String value= lista.get(ide);
+                            // create the popup window
+                            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            boolean focusable = true;
+                            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                            // lets taps outside the popup also dismiss it
+                            comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.comida1);
+                            comida2View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida2);
+                            comida3View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida3);
+                            comida4View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida4);
+                            comida5View = (TextView)  popupWindow.getContentView().findViewById(R.id.comida5);
+                            dayIdView = (TextView) popupWindow.getContentView().findViewById(R.id.day);
 
-                            }
+                            comida1Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida1Check);
+                            comida2Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida2Check);
+                            comida3Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida3Check);
+                            comida4Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida4Check);
+                            comida5Check = (CheckBox)  popupWindow.getContentView().findViewById(R.id.comida5Check);
+
+                            comentView = (TextView) popupWindow.getContentView().findViewById(R.id.comentario);
+                            descripcionView = (TextView) popupWindow.getContentView().findViewById(R.id.descripcion);
+
+                            mydb.child("Patient").child(id).child("Follow").child(value).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshots) {
+                                    if(snapshots.exists()) {
+
+                                        String valor = snapshots.child("food1").child("0").getValue().toString();
+                                        System.out.println(valor);
+                                        comida1View.setText(valor);
+                                        comida1Check.setChecked(Boolean.valueOf(snapshots.child("food1").child("1").getValue().toString()));
+                                        comida2View.setText(snapshots.child("food2").child("0").getValue().toString());
+                                        comida2Check.setChecked(Boolean.valueOf(snapshots.child("food2").child("1").getValue().toString()));
+                                        comida3View.setText(snapshots.child("food3").child("0").getValue().toString());
+                                        comida3Check.setChecked(Boolean.valueOf(snapshots.child("food3").child("1").getValue().toString()));
+                                        comida4View.setText(snapshots.child("food4").child("0").getValue().toString());
+                                        comida4Check.setChecked(Boolean.valueOf(snapshots.child("food4").child("1").getValue().toString()));
+                                        comida5View.setText(snapshots.child("food5").child("0").getValue().toString());
+                                        comida5Check.setChecked(Boolean.valueOf(snapshots.child("food5").child("1").getValue().toString()));
+                                        comentView.setText((String)snapshots.child("coment").getValue());
+                                        descripcionView.setText((String)snapshots.child("descripcion").getValue());
+                                        dayIdView.setText(value);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+                            // show the popup windowt
+                            // which view you pass in doesn't matter, it is only used for the window tolken
+                            popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+                            // dismiss the popup window when touched
+                            popupView.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    popupWindow.dismiss();
+                                    return true;
+                                }
+                            });
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    }, 400);
 
 
-                    // show the popup windowt
-                    // which view you pass in doesn't matter, it is only used for the window tolken
-                    popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(
-                            android.graphics.Color.TRANSPARENT));
-
-                    // dismiss the popup window when touched
-                    popupView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            popupWindow.dismiss();
-                            return true;
-                        }
-                    });
                 }
 
 

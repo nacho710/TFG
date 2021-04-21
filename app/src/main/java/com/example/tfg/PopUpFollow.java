@@ -62,7 +62,8 @@ public class PopUpFollow extends AppCompatActivity {
     private CheckBox     comida3Check;
     private CheckBox     comida4Check;
     private CheckBox     comida5Check;
-    private TextView dayIdView;
+    private TextView  comentView;
+    private TextView  descripcionView;
     private String id ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,10 @@ public class PopUpFollow extends AppCompatActivity {
         comida3Check = (CheckBox) findViewById(R.id.comida3Check);
         comida4Check = (CheckBox) findViewById(R.id.comida4Check);
         comida5Check = (CheckBox) findViewById(R.id.comida5Check);
+
+        comentView = (TextView) findViewById(R.id.comentario);
+        descripcionView = (TextView) findViewById(R.id.descripcion);
+
         mydb.child("Patient").child(id).child("Follow").child(value).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshots) {
@@ -102,7 +107,8 @@ public class PopUpFollow extends AppCompatActivity {
                     comida4Check.setChecked((Boolean)snapshots.child(value).child("food4").child("1").getValue());
                     comida5View.setText((String)snapshots.child(value).child("food5").child("0").getValue());
                     comida5Check.setChecked((Boolean)snapshots.child("Follow").child(value).child("food5").child("1").getValue());
-
+                    comentView.setText((String)snapshots.child(value).child("coment").child("0").getValue());
+                    descripcionView.setText((String)snapshots.child(value).child("descripcion").child("0").getValue());
                 }
             }
 

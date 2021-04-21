@@ -16,5 +16,6 @@
     <color name="grey_500">#9E9E9E</color>
     <color name="buttons">#1722C7</color>
     <color name="fondo"> #252DFBCB</color>
+    <color name="fondoOpaco"> #FF2DFBCB</color>
 
 </resources>

@@ -7,9 +7,10 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="350dp"
-        android:layout_height="669dp"
-        android:background="@color/fondo"
+        android:layout_width="335dp"
+        android:layout_height="575dp"
+        android:background="@color/fondoOpaco"
+        android:backgroundTintMode="src_over"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,11 +23,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/dayIdPopas"
+                android:id="@+id/day"
                 android:layout_width="233dp"
                 android:layout_height="109dp"
                 android:gravity="center"
-                android:text="Texto descripcion" />
+                android:shadowColor="#A69F9F"
+                android:text="Texto descripcion"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="312dp"
@@ -45,35 +49,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/comida2"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/comida3"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/comida4"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/comida5"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -122,17 +131,18 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/comentarioIdPopadad"
-                android:layout_width="377dp"
+                android:id="@+id/comentario"
+                android:layout_width="311dp"
                 android:layout_height="37dp"
                 android:layout_weight="0.20"
                 android:enabled="false"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/descripcionViewPopa"
-                android:layout_width="332dp"
-                android:layout_height="95dp"
+                android:id="@+id/descripcion"
+                android:layout_width="313dp"
+                android:layout_height="86dp"
                 android:ems="10"
                 android:enabled="false"
                 android:gravity="start|top"
