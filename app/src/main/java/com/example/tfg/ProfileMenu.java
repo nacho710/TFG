@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class ProfileMenu extends AppCompatActivity {
     private TextView imcText;
     private TextView nombre;
     private ImageView imagen;
+    private Button solicitarDietista;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,7 @@ public class ProfileMenu extends AppCompatActivity {
         imc = (TextView) findViewById(R.id.imcView);
         nombre = (TextView) findViewById(R.id.nombreView);
         imagen =  (ImageView) findViewById(R.id.imagenPerfil);
+        solicitarDietista = findViewById(R.id.solicitarDietistaButton);
         getInfoUser();
     }
     @Override
@@ -82,6 +85,9 @@ public class ProfileMenu extends AppCompatActivity {
             case R.id.AlarmSet:
                 setAlarm();
                 return true;
+            case R.id.Refresh:
+               refresh();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -95,7 +101,10 @@ public class ProfileMenu extends AppCompatActivity {
                     String pesoValue = snapshot.child("weight").getValue().toString();
                     String alturaValue = snapshot.child("height").getValue().toString();
                     String nameValue = snapshot.child("username").getValue().toString();
-
+                    String idDietista = snapshot.child("dieticianId").getValue().toString();
+                    if(!idDietista.equals("null")){
+                        solicitarDietista.setEnabled(false);}
+                    else   {solicitarDietista.setEnabled(true);}
                     imc.setText(calculateIMC(pesoValue,alturaValue));
                     peso.setText(pesoValue);
                     nombre.setText(nameValue);
@@ -127,6 +136,15 @@ public class ProfileMenu extends AppCompatActivity {
         });
 
 
+
+
+
+    }
+    public void refresh(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
     public  void darseDeBaja(){
         AlertDialog.Builder  dialog = new AlertDialog.Builder(ProfileMenu.this);
@@ -203,11 +221,35 @@ public class ProfileMenu extends AppCompatActivity {
 
     }
     public void gotoUpdateUser(View view){
-        Intent i =  new Intent(this,UpdateUser.class);
-        startActivity(i);
 
+        String id = mAuth.getCurrentUser().getUid();
+        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    String nameValue = snapshot.child("dieticianId").getValue().toString();
+                    if(nameValue.equals("null")){
+                        Intent i =  new Intent(ProfileMenu.this,UpdateUser.class);
+                        startActivity(i);
+                    }
+                    else Toast.makeText(ProfileMenu.this,"Ya tienes asignado un dietista, refresca la página", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
+
+
+public void gotoDietMenu(View view){
+    Intent i =  new Intent(this,DietMenu.class);
+    startActivity(i);
+}
+
     public void gotoDietFollow(View view){
         final int[] check = {0};
             String id = mAuth.getCurrentUser().getUid();
@@ -224,7 +266,7 @@ public class ProfileMenu extends AppCompatActivity {
 
                         }
                     }
-                    else { startActivity(i); finish();
+                    else { startActivity(i);
                         check[0] +=1;
                         }
 

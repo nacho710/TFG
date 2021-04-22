@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tfg.Integracion.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,7 +84,18 @@ public class DietFollow extends AppCompatActivity {
 
 
     }
-
+//    private String dayParser(int day){
+//        switch (day){
+//            case 0: return "sunday";
+//            case 1: return "monday";
+//            case 2: return "tuesday";
+//            case 3: return "wendesday";
+//            case 4: return "thursday";
+//            case 5: return "friday";
+//            case 6: return "saturday";
+//            default: return null;
+//        }
+//    }
     private void getInfoUser(){
 
         String id = mAuth.getCurrentUser().getUid();
@@ -92,8 +104,8 @@ public class DietFollow extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     String dietId = snapshot.child("dietId").getValue().toString();
-                    String dia =  String.valueOf(currentTime.getTime().getDay());
-                    mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
+                    String dia =  Utils.dayParser(currentTime.getTime().getDay());
+                    mydb.child("Diets").child(dietId).child(dia).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 

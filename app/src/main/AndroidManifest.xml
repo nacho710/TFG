@@ -59,6 +59,9 @@
         <activity android:name=".PopUpFollow">
 
         </activity>
+        <activity android:name=".DietMenu">
+
+        </activity>
     </application>
 
 </manifest>
