@@ -46,7 +46,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
     private TextView comida5View;
     private TextView comentView;
 
-    private Calendar currentTime;
+    public Calendar currentTime ;
     private  String dayID;
 
 
@@ -61,12 +61,13 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
         mydb = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.my_diet);
 
-        currentTime.getInstance();
+
     }
 
 
     public void dietista(View view){
-
+        Intent i = new Intent(this, MyDietician.class);
+        startActivity(i);
     }
     public void seguimientos(View view){
         Intent i = new Intent(this, FollowList.class);
@@ -82,7 +83,9 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         int ide= v.getId();
-        String value = String.valueOf(ide);
+
+        String value = getResources().getResourceEntryName(ide);
+        System.out.println(value);
         String id = mAuth.getCurrentUser().getUid();
 
         mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
@@ -103,14 +106,19 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
 
                         View popupView = inflater.inflate(R.layout.diet_detail, null);
                         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                        String dietId = snapshot.child("dietId").getValue().toString();
-    //                    String dia =  Utils.dayParser(currentTime.getTime().getDay());
+                   //     popupWindow.setAnimationStyle();
+                            String dietId = snapshot.child("dietId").getValue().toString();
+
+                            String dia =  Utils.dayParser(currentTime.getInstance().getTime().getDay());
+                            System.out.println("dia");
+                            System.out.println(dia);
                             comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem);
                             comida2View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem2);
                             comida3View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem3);
                             comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem4);
                             comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem5);
-                        mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
+                            comentView = (TextView) popupWindow.getContentView().findViewById(R.id.ComentDietDay);
+                            mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -119,7 +127,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                                 comida3View.setText(snapshot.child("foods").child("food3").getValue().toString());
                                 comida4View.setText(snapshot.child("foods").child("food4").getValue().toString());
                                 comida5View.setText( snapshot.child("foods").child("food5").getValue().toString());
-//                                comentView.setText( snapshot.child("coment").getValue().toString());
+                                  comentView.setText( snapshot.child("coment").getValue().toString());
 
                             }
 

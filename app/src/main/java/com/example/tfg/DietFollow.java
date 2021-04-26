@@ -80,7 +80,7 @@ public class DietFollow extends AppCompatActivity {
         dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
         dayIdView.setText("Seguimiento del "+ dayID );
 
-            getInfoUser();
+        getInfoUser();
 
 
     }

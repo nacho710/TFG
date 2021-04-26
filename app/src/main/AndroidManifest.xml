@@ -62,6 +62,9 @@
         <activity android:name=".DietMenu">
 
         </activity>
+        <activity android:name=".MyDietician">
+
+        </activity>
     </application>
 
 </manifest>

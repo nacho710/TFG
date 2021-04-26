@@ -210,8 +210,8 @@ public class ProfileMenu extends AppCompatActivity {
         startActivity(i);
 
     }
-    public void goToChooseDietician(View view){
-        Intent i =  new Intent(this,ChooseDietist.class);
+    public void gotoUpdateUser(View view){
+        Intent i =  new Intent(this,UpdateUser.class);
         startActivity(i);
 
     }
@@ -220,7 +220,7 @@ public class ProfileMenu extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public void gotoUpdateUser(View view){
+    public void goToChooseDietician(View view){
 
         String id = mAuth.getCurrentUser().getUid();
         mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
@@ -229,7 +229,7 @@ public class ProfileMenu extends AppCompatActivity {
                 if(snapshot.exists()) {
                     String nameValue = snapshot.child("dieticianId").getValue().toString();
                     if(nameValue.equals("null")){
-                        Intent i =  new Intent(ProfileMenu.this,UpdateUser.class);
+                        Intent i =  new Intent(ProfileMenu.this,ChooseDietist.class);
                         startActivity(i);
                     }
                     else Toast.makeText(ProfileMenu.this,"Ya tienes asignado un dietista, refresca la página", Toast.LENGTH_LONG).show();

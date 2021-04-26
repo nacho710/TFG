@@ -128,7 +128,9 @@ public class FirstLogin extends AppCompatActivity {
                             map.put("picIds",array);
                             map.put("dietId","null");
                             map.put("dieticianId","null");
-                            //TYPE 1 = PACIENTE
+                            map.put("dieticianValorated",false);
+
+                        //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 
                             mydb.child("Patient").child(id).updateChildren(map);
