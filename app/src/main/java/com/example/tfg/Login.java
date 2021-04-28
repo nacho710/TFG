@@ -39,6 +39,10 @@ public class Login extends AppCompatActivity {
        Intent i =  new Intent(this,Register.class);
        startActivity(i);
     }
+    public void goToSendReset(View view){
+        Intent i =  new Intent(this,ResetPassword.class);
+        startActivity(i);
+    }
     public void loginUser(View view){
         final EditText emailRegister = (EditText) findViewById(R.id.emailLogin);
         String email = emailRegister.getText().toString();

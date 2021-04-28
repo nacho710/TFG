@@ -65,6 +65,9 @@
         <activity android:name=".MyDietician">
 
         </activity>
+        <activity android:name=".ResetPassword">
+
+        </activity>
     </application>
 
 </manifest>

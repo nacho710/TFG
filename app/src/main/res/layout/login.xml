@@ -82,6 +82,17 @@
             android:textSize="14sp"
             android:theme="@style/AppTheme" />
 
+        <Button
+            android:id="@+id/buttonSend"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_weight="0.10"
+            android:onClick="goToSendReset"
+            android:text="He olvidado mi contraseña"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:theme="@style/AppTheme" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
