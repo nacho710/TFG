@@ -7,8 +7,8 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="335dp"
-        android:layout_height="575dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/fondoOpaco"
         android:backgroundTintMode="src_over"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,6 +29,7 @@
                 android:gravity="center"
                 android:shadowColor="#A69F9F"
                 android:text="Texto descripcion"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -148,6 +149,17 @@
                 android:gravity="start|top"
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="306dp">
+
+                <LinearLayout
+                    android:id="@+id/listaPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
 
         </LinearLayout>
     </ScrollView>

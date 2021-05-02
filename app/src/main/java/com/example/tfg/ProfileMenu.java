@@ -47,6 +47,9 @@ public class ProfileMenu extends AppCompatActivity {
     private TextView nombre;
     private ImageView imagen;
     private Button solicitarDietista;
+    private Button midietabutton;
+    private Button followdietaButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,8 @@ public class ProfileMenu extends AppCompatActivity {
         nombre = (TextView) findViewById(R.id.nombreView);
         imagen =  (ImageView) findViewById(R.id.imagenPerfil);
         solicitarDietista = findViewById(R.id.solicitarDietistaButton);
+        followdietaButton = findViewById(R.id.followDietaButton);
+        midietabutton = findViewById(R.id.midietaButton);
         getInfoUser();
     }
     @Override
@@ -103,8 +108,14 @@ public class ProfileMenu extends AppCompatActivity {
                     String nameValue = snapshot.child("username").getValue().toString();
                     String idDietista = snapshot.child("dieticianId").getValue().toString();
                     if(!idDietista.equals("null")){
-                        solicitarDietista.setEnabled(false);}
-                    else   {solicitarDietista.setEnabled(true);}
+                        solicitarDietista.setEnabled(false);
+                        followdietaButton.setEnabled(true);
+                        midietabutton.setEnabled(true);
+                    }
+                    else   {solicitarDietista.setEnabled(true);
+                        followdietaButton.setEnabled(false);
+                        midietabutton.setEnabled(false);
+                    }
                     imc.setText(calculateIMC(pesoValue,alturaValue));
                     peso.setText(pesoValue);
                     nombre.setText(nameValue);
@@ -131,7 +142,7 @@ public class ProfileMenu extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                imagen.setImageResource(R.drawable.fotoperfil);
             }
         });
 

@@ -134,10 +134,24 @@
 
             <ImageButton
                 android:id="@+id/imageButton"
-                android:layout_width="235dp"
+                android:layout_width="102dp"
                 android:layout_height="62dp"
                 android:layout_weight="0.570"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:onClick="subirFoto"
+                tools:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <HorizontalScrollView
+                android:id="@+id/botonCamera"
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/layoutFollowPhotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
             <Button
                 android:id="@+id/button9"

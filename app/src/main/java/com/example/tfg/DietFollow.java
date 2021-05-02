@@ -1,17 +1,29 @@
 package com.example.tfg;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tfg.Integracion.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,15 +31,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-public class DietFollow extends AppCompatActivity {
+public class DietFollow  extends AppCompatActivity {
+    private static final int CAMERA_REQUEST = 1888;
+    private ImageView imageView ;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
     FirebaseStorage storage;
     StorageReference storageReference;
     FirebaseAuth mAuth;
@@ -38,7 +57,7 @@ public class DietFollow extends AppCompatActivity {
     private TextView comida4View;
     private TextView comida5View;
     private TextView comentView;
-
+    public ArrayList<Bitmap> imagenes = new ArrayList<>();
     private TextView descripcionView;
     private CheckBox comida1Check;
     private CheckBox comida2Check;
@@ -46,7 +65,7 @@ public class DietFollow extends AppCompatActivity {
     private CheckBox comida4Check;
     private CheckBox comida5Check;
     private TextView dayIdView;
-
+    private List<String> picsIDs = new ArrayList<String>();
 
     private Calendar currentTime;
     private  String dayID;
@@ -57,13 +76,12 @@ public class DietFollow extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diet_follow);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-        setContentView(R.layout.diet_follow);
         currentTime = Calendar.getInstance();
-
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         comida1View = (TextView) findViewById(R.id.comidaPop1);
         comida2View = (TextView) findViewById(R.id.comidaPop2);
         comida3View = (TextView) findViewById(R.id.comidaPop3);
@@ -75,6 +93,7 @@ public class DietFollow extends AppCompatActivity {
         comida3Check = (CheckBox) findViewById(R.id.comida3CheckPop);
         comida4Check = (CheckBox) findViewById(R.id.comida4CheckPop);
         comida5Check = (CheckBox) findViewById(R.id.comida5CheckPop);
+
         descripcionView = (TextView) findViewById(R.id.descripcionViewPop);
         dayIdView = (TextView) findViewById(R.id.dayIdPop);
         dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
@@ -105,7 +124,7 @@ public class DietFollow extends AppCompatActivity {
                 if(snapshot.exists()) {
                     String dietId = snapshot.child("dietId").getValue().toString();
                     String dia =  Utils.dayParser(currentTime.getTime().getDay());
-                    mydb.child("Diets").child(dietId).child(dia).addValueEventListener(new ValueEventListener() {
+                    mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -115,6 +134,7 @@ public class DietFollow extends AppCompatActivity {
                             comida4View.setText(snapshot.child("foods").child("food4").getValue().toString());
                             comida5View.setText( snapshot.child("foods").child("food5").getValue().toString());
                             comentView.setText( snapshot.child("coment").getValue().toString());
+
                         }
 
                         @Override
@@ -135,10 +155,52 @@ public class DietFollow extends AppCompatActivity {
 
     }
     public void gotoUpload(View view){
-        Intent i =  new Intent(this,UploadPhoto.class);
-        startActivity(i);
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+        }
+        else
+        {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+            else
+            {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            LinearLayout ll = (LinearLayout) findViewById(R.id.layoutFollowPhotos);
+            imageView = new ImageView(DietFollow.this);
+
+            imagenes.add(photo);
+            imageView.setImageBitmap(photo);
+            ll.addView(imageView);
+
+
+        }
+    }
     public  void uploadFollow(View view){
         AlertDialog.Builder  dialog = new AlertDialog.Builder(DietFollow.this);
         dialog.setTitle("¿La informacion es correcta?");
@@ -176,8 +238,22 @@ public class DietFollow extends AppCompatActivity {
                             map.put("food5", e);
                             map.put("descripcion", descripcionView.getText().toString());
                             map.put("coment",  comentView.getText().toString());
+                            System.out.println("imagenes");
+                            System.out.println(imagenes);
+                                for(Bitmap bmp : imagenes) {
+                                System.out.println(bmp);
+                                String key = UUID.randomUUID().toString();
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                byte[] byteArray = stream.toByteArray();
+                                StorageReference ref = storageReference.child(id + "/images/follow/" + dayID + "/" + key);
+                                ref.putBytes(byteArray);
+                                picsIDs.add(key);
+                            }
 
-                            mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
+                            map.put("photosIds",  picsIDs);
+
+                        mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
 
                 startActivity(new Intent(DietFollow.this, ProfileMenu.class));
                 finish();
@@ -192,6 +268,13 @@ public class DietFollow extends AppCompatActivity {
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
+    public  void subirFoto(View view){
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+
+
 
 }
 
