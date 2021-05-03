@@ -25,8 +25,12 @@
                 android:id="@+id/dayIdPop"
                 android:layout_width="233dp"
                 android:layout_height="109dp"
+                android:fontFamily="@font/font"
                 android:gravity="center"
-                android:text="Texto descripcion" />
+                android:text="Texto descripcion"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="380dp"
@@ -45,6 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:gravity="center_vertical"
                         android:text="TextView" />
 
                     <TextView
@@ -52,6 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:gravity="center_vertical"
                         android:text="TextView" />
 
                     <TextView
@@ -59,6 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:gravity="center_vertical"
                         android:text="TextView" />
 
                     <TextView
@@ -66,6 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:gravity="center_vertical"
                         android:text="TextView" />
 
                     <TextView
@@ -73,6 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:gravity="center_vertical"
                         android:text="TextView" />
 
                 </LinearLayout>
@@ -118,10 +127,17 @@
 
             <TextView
                 android:id="@+id/comentarioIdPop"
-                android:layout_width="377dp"
-                android:layout_height="37dp"
+                android:layout_width="379dp"
+                android:layout_height="47dp"
                 android:layout_weight="0.20"
+                android:gravity="center_vertical"
                 android:text="TextView" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="380dp"
+                android:layout_height="52dp"
+                android:text="Puesdes introducir una aclaración de tu día para que tu dietista lo vea." />
 
             <EditText
                 android:id="@+id/descripcionViewPop"
@@ -132,31 +148,41 @@
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="102dp"
-                android:layout_height="62dp"
-                android:layout_weight="0.570"
-                android:onClick="subirFoto"
-                tools:srcCompat="@android:drawable/ic_menu_camera" />
-
-            <HorizontalScrollView
-                android:id="@+id/botonCamera"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="92dp"
-                android:layout_gravity="center">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:id="@+id/layoutFollowPhotos"
-                    android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="241dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
+                    android:layout_weight="0.570"
+                    android:onClick="subirFoto"
+                    android:visibility="visible"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
+
+                <HorizontalScrollView
+                    android:id="@+id/botonCamera"
+                    android:layout_width="263dp"
+                    android:layout_height="78dp"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/layoutFollowPhotos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button9"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="95dp"
                 android:layout_weight="0.570"
                 android:onClick="uploadFollow"
                 android:text="Validar datos" />

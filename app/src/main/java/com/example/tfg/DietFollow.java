@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -22,8 +23,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tfg.Integracion.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +72,7 @@ public class DietFollow  extends AppCompatActivity {
 
     private Calendar currentTime;
     private  String dayID;
-
+private String id;
 
 
     @Override
@@ -98,7 +101,7 @@ public class DietFollow  extends AppCompatActivity {
         dayIdView = (TextView) findViewById(R.id.dayIdPop);
         dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
         dayIdView.setText("Seguimiento del "+ dayID );
-
+        id = mAuth.getCurrentUser().getUid();
         getInfoUser();
 
 
@@ -208,10 +211,10 @@ public class DietFollow  extends AppCompatActivity {
         dialog.setPositiveButton("Si, Validar datos", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String id = mAuth.getCurrentUser().getUid();
+
                 final boolean[] result = new boolean[1];
 
-                 id = mAuth.getCurrentUser().getUid();
+
             List<String> a = new ArrayList<String>();
                 a.add((String)comida1View.getText());
                 a.add(String.valueOf(comida1Check.isChecked()));
@@ -247,13 +250,23 @@ public class DietFollow  extends AppCompatActivity {
                                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                 byte[] byteArray = stream.toByteArray();
                                 StorageReference ref = storageReference.child(id + "/images/follow/" + dayID + "/" + key);
-                                ref.putBytes(byteArray);
-                                picsIDs.add(key);
+                                ref.putBytes(byteArray).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                        picsIDs.add(key);
+
+                                    }
+                                });
+
                             }
 
-                            map.put("photosIds",  picsIDs);
+                    map.put("photosIds",  picsIDs);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {   mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map); }} , 1000);
 
-                        mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
+                    //mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
 
                 startActivity(new Intent(DietFollow.this, ProfileMenu.class));
                 finish();

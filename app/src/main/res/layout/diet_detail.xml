@@ -7,14 +7,12 @@
     android:background="@color/fondoOpaco">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="348dp"
+        android:layout_height="718dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,84 +25,98 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_weight="0.5"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.40"
-                android:text="1ª Comida" />
+                android:text="1ª Comida"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dietItem"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.40"
-                android:text="2ª Comida" />
+                android:text="2ª Comida"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dietItem2"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.40"
-                android:text="3ª Comida" />
+                android:text="3ª Comida"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dietItem3"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView16"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.40"
-                android:text="4ª Comida" />
+                android:text="4ª Comida"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dietItem4"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView17"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.40"
-                android:text="5ª Comida" />
+                android:text="5ª Comida"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/dietItem5"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="Comentarios a tener en cuenta de tu dietista" />
+                android:layout_height="wrap_content"
+                android:text="Comentarios a tener en cuenta de tu dietista"
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/ComentDietDay"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>
 

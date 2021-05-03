@@ -1,9 +1,12 @@
 package com.example.tfg;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +50,7 @@ public class MyDietician extends AppCompatActivity {
     private String idDietista;
     private  String sumaString;
     private RatingBar ratingBar;
+    private String phone;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +136,7 @@ public class MyDietician extends AppCompatActivity {
                                 nameView.setText(snapshot.child("username").getValue().toString());
                                 emailView.setText(snapshot.child("email").getValue().toString());
                                 descriptionView.setText(snapshot.child("description").getValue().toString());
+                                phone = snapshot.child("phone").getValue().toString();
                                 phoneView.setText(snapshot.child("phone").getValue().toString());
 
                             }
@@ -176,6 +181,35 @@ public class MyDietician extends AppCompatActivity {
             map_user.put("dieticianValorated", true);
         mydb.child("Patient").child(id).updateChildren(map_user);
 
+
+    }
+    public void openTelegram(View view){
+        Intent intent = getTelegramInt(this);
+        startActivity(intent);
+
+    }
+    Intent getTelegramInt(Context context) {
+        Intent intent;
+        try {
+            try { // check for telegram app
+                context.getPackageManager().getPackageInfo("org.telegram.messenger", 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                // check for telegram X app
+                context.getPackageManager().getPackageInfo("org.thunderdog.challegram", 0);
+            }
+            // set app Uri
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=${TELEGRAM_PAGE_ID}"));
+        } catch (PackageManager.NameNotFoundException e) {
+            // set browser URI
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.telegram.me/$TELEGRAM_PAGE_ID"));
+        }
+        return intent;
+    }
+    public void openWhatsApp(View view){
+        String url = "https://api.whatsapp.com/send?phone="+phone;
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
 
     }
 }

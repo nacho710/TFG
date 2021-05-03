@@ -45,7 +45,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
     private TextView comida4View;
     private TextView comida5View;
     private TextView comentView;
-
+    private TextView titulo;
     public Calendar currentTime ;
     private  String dayID;
 
@@ -92,7 +92,6 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -102,8 +101,6 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                         int width = LinearLayout.LayoutParams.MATCH_PARENT;
                         int height = LinearLayout.LayoutParams.MATCH_PARENT;
                         boolean focusable = true;
-
-
                         View popupView = inflater.inflate(R.layout.diet_detail, null);
                         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
                    //     popupWindow.setAnimationStyle();
@@ -112,6 +109,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                             String dia =  Utils.dayParser(currentTime.getInstance().getTime().getDay());
                             System.out.println("dia");
                             System.out.println(dia);
+                            titulo = (TextView) popupWindow.getContentView().findViewById(R.id.tituloDiet);
                             comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem);
                             comida2View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem2);
                             comida3View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem3);
@@ -127,8 +125,8 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                                 comida3View.setText(snapshot.child("foods").child("food3").getValue().toString());
                                 comida4View.setText(snapshot.child("foods").child("food4").getValue().toString());
                                 comida5View.setText( snapshot.child("foods").child("food5").getValue().toString());
-                                  comentView.setText( snapshot.child("coment").getValue().toString());
-
+                                comentView.setText( snapshot.child("coment").getValue().toString());
+                                titulo.setText(Utils.DaytoDia(value));
                             }
 
                             @Override
