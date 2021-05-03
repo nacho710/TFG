@@ -51,6 +51,7 @@
             android:layout_width="364dp"
             android:layout_height="0dp"
             android:layout_weight="0.09"
+            android:backgroundTint="#4CBD80"
             android:onClick="establecerAlarma"
             android:text="Establecer alarma" />
 

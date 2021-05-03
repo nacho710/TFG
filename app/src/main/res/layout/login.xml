@@ -54,13 +54,13 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
 
+            android:backgroundTint="#4CBD80"
             android:fontFamily="sans-serif-light"
             android:onClick="loginUser"
             android:text="Iniciar Sesión"
             android:textAllCaps="false"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:theme="@style/AppTheme" />
+            android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"

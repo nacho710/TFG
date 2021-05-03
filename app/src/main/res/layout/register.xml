@@ -4,14 +4,13 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
+    android:background="@color/fondo"
     android:orientation="vertical"
     android:weightSum="4">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fondo"
         android:orientation="vertical">
 
         <ImageView
@@ -68,12 +67,12 @@
             android:layout_marginStart="@dimen/button_horizontal_margin"
             android:layout_marginEnd="@dimen/button_horizontal_margin"
             android:layout_weight="1"
+            android:backgroundTint="#4CBD80"
             android:forceHasOverlappingRendering="false"
             android:onClick="createUser"
             android:text="@string/crear_cuenta"
             android:textAllCaps="false"
             android:textSize="18sp"
-            android:theme="@style/AppTheme"
             android:visibility="visible" />
 
         <Space

@@ -198,15 +198,15 @@ public class MyDietician extends AppCompatActivity {
                 context.getPackageManager().getPackageInfo("org.thunderdog.challegram", 0);
             }
             // set app Uri
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=${TELEGRAM_PAGE_ID}"));
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=g438691580"));
         } catch (PackageManager.NameNotFoundException e) {
             // set browser URI
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.telegram.me/$TELEGRAM_PAGE_ID"));
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.telegram.me/g438691580"));
         }
         return intent;
     }
     public void openWhatsApp(View view){
-        String url = "https://api.whatsapp.com/send?phone="+phone;
+        String url = "https://api.whatsapp.com/send?phone=34"+phone;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

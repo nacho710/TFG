@@ -72,8 +72,7 @@ public class DietFollow  extends AppCompatActivity {
 
     private Calendar currentTime;
     private  String dayID;
-private String id;
-
+    private String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,18 +105,7 @@ private String id;
 
 
     }
-//    private String dayParser(int day){
-//        switch (day){
-//            case 0: return "sunday";
-//            case 1: return "monday";
-//            case 2: return "tuesday";
-//            case 3: return "wendesday";
-//            case 4: return "thursday";
-//            case 5: return "friday";
-//            case 6: return "saturday";
-//            default: return null;
-//        }
-//    }
+
     private void getInfoUser(){
 
         String id = mAuth.getCurrentUser().getUid();
