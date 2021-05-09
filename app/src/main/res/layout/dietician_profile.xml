@@ -38,6 +38,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="329dp"
         android:layout_height="731dp"
+        android:layout_marginTop="24dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,17 +49,18 @@
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:fontFamily="@font/dolliescript_personaluse"
+            android:fontFamily="@font/gorditas"
             android:gravity="center|center_vertical"
             android:text="Perfil de tu dietista"
             android:textColor="#000000"
-            android:textSize="45sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textView30"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Nombre "
             android:textSize="14sp" />
 
@@ -67,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="61dp"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -75,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Descripción"
             android:textSize="14sp" />
 
@@ -84,6 +88,7 @@
             android:layout_height="71dp"
             android:layout_gravity="center"
             android:layout_weight="0"
+            android:fontFamily="@font/gorditas"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -92,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Teléfono de contacto"
             android:textSize="14sp" />
 
@@ -101,6 +107,7 @@
             android:layout_height="59dp"
             android:layout_gravity="center"
             android:layout_weight="0"
+            android:fontFamily="@font/gorditas"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -109,6 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Email de contacto"
             android:textSize="14sp" />
 
@@ -118,6 +126,8 @@
             android:layout_height="59dp"
             android:layout_gravity="center"
             android:layout_weight="0"
+            android:fontFamily="@font/gorditas"
+            android:onClick="sendEmail"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -126,6 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Valora a tu dietista"
             android:textSize="14sp" />
 
@@ -134,6 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/gorditas"
             android:text="Esto hara que tu dietista pueda mejorar y dar lo mejor de si mismo" />
 
         <RatingBar
@@ -150,6 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#4CBD80"
+            android:fontFamily="@font/gorditas"
             android:onClick="getRating"
             android:text="Enviar valoración" />
 

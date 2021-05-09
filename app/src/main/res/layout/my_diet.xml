@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.15"
-            android:fontFamily="@font/dolliescript_personaluse"
+            android:fontFamily="@font/gorditas"
             android:gravity="center"
             android:text="Mi dieta"
             android:textColor="#070000"
@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Lunes"
             android:theme="@style/AppTheme" />
@@ -42,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Martes"
             android:theme="@style/AppTheme" />
@@ -51,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Miércoles"
             android:theme="@style/AppTheme" />
@@ -60,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Jueves"
             android:theme="@style/AppTheme" />
@@ -69,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Viernes"
             android:theme="@style/AppTheme" />
@@ -78,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Sábado"
             android:theme="@style/AppTheme" />
@@ -87,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.20"
+            android:fontFamily="@font/gorditas"
             android:onClick="onClick"
             android:text="Domingo"
             android:theme="@style/AppTheme" />
@@ -102,6 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
+                android:fontFamily="@font/gorditas"
                 android:onClick="seguimientos"
                 android:text="Mis seguimientos"
                 android:theme="@style/AppTheme" />
@@ -116,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
+                android:fontFamily="@font/gorditas"
                 android:onClick="dietista"
                 android:text="Mi dietista"
                 android:theme="@style/AppTheme" />

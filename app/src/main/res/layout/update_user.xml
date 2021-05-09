@@ -19,6 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/actualiza_todos_tus_datos"
             android:textSize="24sp" />
 
@@ -30,6 +31,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/nombre_y_apellidos" />
 
         <EditText
@@ -38,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/fullName"
             android:importantForAutofill="no"
             android:inputType="textPersonName" />
@@ -50,6 +53,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/tel_fono" />
 
         <EditText
@@ -57,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/phone"
             android:importantForAutofill="no"
             android:inputType="phone" />
@@ -69,6 +74,7 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/edad" />
 
         <EditText
@@ -76,6 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/edad"
             android:importantForAutofill="no"
             android:inputType="number" />
@@ -89,6 +96,7 @@
             android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/altura" />
 
         <EditText
@@ -96,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/height"
             android:importantForAutofill="no"
             android:inputType="numberDecimal" />
@@ -115,6 +124,7 @@
                 android:layout_width="236dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#4CBD80"
+                android:fontFamily="@font/gorditas"
                 android:onClick="SelectImage"
                 android:text="Modificar imagen de perfil" />
 
@@ -135,6 +145,7 @@
             android:id="@+id/btnConfirmar"
             android:layout_width="match_parent"
             android:layout_height="66dp"
+            android:fontFamily="@font/gorditas"
             android:onClick="botonConfirmarUpdate"
             android:text="@string/confirmarButton"
             android:theme="@style/AppTheme" />

@@ -26,9 +26,9 @@
                 android:id="@+id/day"
                 android:layout_width="233dp"
                 android:layout_height="109dp"
+                android:fontFamily="@font/gorditas"
                 android:gravity="center"
                 android:shadowColor="#A69F9F"
-                android:text="Texto descripcion"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -50,8 +50,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
-                        android:text="TextView"
                         android:textStyle="bold" />
 
                     <TextView
@@ -59,8 +59,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
-                        android:text="TextView"
                         android:textStyle="bold" />
 
                     <TextView
@@ -68,8 +68,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
-                        android:text="TextView"
                         android:textStyle="bold" />
 
                     <TextView
@@ -77,8 +77,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
-                        android:text="TextView"
                         android:textStyle="bold" />
 
                     <TextView
@@ -86,8 +86,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
-                        android:text="TextView"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -142,7 +142,7 @@
                 android:layout_height="37dp"
                 android:layout_weight="0.20"
                 android:enabled="false"
-                android:text="TextView"
+                android:fontFamily="@font/gorditas"
                 android:textStyle="bold" />
 
             <EditText
@@ -151,20 +151,23 @@
                 android:layout_height="86dp"
                 android:ems="10"
                 android:enabled="false"
+                android:fontFamily="@font/gorditas"
                 android:gravity="start|top"
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="306dp">
+            <HorizontalScrollView
+                android:layout_width="321dp"
+                android:layout_height="247dp"
+                android:layout_gravity="center">
 
                 <LinearLayout
                     android:id="@+id/listaPhotos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
         </LinearLayout>
     </ScrollView>

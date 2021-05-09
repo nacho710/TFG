@@ -20,6 +20,7 @@
             android:id="@+id/textView"
             android:layout_width="313dp"
             android:layout_height="44dp"
+            android:fontFamily="@font/gorditas"
             android:text="@string/cu_nto_pesas_hoy"
             android:textAlignment="center"
             android:textSize="24sp" />
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/ej_74_1"
             android:inputType="numberDecimal" />
 
@@ -49,6 +51,7 @@
             android:id="@+id/button2"
             android:layout_width="231dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:onClick="actualizarPeso"
             android:text="@string/actualizar"
             android:theme="@style/AppTheme" />

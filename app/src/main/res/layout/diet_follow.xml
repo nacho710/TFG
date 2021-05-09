@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fondo">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/fondo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,7 +24,7 @@
                 android:id="@+id/dayIdPop"
                 android:layout_width="233dp"
                 android:layout_height="109dp"
-                android:fontFamily="@font/font"
+                android:fontFamily="@font/gorditas"
                 android:gravity="center"
                 android:text="Texto descripcion"
                 android:textColor="#000000"
@@ -33,8 +32,8 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="380dp"
-                android:layout_height="305dp"
+                android:layout_width="278dp"
+                android:layout_height="290dp"
                 android:layout_weight="0.570"
                 android:orientation="horizontal">
 
@@ -49,6 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="TextView" />
 
@@ -57,6 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="TextView" />
 
@@ -65,6 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="TextView" />
 
@@ -73,6 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="TextView" />
 
@@ -81,6 +84,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.20"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="TextView" />
 
@@ -127,35 +131,38 @@
 
             <TextView
                 android:id="@+id/comentarioIdPop"
-                android:layout_width="379dp"
+                android:layout_width="277dp"
                 android:layout_height="47dp"
                 android:layout_weight="0.20"
+                android:fontFamily="@font/gorditas"
                 android:gravity="center_vertical"
                 android:text="TextView" />
 
             <TextView
                 android:id="@+id/textView21"
-                android:layout_width="380dp"
+                android:layout_width="276dp"
                 android:layout_height="52dp"
+                android:fontFamily="@font/gorditas"
                 android:text="Puesdes introducir una aclaración de tu día para que tu dietista lo vea." />
 
             <EditText
                 android:id="@+id/descripcionViewPop"
-                android:layout_width="match_parent"
+                android:layout_width="281dp"
                 android:layout_height="95dp"
                 android:ems="10"
+                android:fontFamily="@font/gorditas"
                 android:gravity="start|top"
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="287dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/imageButton"
-                    android:layout_width="241dp"
+                    android:layout_width="78dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.570"
                     android:onClick="subirFoto"
@@ -164,7 +171,7 @@
 
                 <HorizontalScrollView
                     android:id="@+id/botonCamera"
-                    android:layout_width="263dp"
+                    android:layout_width="227dp"
                     android:layout_height="78dp"
                     android:layout_gravity="center">
 
@@ -181,9 +188,12 @@
 
             <Button
                 android:id="@+id/button9"
-                android:layout_width="match_parent"
+                android:layout_width="288dp"
                 android:layout_height="95dp"
                 android:layout_weight="0.570"
+                android:background="#43A047"
+                android:backgroundTint="#43A047"
+                android:fontFamily="@font/gorditas"
                 android:onClick="uploadFollow"
                 android:text="Validar datos" />
 

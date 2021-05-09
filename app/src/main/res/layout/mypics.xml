@@ -39,6 +39,7 @@
             android:layout_width="585dp"
             android:layout_height="0dp"
             android:layout_weight="0.10"
+            android:fontFamily="@font/gorditas"
             android:onClick="gotoUpload"
             android:text="Subir foto"
             tools:visibility="visible" />

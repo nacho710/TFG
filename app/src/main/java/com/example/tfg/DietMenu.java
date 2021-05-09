@@ -88,14 +88,12 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
         System.out.println(value);
         String id = mAuth.getCurrentUser().getUid();
 
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+
+
                             LayoutInflater inflater = (LayoutInflater)
                             getSystemService(LAYOUT_INFLATER_SERVICE);
                         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -116,7 +114,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                             comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem4);
                             comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem5);
                             comentView = (TextView) popupWindow.getContentView().findViewById(R.id.ComentDietDay);
-                            mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
+                            mydb.child("Diets").child(dietId).child("0").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -151,9 +149,9 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                                 }
                             });
                         }
-                    }, 100);
 
-                }
+
+
             }
 
             @Override

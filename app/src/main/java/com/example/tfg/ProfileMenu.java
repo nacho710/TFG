@@ -6,12 +6,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.tfg.Integracion.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -99,7 +105,7 @@ public class ProfileMenu extends AppCompatActivity {
     }
     private void getInfoUser(){
         String id = mAuth.getCurrentUser().getUid();
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
@@ -211,6 +217,11 @@ public class ProfileMenu extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+    public void gotoGuide(View view){
+        Intent i =  new Intent(this,GuideViewer.class);
+        startActivity(i);
+
+    }
     public void misFotos(){
         Intent i =  new Intent(this,MyPics.class);
         startActivity(i);
@@ -227,7 +238,7 @@ public class ProfileMenu extends AppCompatActivity {
 
     }
     public void goToUpdatePeso(View view){
-        Intent intent = new Intent(ProfileMenu.this, UpdateWeight.class);
+        Intent intent = new Intent(this, UpdateWeight.class);
         startActivity(intent);
 
     }
@@ -260,6 +271,33 @@ public void gotoDietMenu(View view){
     Intent i =  new Intent(this,DietMenu.class);
     startActivity(i);
 }
+    public void openHelp(View view){
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.help_view, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        //     popupWindow.setAnimationStyle();
+
+        // show the popup windowt
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(popupView, Gravity.BOTTOM, 0, 0);
+        ImageView image =  popupWindow.getContentView().findViewById(R.id.helpImage);
+        image.setImageResource(R.drawable.profilehelp);
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // popupWindow.dismiss();
+                return true;
+            }
+        });
+
+    }
 
     public void gotoDietFollow(View view){
         final int[] check = {0};

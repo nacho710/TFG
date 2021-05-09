@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="Email"
             android:inputType="textEmailAddress" />
 
@@ -46,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/gorditas"
             android:hint="Contraseña"
             android:inputType="textPassword" />
 
@@ -55,7 +57,7 @@
             android:layout_height="64dp"
 
             android:backgroundTint="#4CBD80"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="@font/gorditas"
             android:onClick="loginUser"
             android:text="Iniciar Sesión"
             android:textAllCaps="false"
@@ -70,12 +72,14 @@
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gorditas"
             android:text="@string/no_te_has_registrado_antes_hazlo_aqu" />
 
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:fontFamily="@font/gorditas"
             android:onClick="goToRegister"
             android:text="Regístrate"
             android:textAllCaps="false"
@@ -87,6 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_weight="0.10"
+            android:fontFamily="@font/gorditas"
             android:onClick="goToSendReset"
             android:text="He olvidado mi contraseña"
             android:textAllCaps="false"

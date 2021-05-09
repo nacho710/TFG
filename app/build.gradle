@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
-
+    implementation 'com.bogdwellers:pinchtozoom:0.1'
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'

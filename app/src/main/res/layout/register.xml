@@ -29,29 +29,32 @@
 
         <EditText
             android:id="@+id/fieldEmail"
-            android:layout_width="366dp"
+            android:layout_width="341dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/fieldPassword"
-            android:layout_width="366dp"
+            android:layout_width="341dp"
             android:layout_height="11dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:autofillHints=""
+            android:fontFamily="@font/gorditas"
             android:hint="@string/contrase_a_min_6_car_cteres"
             android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/fieldPassword2"
-            android:layout_width="366dp"
+            android:layout_width="341dp"
             android:layout_height="11dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/gorditas"
             android:hint="@string/repetir_contrase_a_min_6_car_cteres"
             android:inputType="textPassword" />
 
@@ -61,13 +64,14 @@
 
         <Button
             android:id="@+id/emailCreateAccountButton"
-            android:layout_width="372dp"
+            android:layout_width="341dp"
             android:layout_height="8dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/button_horizontal_margin"
             android:layout_marginEnd="@dimen/button_horizontal_margin"
             android:layout_weight="1"
             android:backgroundTint="#4CBD80"
+            android:fontFamily="@font/gorditas"
             android:forceHasOverlappingRendering="false"
             android:onClick="createUser"
             android:text="@string/crear_cuenta"

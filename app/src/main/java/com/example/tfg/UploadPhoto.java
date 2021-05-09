@@ -1,6 +1,7 @@
 package com.example.tfg;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tfg.Integracion.TUsuario;
@@ -109,59 +111,77 @@ public class UploadPhoto extends AppCompatActivity {
     }
     // UploadImage method
     public void uploadImage(View view) {
+        AlertDialog.Builder  dialog = new AlertDialog.Builder(UploadPhoto.this);
+        dialog.setTitle("¿Es correcta la foto?");
+        dialog.setMessage("Si la subes y decides eliminarla ponte en contacto con el servicio tecnico");
+        dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(filePath != null)
+                {
+                    final ProgressDialog progressDialog = new ProgressDialog(UploadPhoto.this);
+                    progressDialog.setTitle("Uploading...");
+                    progressDialog.show();
+                    String id = mAuth.getCurrentUser().getUid();
+                    String key = UUID.randomUUID().toString();
+                    StorageReference ref = storageReference.child(id+"/images/bodyimages/"+  key);
+                    ref.putFile(filePath)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(UploadPhoto.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
-        if(filePath != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-            String id = mAuth.getCurrentUser().getUid();
-            String key = UUID.randomUUID().toString();
-            StorageReference ref = storageReference.child(id+"/images/bodyimages/"+  key);
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(UploadPhoto.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                            if(numpic==0){
-                                picIds.set(0,key);
-                            }else
-                                picIds.add(key);
-                            Integer suma= numpic+1;
+                                    if(numpic==0){
+                                        picIds.set(0,key);
+                                    }else
+                                        picIds.add(key);
+                                    Integer suma= numpic+1;
 //                        String nombre = snapshot.child("username").getValue().toString();
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("numpics", suma);
-                                map.put("picIds", picIds);
-                                //TYPE 1 = PACIENTE
-                                // TYPE 2 = DIETISTA
-                                mydb.child("Patient").child(id).updateChildren(map);
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put("numpics", suma);
+                                    map.put("picIds", picIds);
+                                    //TYPE 1 = PACIENTE
+                                    // TYPE 2 = DIETISTA
+                                    mydb.child("Patient").child(id).updateChildren(map);
 
-                                //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
-
-
-
-                        }
-
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(UploadPhoto.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
+                                    //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
 
 
-        }
+
+                                }
+
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(UploadPhoto.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                            .getTotalByteCount());
+                                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                                }
+                            });
+
+
+                }
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+
+
+
     }
 }

@@ -24,7 +24,7 @@
 
         <ImageButton
             android:id="@+id/ib_obtener_hora"
-            android:layout_width="359dp"
+            android:layout_width="334dp"
             android:layout_height="73dp"
             android:src="@mipmap/baseline_alarm_black_24dp"
             app:layout_constraintHorizontal_bias="0.504"
@@ -35,12 +35,13 @@
 
         <EditText
             android:id="@+id/et_mostrar_hora_picker"
-            android:layout_width="367dp"
+            android:layout_width="343dp"
             android:layout_height="0dp"
             android:layout_weight="0.10"
             android:editable="false"
             android:ems="10"
             android:enabled="false"
+            android:fontFamily="@font/gorditas"
             android:gravity="center"
             android:hint="@string/formato_hora"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -48,10 +49,11 @@
 
         <Button
             android:id="@+id/butonCreateAlarm"
-            android:layout_width="364dp"
+            android:layout_width="346dp"
             android:layout_height="0dp"
             android:layout_weight="0.09"
             android:backgroundTint="#4CBD80"
+            android:fontFamily="@font/gorditas"
             android:onClick="establecerAlarma"
             android:text="Establecer alarma" />
 

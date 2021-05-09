@@ -42,13 +42,8 @@ public class UpdateWeight extends AppCompatActivity {
             String id = mAuth.getCurrentUser().getUid();
             Map<String, Object> map = new HashMap<>();
             map.put("weight", pesoo);
-            mydb.child("Patient").child(id).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Intent intent = new Intent(UpdateWeight.this, ProfileMenu.class);
-                    finish();
-                }
-            });
+            mydb.child("Patient").child(id).updateChildren(map);
+
         }
 
 
@@ -56,5 +51,6 @@ public class UpdateWeight extends AppCompatActivity {
             Toast.makeText(UpdateWeight.this,"Tienes que rellenar un peso",Toast.LENGTH_LONG).show();
 
         }
+
     }
 }

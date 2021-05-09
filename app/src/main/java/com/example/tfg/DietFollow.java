@@ -231,33 +231,26 @@ public class DietFollow  extends AppCompatActivity {
                             map.put("coment",  comentView.getText().toString());
                             System.out.println("imagenes");
                             System.out.println(imagenes);
-                                for(Bitmap bmp : imagenes) {
+                            for(Bitmap bmp : imagenes) {
                                 System.out.println(bmp);
                                 String key = UUID.randomUUID().toString();
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                                 byte[] byteArray = stream.toByteArray();
                                 StorageReference ref = storageReference.child(id + "/images/follow/" + dayID + "/" + key);
-                                ref.putBytes(byteArray).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                        picsIDs.add(key);
-
-                                    }
-                                });
-
+                                ref.putBytes(byteArray);
+                                picsIDs.add(key);
                             }
-
                     map.put("photosIds",  picsIDs);
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
-                    public void run() {   mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map); }} , 1000);
+                    public void run() {   mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map); finish(); }} , 1000);
 
                     //mydb.child("Patient").child(id).child("Follow").child(dayID).updateChildren(map);
 
-                startActivity(new Intent(DietFollow.this, ProfileMenu.class));
-                finish();
+
+
             }
         });
         dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {

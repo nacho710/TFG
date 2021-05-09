@@ -38,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
                 android:backgroundTintMode="add"
+                android:fontFamily="@font/gorditas"
                 android:gravity="center_vertical"
                 android:text="TextView"
                 android:textAlignment="center"
@@ -63,6 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="29dp"
                         android:backgroundTintMode="add"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center_vertical"
                         android:text="@string/peso_actual"
                         android:textAlignment="center"
@@ -81,6 +83,7 @@
                         android:layout_width="186dp"
                         android:layout_height="101dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center|clip_vertical"
                         android:text="TextView"
                         android:textAlignment="center"
@@ -91,9 +94,10 @@
                         android:layout_width="104dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/gorditas"
                         android:onClick="goToUpdatePeso"
                         android:text="Actualizar"
-                        android:textSize="10sp"
+                        android:textSize="8sp"
                         android:theme="@style/AppTheme" />
 
                 </LinearLayout>
@@ -110,6 +114,7 @@
                         android:layout_height="33dp"
                         android:layout_gravity="center"
                         android:backgroundTintMode="add"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center"
                         android:text="IMC"
                         android:textAlignment="center"
@@ -124,6 +129,7 @@
                         android:layout_height="117dp"
                         android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center|center_vertical"
                         android:text="TextView"
                         android:textAlignment="center"
@@ -134,6 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
+                        android:fontFamily="@font/gorditas"
                         android:gravity="center" />
 
                 </LinearLayout>
@@ -142,8 +149,10 @@
 
             <Button
                 android:id="@+id/midietaButton"
-                android:layout_width="match_parent"
+                android:layout_width="365dp"
                 android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/gorditas"
                 android:onClick="gotoDietMenu"
                 android:text="MI DIETA"
                 android:textSize="18sp"
@@ -151,19 +160,45 @@
 
             <Button
                 android:id="@+id/followDietaButton"
-                android:layout_width="match_parent"
+                android:layout_width="367dp"
                 android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/gorditas"
                 android:onClick="gotoDietFollow"
                 android:text="Seguimiento de dieta"
                 android:theme="@style/AppTheme" />
 
             <Button
                 android:id="@+id/solicitarDietistaButton"
-                android:layout_width="match_parent"
+                android:layout_width="367dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/gorditas"
                 android:onClick="goToChooseDietician"
                 android:text="@string/solicitar_dietista"
                 android:theme="@style/AppTheme" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="365dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#FFFFFF"
+                android:backgroundTint="#43A047"
+                android:fontFamily="@font/gorditas"
+                android:onClick="gotoGuide"
+                android:text="Consejos para comer bien" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:alpha="1"
+                android:backgroundTint="#00000000"
+                android:backgroundTintMode="src_in"
+                android:onClick="openHelp"
+                app:srcCompat="@android:drawable/ic_menu_help" />
 
         </LinearLayout>
     </ScrollView>

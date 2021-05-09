@@ -66,9 +66,10 @@ public class MyPics extends AppCompatActivity {
                 if(snapshot.exists()) {
                     numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
                     picIds =  (List<String>) snapshot.child("picIds").getValue();
-                    final long ONE_MEGABYTE =  1024 * 1024;
+                    final long ONE_MEGABYTE =  2048 * 2048;
                     for( int i = 0 ; i < numpic ;i++){
                         ImageView imagen = new ImageView(MyPics.this);
+
                         ll.addView(imagen);
                         storageReference.child(id+"/images/bodyimages/"+picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override

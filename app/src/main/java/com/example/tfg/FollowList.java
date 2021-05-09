@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +65,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
     private TextView  descripcionView;
     private Calendar currentTime;
     private  String dayID;
-
+    private  PopupWindow popupWindow;
      private CheckBox     comida1Check;
      private CheckBox     comida2Check;
      private CheckBox     comida3Check;
@@ -94,6 +96,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
         comida3Check = (CheckBox) findViewById(R.id.comida3Check);
         comida4Check = (CheckBox) findViewById(R.id.comida4Check);
         comida5Check = (CheckBox) findViewById(R.id.comida5Check);
+
 
         mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,15 +146,13 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
 
 
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if(snapshot.exists()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+
+
 
 
                                 HashMap<String, List<String>> mapa = (HashMap<String, List<String>>) snapshot.child("Follow").getValue();
@@ -166,7 +167,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
                                 int width = LinearLayout.LayoutParams.MATCH_PARENT;
                                 int height = LinearLayout.LayoutParams.MATCH_PARENT;
                                 boolean focusable = true;
-                                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                                 popupWindow = new PopupWindow(popupView, width, height, focusable);
                                 // lets taps outside the popup also dismiss it
                                 comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.comida1);
                                 comida2View = (TextView) popupWindow.getContentView().findViewById(R.id.comida2);
@@ -210,15 +211,23 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
 
                                             picIds = (List<String>) snapshots.child("photosIds").getValue();
                                             llphotos = (LinearLayout) popupWindow.getContentView().findViewById(R.id.listaPhotos);
-                                            final long ONE_MEGABYTE = 1024 * 1024;
+                                            final long ONE_MEGABYTE = 2048 * 2048;
                                             for (int i = 0; i < picIds.size(); i++) {
                                                 ImageView imagen = new ImageView(FollowList.this);
 
-                                                storageReference.child(id + "/images/follow/" + dayID + "/" + picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                storageReference.child(id + "/images/follow/" + value + "/" + picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                     @Override
                                                     public void onSuccess(byte[] bytes) {
+                                                        System.out.println("HOLA");
                                                         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                         imagen.setImageBitmap(bmp);
+                                                        imagen.setOnTouchListener(new ImageMatrixTouchHandler(popupView.getContext()));
+//                                                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+//                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+//                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+//                                                                1.0f
+//                                                        );
+//                                                        imagen.setLayoutParams(param);
                                                         llphotos.addView(imagen);
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
@@ -257,13 +266,13 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
 
 
                         }
-                    }, 400);
+                    }
 
 
-                }
 
 
-            }
+
+
 
 
             @Override
@@ -272,4 +281,16 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-}}
+
+}
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            popupWindow.dismiss();
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+}

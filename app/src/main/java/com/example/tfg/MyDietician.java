@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,6 +53,7 @@ public class MyDietician extends AppCompatActivity {
     private  String sumaString;
     private RatingBar ratingBar;
     private String phone;
+    private String email;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +137,11 @@ public class MyDietician extends AppCompatActivity {
 
 
                                 nameView.setText(snapshot.child("username").getValue().toString());
-                                emailView.setText(snapshot.child("email").getValue().toString());
+                                SpannableString content = new SpannableString(snapshot.child("email").getValue().toString()); content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+
+
+                                emailView.setText(content);
+                                email = snapshot.child("email").getValue().toString();
                                 descriptionView.setText(snapshot.child("description").getValue().toString());
                                 phone = snapshot.child("phone").getValue().toString();
                                 phoneView.setText(snapshot.child("phone").getValue().toString());
@@ -163,6 +170,12 @@ public class MyDietician extends AppCompatActivity {
         Intent i =  new Intent(this,UploadPhoto.class);
         startActivity(i);
     }
+    public void sendEmail(View view){
+        Intent emailIntent =  new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"+email));
+        startActivity(emailIntent);
+
+    }
     public void getRating(View view) {
 
         String id = mAuth.getCurrentUser().getUid();
@@ -172,9 +185,7 @@ public class MyDietician extends AppCompatActivity {
                 Map<String,Object> map = new HashMap<>();
                 lista.add(String.valueOf( ratingBar.getRating()));
                 map.put("worthList", lista);
-
                 map.put("worth",sumaString);
-
                 mydb.child("Dietician").child(idDietista).updateChildren(map);
             Map<String,Object> map_user = new HashMap<>();
             lista.add(String.valueOf( ratingBar.getRating()));
