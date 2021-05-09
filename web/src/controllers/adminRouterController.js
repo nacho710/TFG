@@ -7,7 +7,7 @@ const { response } = require("express");
 
 
 // function comprobarSesion() {
-//     firebase.auth().onAuthStateChanged((user) => {
+//     firebase.auth().onAuthStateChanged(function(user) {
 //         if (user) {
 
 
@@ -30,7 +30,7 @@ const { response } = require("express");
 //SACAR LA VISTA DEL INDEX DEL ADMIN
 function indexAdmin(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -54,7 +54,7 @@ function indexAdmin(request, response) {
 
 //SACAR LA VISTA DEL FORMULARIO DE NUEVO DIETISTA POR PARTE DEL ADMIN
 function nuevoDietistaView(request, response) {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
             // User is signed in, see docs for a list of available properties
@@ -75,7 +75,7 @@ function nuevoDietistaView(request, response) {
 
 //FUNCION QUE AÑADE UN NUEVO DIETISTA TRAS PULSAR EL BOTON DE AÑADIR DIETISTA DEL FORM DEL ADMIN
 function nuevoDietista(request, response) {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
             // User is signed in, see docs for a list of available properties
@@ -146,7 +146,7 @@ function nuevoDietista(request, response) {
 
 function modificarDietistaView(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -174,7 +174,7 @@ function modificarDietistaView(request, response) {
 }
 
 function modificarDietista(request, response) {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
             // User is signed in, see docs for a list of available properties
@@ -256,7 +256,7 @@ function modificarDietista(request, response) {
 //FUNCION QUE BORRA UN USUARIO DE LA BASE DE DATOS
 function borrarDietista(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -358,7 +358,7 @@ function borrarDietista(request, response) {
 
 
 //     //console.log('EAA: getDietistas: ');
-//     firebase.auth().onAuthStateChanged((user) => {
+//     firebase.auth().onAuthStateChanged(function(user) {
 //         if (user) {
 //             if (user.email == "personaldiet@admin.es") {
 
@@ -451,7 +451,7 @@ function borrarDietista(request, response) {
 function getDietistas(request, response) {
 
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -483,7 +483,7 @@ function getDietistas(request, response) {
 function getAllDietistas(request, response) {
 
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             
 
@@ -514,7 +514,7 @@ function getAllDietistas(request, response) {
 }
 function modificarEstadoDietistaAprobado(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -549,7 +549,7 @@ function modificarEstadoDietistaAprobado(request, response) {
 }
 
 function modificarEstadoDietistaDenegado(request, response) {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -588,7 +588,7 @@ function modificarEstadoDietistaDenegado(request, response) {
 //SACAR LA VISTA DEL FORMULARIO DE NUEVO PACIENTE POR PARTE DEL ADMIN
 function nuevoPacienteView(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -616,7 +616,7 @@ function nuevoPacienteView(request, response) {
 //CUANDO SE PULSA EL BOTON DEL FORMULARIO DE AÑADIR NUEVO PACIENTE CREAMOS EL PACIENTE
 function nuevoPaciente(request, response) {
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -630,7 +630,7 @@ function nuevoPaciente(request, response) {
                         email: email,
                         password: password,
                     })
-                    .then((user) => {
+                    .then(function(user) {
                         const newPatient = {
                             username: request.body.nombre + " " + request.body.apellidos,
                             email: request.body.email,
@@ -676,8 +676,6 @@ function nuevoPaciente(request, response) {
 
 
                     });
-                //push(req.body) es para saber que guardar en dicha tabla
-                //response.render('index');
             }
             else {
                 response.render('noAdminView');
@@ -696,7 +694,7 @@ function nuevoPaciente(request, response) {
 function getPacientesAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -730,7 +728,7 @@ function getPacientesAdmin(request, response) {
 function borrarPacientesAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -792,7 +790,7 @@ function borrarPacientesAdmin(request, response) {
 function perfilAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
 
 
@@ -859,7 +857,7 @@ module.exports = {
 //     var email="personaldiet@admin.es";
 //     var password="admin";
 //     firebase.auth().createUserWithEmailAndPassword(email, password)
-//     .then((user) => {
+//     .then(function(user) {
 //         response.redirect('/');
 
 //     })

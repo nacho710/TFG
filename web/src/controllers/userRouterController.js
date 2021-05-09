@@ -9,7 +9,6 @@ let alert = require('alert');
 
 
 function root(request, response) {
-    response.status(200);
 
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -18,30 +17,33 @@ function root(request, response) {
             // https://firebase.google.com/docs/reference/js/firebase.User
 
             var uid = user.uid;
-            console.log('EAA emailroot:'+user.email);
-            if (user.email == "personaldiet@admin.es") response.render('./adminViews/indexAdmin');
-            else response.render('./dieticianViews/indexDietician');
+            console.log('EAA emailroot:' + user.email);
+            if (user.email == "personaldiet@admin.es") return response.render('./adminViews/indexAdmin');
+            else return response.render('./dieticianViews/indexDietician');
         }
         else {
-            response.render("index", {
+            response.status(200);
+
+            return response.render("index", {
                 msg: null
             });
-            console.log('EAA NO ESTOY LOGUEADO');
         }
     });
 
 
 }
+
+
 function noLoggedView(request, response) {
     response.status(200);
-    response.render("noLoggedView", {
+    return response.render("noLoggedView", {
         msg: null
     });
 }
 
 function registroView(request, response) {
     response.status(200);
-    response.render("registro", {
+    return response.render("registro", {
         msg: null
     });
 }
@@ -76,10 +78,12 @@ function registroDietician(request, response) {
                 rol: "dietista",
                 status: "Pendiente de aprobar",
                 worth: "3.5"
-              });
+            });
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
-                    response.render('./dieticianViews/indexDietician');
+                    response.status(200);
+
+                    return response.render('./dieticianViews/indexDietician');
 
                 })
                 .catch((error) => {
@@ -88,7 +92,7 @@ function registroDietician(request, response) {
                     var errorMessage = error.message;
 
                     alert(errorMessage);
-                    response.redirect("/");
+                    return response.redirect("/");
                 });
 
         })
@@ -110,14 +114,14 @@ function registroDietician(request, response) {
                 msg = errorMessage;
             }
             alert(msg);
-            response.redirect("registroView");
+            return response.redirect("registroView");
 
         });
 }
 
 
 function loginView(request, response) {
-    response.render("login");
+    return response.render("login");
 }
 
 
@@ -127,64 +131,89 @@ function loginUser(request, response) {
     //console.log(request);
     var email = request.body.email;
     var password = request.body.password;
-    firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
-            if (email == "personaldiet@admin.es"){
-                response.render('./adminViews/indexAdmin');
-            }
-                
-            else{
-                 response.render('./dieticianViews/indexDietician');
-            }
-               
+    try {
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
 
-        })
-        .catch((error) => {
+            if (email == "personaldiet@admin.es") {
 
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var msg;
-            if (errorCode == 'auth/wrong-password') {
-                msg = 'El correo o la contraseña es incorrecta.';
+                return response.render('./adminViews/indexAdmin');
             }
-            else if (errorCode == 'auth/invalid-email') {
-                msg = 'El email que has introducido no es correcto.';
-            }
-            else if (errorCode == 'auth/user-disabled') {
-                msg = 'El usuario está inhabilitado.';
-            }
-            else if (errorCode == 'auth/user-not-found') {
-                msg = 'El usuario no existe.';
-            }
+
             else {
-                msg = errorMessage;
+                return response.render('./dieticianViews/indexDietician');
             }
-            alert(msg);
-            response.redirect("login");
-        });
+
+
+        }).catch((error) => {
+
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                var msg;
+                if (errorCode == 'auth/wrong-password') {
+                    msg = 'El correo o la contraseña es incorrecta.';
+                }
+                else if (errorCode == 'auth/invalid-email') {
+                    msg = 'El email que has introducido no es correcto.';
+                }
+                else if (errorCode == 'auth/user-disabled') {
+                    msg = 'El usuario está inhabilitado.';
+                }
+                else if (errorCode == 'auth/user-not-found') {
+                    msg = 'El usuario no existe.';
+                }
+                else {
+                    msg = errorMessage;
+                }
+                alert(msg);
+                return response.redirect("login");
+            });
+    }
+    catch (error) {
+        console.log('EAA errorTRY ' + error);
+        return response.render('errorViewUsers');
+
+    }
+
 }
+
 
 
 
 function logout(request, response) {
     firebase.auth().signOut().
         then(function () {
-            response.redirect("/");
+            return response.redirect("/");
         }, function (error) {
             console.error('Sign Out Error', error);
         });
 }
 
-function darseDeBaja(request, response) {
-    firebase.auth().signOut().
-        then(function () {
-            response.redirect("/");
-        }, function (error) {
-            console.error('Sign Out Error', error);
-        });
+function resetPasswordView(request, response) {
+    response.status(200);
+    return response.render("resetPassword");
 }
+
+function resetPassword(request, response) {
+
+    //console.log(request);
+    var email = request.body.email;
+    if (email != 'personaldiet@admin.es') {
+        firebase
+            .auth()
+            .sendPasswordResetEmail(email)
+            .then(function () {
+                return response.render("resetPasswordSent", { email: email });
+            })
+            .catch(function (error) {
+                console.log('EAA ERROR RESET PASSWORD ');
+                console.log(error);
+                return response.render("errorViewUsers");
+            });
+    }
+    else return response.render("errorViewUsers");
+}
+
+
 module.exports = {
     root,
     registroDietician,
@@ -193,6 +222,7 @@ module.exports = {
     loginUser,
     logout,
     noLoggedView,
-    darseDeBaja
+    resetPasswordView,
+    resetPassword
 }
 
