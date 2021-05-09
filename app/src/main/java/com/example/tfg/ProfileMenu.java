@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public class ProfileMenu extends AppCompatActivity {
@@ -55,6 +56,8 @@ public class ProfileMenu extends AppCompatActivity {
     private Button solicitarDietista;
     private Button midietabutton;
     private Button followdietaButton;
+    private List<String> picIds;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,22 +170,14 @@ public class ProfileMenu extends AppCompatActivity {
         AlertDialog.Builder  dialog = new AlertDialog.Builder(ProfileMenu.this);
         dialog.setTitle("¿Estás seguro?");
         dialog.setMessage("Esta accion eliminara tu cuenta de usuario de nuesta base de datos y borrara todas tu informacion relacionada");
-        dialog.setPositiveButton("Si,Darme de baja", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Darme de baja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String id = mAuth.getCurrentUser().getUid();
-                mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                mydb.child("Patient").child(id).removeValue();
+                storageReference.child(id).delete();
                 mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
@@ -190,6 +185,7 @@ public class ProfileMenu extends AppCompatActivity {
                             Toast.makeText(ProfileMenu.this , "Cuenta eliminada", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(ProfileMenu.this, Login.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                             startActivity(intent);
                             finish();
                         }

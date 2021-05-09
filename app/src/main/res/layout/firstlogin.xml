@@ -6,130 +6,136 @@
     android:layout_height="match_parent"
     android:background="@color/fondo">
 
-    <LinearLayout
-        android:layout_width="313dp"
-        android:layout_height="732dp"
-        android:gravity="center"
-        android:orientation="vertical"
+    <ScrollView
+        android:layout_width="329dp"
+        android:layout_height="661dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gorditas"
-            android:text="@string/textFirstLogin"
-            android:textColor="#000000"
-            android:textSize="30sp" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="34dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gorditas"
+                android:text="@string/textFirstLogin"
+                android:textColor="#000000"
+                android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName"
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="34dp" />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/gorditas"
-            android:hint="@string/fullName"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/editTextTextPersonName"
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="37dp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/gorditas"
+                android:hint="@string/fullName"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/editTextPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/gorditas"
-            android:hint="@string/phone"
-            android:importantForAutofill="no"
-            android:inputType="phone" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="37dp" />
+            <EditText
+                android:id="@+id/editTextPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/gorditas"
+                android:hint="@string/phone"
+                android:importantForAutofill="no"
+                android:inputType="phone" />
 
-        <EditText
-            android:id="@+id/editTextNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/gorditas"
-            android:hint="@string/edad"
-            android:importantForAutofill="no"
-            android:inputType="number" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="37dp" />
+            <EditText
+                android:id="@+id/editTextNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/gorditas"
+                android:hint="@string/edad"
+                android:importantForAutofill="no"
+                android:inputType="number" />
 
-        <EditText
-            android:id="@+id/editTextNumberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/gorditas"
-            android:hint="@string/weight"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="37dp" />
+            <EditText
+                android:id="@+id/editTextNumberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/gorditas"
+                android:hint="@string/weight"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal" />
 
-        <EditText
-            android:id="@+id/editTextNumberDecimal2"
-            android:layout_width="match_parent"
-            android:layout_height="59dp"
-            android:ems="10"
-            android:fontFamily="@font/gorditas"
-            android:hint="@string/height"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
 
-        <TextView
-            android:id="@+id/labelSexo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sexo" />
+            <EditText
+                android:id="@+id/editTextNumberDecimal2"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:ems="10"
+                android:fontFamily="@font/gorditas"
+                android:hint="@string/height"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:entries="@array/sexo" />
+            <TextView
+                android:id="@+id/labelSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sexo" />
 
-        <TextView
-            android:id="@+id/labelFrecuencia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Frecuencia de Actividad Deportiva" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:entries="@array/sexo" />
 
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:entries="@array/actividad" />
+            <TextView
+                android:id="@+id/labelFrecuencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Frecuencia de Actividad Deportiva" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:entries="@array/actividad" />
 
-        <Button
-            android:id="@+id/btnConfirmar"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:backgroundTint="#4CBD80"
-            android:onClick="botonConfirmar"
-            android:text="@string/confirmarButton" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:backgroundTint="#4CBD80"
+                android:onClick="botonConfirmar"
+                android:text="@string/confirmarButton" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

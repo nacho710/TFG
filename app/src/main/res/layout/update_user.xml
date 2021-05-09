@@ -121,7 +121,7 @@
 
             <Button
                 android:id="@+id/modPerf"
-                android:layout_width="236dp"
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#4CBD80"
                 android:fontFamily="@font/gorditas"

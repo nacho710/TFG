@@ -189,7 +189,7 @@
             <Button
                 android:id="@+id/button9"
                 android:layout_width="288dp"
-                android:layout_height="95dp"
+                android:layout_height="59dp"
                 android:layout_weight="0.570"
                 android:background="#43A047"
                 android:backgroundTint="#43A047"
