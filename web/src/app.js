@@ -33,7 +33,7 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
-  const fs = firebase.firestore();
+  // const fs = firebase.firestore();
 
 //settings
 

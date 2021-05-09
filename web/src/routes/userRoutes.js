@@ -12,11 +12,13 @@ router.get("/noLoggedView",userRouterController.noLoggedView);
 router.get("/registroView",userRouterController.registroView);
 router.get('/login',userRouterController.loginView);
 router.get('/logout',userRouterController.logout);
+router.get("/resetPasswordView",userRouterController.resetPasswordView);
 
 
 //POST
 router.post('/registroDietician',userRouterController.registroDietician);
 router.post('/loginUser',userRouterController.loginUser);
+router.post('/resetPassword',userRouterController.resetPassword);
 
 
 module.exports = router;

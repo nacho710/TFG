@@ -10,16 +10,19 @@ router.get('/indexDietician',dieticianRouterController.indexDietician);
 router.get('/perfilDietician',dieticianRouterController.perfilDietician);
 router.get('/manejarPacientes',dieticianRouterController.getPacientes);
 router.get('/aceptarPacienteView',dieticianRouterController.aceptarPacienteView);
-router.get('/aceptar-patient/:id',dieticianRouterController.aceptarPaciente);
-router.get('/rechazar-patient/:id',dieticianRouterController.rechazarPaciente);
-router.get('/rechazar-patient-aceptado/:id',dieticianRouterController.rechazarPacienteAceptado);
-router.get('/delete-dietician/:id',dieticianRouterController.darseDeBaja);
+router.get('/aceptar-patient/:idPatient',dieticianRouterController.aceptarPaciente);
+router.get('/rechazar-patient/:idPatient',dieticianRouterController.rechazarPaciente);
+router.get('/rechazar-patient-aceptado/:idPatient',dieticianRouterController.rechazarPacienteAceptado);
 router.get('/nuevaDietaView',dieticianRouterController.nuevaDietaView);
-
+router.get('/modify-patient-diet/:idPatient',dieticianRouterController.modificarDieta);
+router.get('/track-patient/:idPatient',dieticianRouterController.seguirProgreso); 
+router.get('/changePassword/:email',dieticianRouterController.cambiarPassword);
+router.get('/deregister/:idDietician',dieticianRouterController.darseDeBaja);
 
 
 //POST
 router.post('/nuevaDieta',dieticianRouterController.nuevaDieta);
+router.post('/modify-patient-diet/:idPatient',dieticianRouterController.nuevaDieta);
 
 
 

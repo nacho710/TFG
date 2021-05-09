@@ -352,3 +352,41 @@ span.tags
 	from { background-position: 0 50%; }
 	to { background-position: 0 0; }
 } */
+.rowProfile{
+	display: flex;
+	justify-content:center;
+}
+
+
+/****************RESET PASSWORD VIEW**************************/
+
+.descriptionReset{
+	font-size: 16px;
+	margin-bottom: 10px;
+	font-weight: 400;
+
+
+}
+.aux-buttons{
+	display: flex;
+	justify-content: space-between;
+	background-color:#f1f1f1;
+}
+
+/****************NEW DIET**************************/
+.card-day-title{
+	display: flex;
+	justify-content: center;
+}
+.day-title{
+	font-size: 22px;
+	font-weight: 700;
+}
+.food-title{
+	font-size: 18px;
+	font-weight: 400;
+}
+
+
+
+/****************PERFIL DIETICIAN**************************/

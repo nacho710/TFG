@@ -17,7 +17,9 @@
                     <p class="info-patient">Altura: {{height}} <br></br></p> 
                     <p class="info-patient">Peso: <br></br>{{weight}} </p>
                     <a href="/rechazar-patient-aceptado/{{@key}}" class="btn btn-danger">Borrar paciente</a>
-                    {{!-- <a href="/modify-patient/{{@key}}" class="btn btn-actualizarPaciente">Modificar paciente</a> --}}
+                    <a href="/modify-patient-diet/{{@key}}" class="btn myButtonMarron">Modificar dieta</a>
+                    <a href="/track-patient/{{@key}}" class="btn myButtonVerde">Seguir progreso</a>
+
 
                 </li>
                 {{/each}}
