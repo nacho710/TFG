@@ -1,4 +1,4 @@
-{{> navbarLoggedDietician }} 
+{{> navbarLoggedDietician }}
 
 <div class="col-md-6 offset-md-3">
     <div class="card">
@@ -10,22 +10,26 @@
             <ul class="list-group">
                 {{#each patient}}
                 <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
-                    <p class="info-patient">Nombre y apellidos: <br></br>{{username}}</p> 
+                    <p class="info-patient">Nombre y apellidos: <br></br>{{username}}</p>
                     <p class="info-patient">Email: <br></br> {{email}} </p>
                     <p class="info-patient">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-patient">Edad: <br></br>{{age}} </p> 
-                    <p class="info-patient">Altura: {{height}} <br></br></p> 
+                    <p class="info-patient">Edad: <br></br>{{age}} </p>
+                    <p class="info-patient">Altura: {{height}} <br></br></p>
                     <p class="info-patient">Peso: <br></br>{{weight}} </p>
-                    <a href="/rechazar-patient-aceptado/{{@key}}" class="btn btn-danger">Borrar paciente</a>
-                    <a href="/modify-patient-diet/{{@key}}" class="btn myButtonMarron">Modificar dieta</a>
-                    <a href="/track-patient/{{@key}}" class="btn myButtonVerde">Seguir progreso</a>
-
+                    <a href="/rechazarPacienteAceptado/{{@key}}" class="btn btn-danger">Borrar paciente</a>
+                     {{#ifeq dietId "null" }}
+                    <a href="/nuevaDieta/{{@key}}" class="btn myButtonAmarillo">Crear Dieta</a>
+                    {{/ifeq}}           
+                     {{#ifnoteq dietId "null" }}
+                     <a href="/modificarDieta/{{@key}}" class="btn myButtonMarron">Modificar dieta</a>
+                    <a href="/seguirPaciente/{{@key}}" class="btn myButtonVerde">Seguir progreso</a>
+                    {{/ifnoteq}}
 
                 </li>
                 {{/each}}
             </ul>
             {{else}}
-                <p>No tienes pacientes asignados</p>
+            <p>No tienes pacientes asignados</p>
             {{/if}}
         </div>
         <div class="card-footer">
