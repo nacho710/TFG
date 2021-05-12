@@ -105,7 +105,7 @@ function aceptarPacienteView(request, response, next) {
                 db.ref('/Request/' + snapshot.key).once('value', (childSnapshot) => { //consultamos en firebase la tabla users 
                     var refPatient = db.ref('Patient');
                     refPatient.orderByKey().equalTo(childSnapshot.val().idPatient).once('value', (patientSnapshot) => { //me devuelve cada fila que tiene status aprobado pero sin la clave
-
+                        console.log('EAA aceptarPacienteView '+JSON.stringify(patientSnapshot.val()));
                         var data = patientSnapshot.val();
                         return response.render('./dieticianViews/aceptarPacientes', { patient: data }); //refrescamos la vista de index ahora con esos valores
                     })
@@ -258,14 +258,14 @@ function nuevaDietaView(request, response) {
     var user = firebase.auth().currentUser;
     if (user) {
 
-        if(request.params.idPatient.con)
         var patientId = request.params.idPatient;
         db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
             if (snapshot.exists()) {
+                
                 const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
-                console.log('EAA ' + JSON.stringify(data));
-                response.status(200);
-                return response.render('./dieticianViews/nuevaDieta', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                // var jsonPatient={patientId:data};
+                // console.log('EAA nuevaDietaView ' + JSON.stringify(jsonPatient));
+                response.render('./dieticianViews/nuevaDieta', { patient: data }); //refrescamos la vista de index ahora con esos valores
             }
             else {
                 return response.render('./dieticianViews/errorView');
