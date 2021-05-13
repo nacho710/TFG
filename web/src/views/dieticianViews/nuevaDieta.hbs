@@ -32,6 +32,16 @@
                     </li>
                 </ul>
             </div>
+
+            {{#if errors}}
+            <div class="card-body">
+                <ul class="list-group">
+                    <h1>Ha habido un error al crear la dieta. Prueba a hacerlo de nuevo poniendo más atención.</h1>
+                </ul>
+            </div>
+            {{/if}}
+
+
             <div class="card-footer">
             </div>
         </div>
@@ -39,21 +49,21 @@
             <div class="card-heading"></div>
             <div class="card-body">
                 <h2 class="title">Creación de nueva dieta</h2>
-                <form action="/nuevaDieta" id="dietForm" method="POST">
+                <form action="/nuevaDieta/{{patientId}}" id="dietForm" method="POST">
                     <div class="card-day monday-day">
                         <div class="card-day-title">
                             <p class="day-title monday-day-title">Lunes</p>
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="monday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="mondaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="monday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="mondaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -61,7 +71,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="monday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="mondaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -69,7 +79,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="monday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="mondaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -77,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="monday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="mondaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -85,7 +95,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del lunes:</p>
-                            <p><textarea class="form-control" name="monday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="mondaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el lunes"
                                     required="true"></textarea></p>
 
@@ -100,14 +110,14 @@
                         <div class="form-group">
 
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="tuesday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="tuesday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -115,7 +125,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="tuesday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -123,7 +133,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="tuesday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -131,7 +141,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="tuesday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -139,7 +149,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del martes:</p>
-                            <p><textarea class="form-control" name="tuesday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="tuesdaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el martes"
                                     required="true"></textarea></p>
 
@@ -154,14 +164,14 @@
                         <div class="form-group">
 
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="wednesday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="wednesday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -169,7 +179,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="wednesday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -177,7 +187,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="wednesday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -185,7 +195,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="wednesday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -193,8 +203,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del miércoles:</p>
-                            <p><textarea class="form-control" name="wednesday-comment" cols="50" rows="5"
-                                    form="dietForm"
+                            <p><textarea class="form-control" name="wednesdaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el miércoles"
                                     required="true"></textarea></p>
 
@@ -209,14 +218,14 @@
                         <div class="form-group">
 
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="thursday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="thursday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -224,7 +233,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="thursday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -232,7 +241,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="thursday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -240,7 +249,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="thursday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -248,7 +257,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del jueves:</p>
-                            <p><textarea class="form-control" name="thursday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="thursdaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el jueves"
                                     required="true"></textarea></p>
 
@@ -263,14 +272,14 @@
 
                         <div class="form-group">
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="friday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="fridaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="friday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="fridaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -278,7 +287,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="friday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="fridaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -286,7 +295,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="friday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="fridaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -294,7 +303,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="friday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="fridaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -302,7 +311,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del viernes:</p>
-                            <p><textarea class="form-control" name="friday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="fridaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el viernes"
                                     required="true"></textarea></p>
 
@@ -316,14 +325,14 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="saturday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="saturday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -331,7 +340,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="saturday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -339,7 +348,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="saturday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -347,7 +356,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="saturday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -355,7 +364,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del sábado:</p>
-                            <p><textarea class="form-control" name="saturday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="saturdaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el sábado"
                                     required="true"></textarea></p>
 
@@ -369,14 +378,14 @@
 
                         <div class="form-group">
                             <p class="food-title">Comida 1</p>
-                            <p><textarea class="form-control" name="sunday-lunch1" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="sundaylunch1" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
                                     autofocus></textarea></p>
 
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 2:</p>
-                            <p><textarea class="form-control" name="sunday-lunch2" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="sundaylunch2" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la segunda comida (o posibles comidas)"
                                     required="true"></textarea></p>
 
@@ -384,7 +393,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 3:</p>
-                            <p><textarea class="form-control" name="sunday-lunch3" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="sundaylunch3" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -392,7 +401,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 4:</p>
-                            <p><textarea class="form-control" name="sunday-lunch4" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="sundaylunch4" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -400,7 +409,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comida 5:</p>
-                            <p><textarea class="form-control" name="sunday-lunch5" cols="50" rows="4" form="dietForm"
+                            <p><textarea class="form-control" name="sundaylunch5" cols="50" rows="4" form="dietForm"
                                     placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)"></textarea>
                             </p>
 
@@ -408,7 +417,7 @@
                         </div>
                         <div class="form-group">
                             <p class="food-title">Comentario para las comidas del domingo:</p>
-                            <p><textarea class="form-control" name="sunday-comment" cols="50" rows="5" form="dietForm"
+                            <p><textarea class="form-control" name="sundaycomment" cols="50" rows="5" form="dietForm"
                                     placeholder="Escribe aquí los comentarios que tengas sobre el domingo"
                                     required="true"></textarea></p>
 

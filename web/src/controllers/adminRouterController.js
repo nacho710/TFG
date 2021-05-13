@@ -125,15 +125,28 @@ function modificarDietistaView(request, response) {
     var user = firebase.auth().currentUser;
         if (user) {
 
-
             if (user.email == "personaldiet@admin.es") {
 
+                var dieticianId = request.params.id;
 
-                db.ref('/Dietician/' + request.body.id).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                    const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                    response.render('./adminViews/modificarDietista', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                // db.ref('/Dietician/' + request.body.id).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                //     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                //     return response.render('./adminViews/modificarDietista', { dietician: data }); //refrescamos la vista de index ahora con esos valores
 
+                // })
+                db.ref('Dietician/' + dieticianId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                    const dataDietician = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
+
+                    console.log('EAA dataDietician ' + JSON.stringify(dataDietician));
+                    return response.render('./adminViews/modificarDietista', { dietician: dataDietician,dieticianId:dieticianId }); //refrescamos la vista de index ahora con esos valores
+        
+                }).catch(function (error) {
+                    console.log('EAA ERROR1' + error)
+                    return response.render('./adminViews/errorView');
+        
                 })
+
+
             }
             else response.render('noAdminView');
         }
@@ -150,57 +163,31 @@ function modificarDietistaView(request, response) {
 function modificarDietista(request, response) {
     var user = firebase.auth().currentUser;
         if (user) {
-
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
             if (user.email == "personaldiet@admin.es") {
-                var email = request.body.email;
-                var password = request.body.password;
-                admin
-                    .auth()
-                    .createUser({
-                        email: email,
-                        password: password,
-                    })
-                    .then((userDietista) => {
-                        console.log('EAA userdietista' + JSON.stringify(userDietista.uid));
-                        db.ref('Dietician/' + userDietista.uid).set({
-                            username: request.body.nombre + " " + request.body.apellidos,
-                            email: request.body.email,
-                            password: request.body.password,
-                            phone: request.body.phone,
-                            description: request.body.description,
-                            status: "Aprobado",
-                            worth: request.body.worthStars
-                        });
-                        db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                            const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                            response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                var dieticianId = request.params.id;
+                var dieticianRef = db.ref("Dietician/" + dieticianId);
+                if (dieticianRef) {
+                    dieticianRef.update({
+                        "username": request.body.nombre,
+                        "description": request.body.description,
+                        "phone": request.body.phone
 
-                        })
-
-                    })
-                    .catch((error) => {
-                        // alert("ERROR EN createuser:"+error);
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        var msg;
-                        if (errorCode == 'auth/weak-password') {
-                            msg = 'La contraseña es demasiado debil-->Tiene que tener más de 6 caracteres.';
+                    }, (error) => {
+                        if (error) {
+                          return  response.redirect('./adminViews/errorView');
+        
+        
+                        } else {
+                            db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                                const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                                console.log('EAA GETDietician:' + JSON.stringify(snapshot.val()));
+                                response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+            
+                            })
+        
                         }
-                        else if (errorCode == 'auth/invalid-email') {
-                            msg = 'El email que has introducido no es correcto';
-                        }
-                        else if (errorCode == 'auth/email-already-in-use') {
-                            msg = 'El email que has introducido ya está en uso';
-                        }
-                        else {
-                            msg = errorMessage;
-                        }
-                        alert(msg);
-                        response.render('./adminViews/nuevoDietista');
-
                     });
+                }
             }
             else response.render('noAdminView');
         }

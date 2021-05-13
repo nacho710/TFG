@@ -72,17 +72,15 @@ function perfilDietician(request, response) {
 function getPacientes(request, response) {
     var user = firebase.auth().currentUser;
     if (user) {
-
-        db.ref('Patient').once('value', (snapshot) => { //consultamos en firebase la tabla users 
+        var dieticianId = user.uid;
+        db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
             const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-            response.status(200);
-
+            console.log('EAA getPacientes ' + JSON.stringify(data));
             return response.render('./dieticianViews/manejarPacientes', { patient: data }); //refrescamos la vista de index ahora con esos valores
-
         })
 
-
     }
+
     else {
         return response.redirect('../noLoggedView');
     }
@@ -90,22 +88,19 @@ function getPacientes(request, response) {
 }
 
 
-
-//get LOS PACIENTES QUE REQUIEREN LOS SERVICIOS DEL DIETISTA
-
-
 function aceptarPacienteView(request, response, next) {
 
     var user = firebase.auth().currentUser;
     if (user) {
         var ref = db.ref('Request');
-        ref.orderByChild('idDietician').equalTo(user.uid).on('child_added', function (snapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
+        ref.orderByChild('idDietician').equalTo(user.uid).on('child_added', function (snapshot) { 
 
             if (snapshot) {
                 db.ref('/Request/' + snapshot.key).once('value', (childSnapshot) => { //consultamos en firebase la tabla users 
+                    console.log('EAA aceptarPacienteView snapshot.key' + JSON.stringify(childSnapshot));
                     var refPatient = db.ref('Patient');
                     refPatient.orderByKey().equalTo(childSnapshot.val().idPatient).once('value', (patientSnapshot) => { //me devuelve cada fila que tiene status aprobado pero sin la clave
-                        console.log('EAA aceptarPacienteView '+JSON.stringify(patientSnapshot.val()));
+                        console.log('EAA aceptarPacienteView ' + JSON.stringify(patientSnapshot.val()));
                         var data = patientSnapshot.val();
                         return response.render('./dieticianViews/aceptarPacientes', { patient: data }); //refrescamos la vista de index ahora con esos valores
                     })
@@ -166,7 +161,18 @@ function aceptarPaciente(request, response) {
 
 
                         } else {
-                            return response.redirect('/manejarPacientes'); //refrescamos la vista de index ahora con esos valores
+
+                            db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                                const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
+                                console.log('EAA ' + JSON.stringify(data));
+                                return response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId }); //refrescamos la vista de index ahora con esos valores
+
+                            }).catch(function (error) {
+                                console.log('EAA ERROR1' + error)
+                                return response.render('./dieticianViews/errorView');
+
+                            })
+                            // return response.redirect('/manejarPacientes'); //refrescamos la vista de index ahora con esos valores
                         }
                     });
 
@@ -243,7 +249,42 @@ function rechazarPaciente(request, response) {
 function rechazarPacienteAceptado(request, response) {
     var user = firebase.auth().currentUser;
     if (user) {
+        console.log(('EAA rechazarPacienteAceptado 111111'));
 
+        var dieticianId = user.uid;
+        var patientId = request.params.idPatient;
+        db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (snapshot) {
+            console.log(JSON.stringify(snapshot));
+            console.log(JSON.stringify(snapshot.key));
+
+            if (snapshot) {
+                db.ref('Diets/' + snapshot.key).remove();
+                const patientRef = db.ref("Patient/" + patientId);
+                patientRef.update({
+                    dietId: "null",
+                    dieticianId: "null",
+                    dieticianValorated: "false"
+                }, (error) => {
+                    if (error) {
+                        return response.render('./dieticianViews/errorView');
+
+
+                    } else {
+                        db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId).remove();
+                        db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
+                            const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                            return response.render('./dieticianViews/manejarPacientes', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                        })
+                        
+                    }
+                });
+            }
+
+            db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
+                const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                return response.render('./dieticianViews/manejarPacientes', { patient: data }); //refrescamos la vista de index ahora con esos valores
+            })
+        });
 
     }
     else {
@@ -261,11 +302,9 @@ function nuevaDietaView(request, response) {
         var patientId = request.params.idPatient;
         db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
             if (snapshot.exists()) {
-                
+
                 const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
-                // var jsonPatient={patientId:data};
-                // console.log('EAA nuevaDietaView ' + JSON.stringify(jsonPatient));
-                response.render('./dieticianViews/nuevaDieta', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId }); //refrescamos la vista de index ahora con esos valores
             }
             else {
                 return response.render('./dieticianViews/errorView');
@@ -293,185 +332,134 @@ function nuevaDieta(request, response) { //LA DIETA SIEMPRE VA A ESTAR ASIGNADA 
 
     var user = firebase.auth().currentUser;
     if (user) {
+        console.log('EAA ENTRO EN NUEVA DIETA')
         var patientId = request.params.idPatient;
         var dieticianId = user.uid;
+        console.log('EAA NUEVA DIETA patientId' + patientId)
 
-        body('monday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('monday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('monday-lunch3', '').trim().escape(),
-            body('monday-lunch4', '').trim().escape(),
-            body('monday-lunch5', '').trim().escape(),
-            body('monday-comment', 'El comentario sobre el día lunes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch3', '').trim().escape(),
-            body('tuesday-lunch4', '').trim().escape(),
-            body('tuesday-lunch5', '').trim().escape(),
-            body('tuesday-comment', 'El comentario sobre el día martes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch3', '').trim().escape(),
-            body('wednesday-lunch4', '').trim().escape(),
-            body('wednesday-lunch5', '').trim().escape(),
-            body('wednesday-comment', 'El comentario sobre el día miércoles está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch3', '').trim().escape(),
-            body('thursday-lunch4', '').trim().escape(),
-            body('thursday-lunch5', '').trim().escape(),
-            body('thursday-comment', 'El comentario sobre el día jueves está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch3', '').trim().escape(),
-            body('friday-lunch4', '').trim().escape(),
-            body('friday-lunch5', '').trim().escape(),
-            body('friday-comment', 'El comentario sobre el día viernes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch3', '').trim().escape(),
-            body('saturday-lunch4', '').trim().escape(),
-            body('saturday-lunch5', '').trim().escape(),
-            body('saturday-comment', 'El comentario sobre el día sábado está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch3', '').trim().escape(),
-            body('sunday-lunch4', '').trim().escape(),
-            body('sunday-lunch5', '').trim().escape(),
-            body('sunday-comment', 'El comentario sobre el día domingo está vacío.').trim().isLength({ min: 1 }).escape(),
-            (req, res, next) => {
-                const errors = validationResult(req);
+        var newDiet = {
+            dieticianId: dieticianId,
+            patientId: patientId,
+            Lunes: {
+                coment: request.body.mondaycomment,
+                foods: {
+                    food1: request.body.mondaylunch1,
+                    food2: request.body.mondaylunch2,
+                    food3: request.body.mondaylunch3,
+                    food4: request.body.mondaylunch4,
+                    food5: request.body.mondaylunch5,
 
-                var newDiet = {
-                    dieticianId: dieticianId,
-                    patientId: patientId,
-                    Lunes: {
-                        coment: request.body.monday - comment,
-                        foods: {
-                            food1: request.body.monday - lunch1,
-                            food2: request.body.monday - lunch2,
-                            food3: request.body.monday - lunch3,
-                            food4: request.body.monday - lunch4,
-                            food5: request.body.monday - lunch5,
+                },
+            },
+            Martes: {
+                coment: request.body.tuesdaycomment,
+                foods: {
+                    food1: request.body.tuesdaylunch1,
+                    food2: request.body.tuesdaylunch2,
+                    food3: request.body.tuesdaylunch3,
+                    food4: request.body.tuesdaylunch4,
+                    food5: request.body.tuesdaylunch5,
 
-                        },
-                    },
-                    Martes: {
-                        coment: request.body.tuesday - comment,
-                        foods: {
-                            food1: request.body.tuesday - lunch1,
-                            food2: request.body.tuesday - lunch2,
-                            food3: request.body.tuesday - lunch3,
-                            food4: request.body.tuesday - lunch4,
-                            food5: request.body.tuesday - lunch5,
+                },
+            },
+            Miercoles: {
+                coment: request.body.wednesdaycomment,
+                foods: {
+                    food1: request.body.wednesdaylunch1,
+                    food2: request.body.wednesdaylunch2,
+                    food3: request.body.wednesdaylunch3,
+                    food4: request.body.wednesdaylunch4,
+                    food5: request.body.wednesdaylunch5,
 
-                        },
-                    },
-                    Miercoles: {
-                        coment: request.body.wednesday - comment,
-                        foods: {
-                            food1: request.body.wednesday - lunch1,
-                            food2: request.body.wednesday - lunch2,
-                            food3: request.body.wednesday - lunch3,
-                            food4: request.body.wednesday - lunch4,
-                            food5: request.body.wednesday - lunch5,
+                },
+            },
+            Jueves: {
+                coment: request.body.thursdaycomment,
+                foods: {
+                    food1: request.body.thursdaylunch1,
+                    food2: request.body.thursdaylunch2,
+                    food3: request.body.thursdaylunch3,
+                    food4: request.body.thursdaylunch4,
+                    food5: request.body.thursdaylunch5,
 
-                        },
-                    },
-                    Jueves: {
-                        coment: request.body.thursday - comment,
-                        foods: {
-                            food1: request.body.thursday - lunch1,
-                            food2: request.body.thursday - lunch2,
-                            food3: request.body.thursday - lunch3,
-                            food4: request.body.thursday - lunch4,
-                            food5: request.body.thursday - lunch5,
+                },
+            },
+            Viernes: {
+                coment: request.body.fridaycomment,
+                foods: {
+                    food1: request.body.fridaylunch1,
+                    food2: request.body.fridaylunch2,
+                    food3: request.body.fridaylunch3,
+                    food4: request.body.fridaylunch4,
+                    food5: request.body.fridaylunch5,
 
-                        },
-                    },
-                    Viernes: {
-                        coment: request.body.friday - comment,
-                        foods: {
-                            food1: request.body.friday - lunch1,
-                            food2: request.body.friday - lunch2,
-                            food3: request.body.friday - lunch3,
-                            food4: request.body.friday - lunch4,
-                            food5: request.body.friday - lunch5,
+                },
+            },
+            Sabado: {
+                coment: request.body.saturdaycomment,
+                foods: {
+                    food1: request.body.saturdaylunch1,
+                    food2: request.body.saturdaylunch2,
+                    food3: request.body.saturdaylunch3,
+                    food4: request.body.saturdaylunch4,
+                    food5: request.body.saturdaylunch5,
 
-                        },
-                    },
-                    Sabado: {
-                        coment: request.body.saturday - comment,
-                        foods: {
-                            food1: request.body.saturday - lunch1,
-                            food2: request.body.saturday - lunch2,
-                            food3: request.body.saturday - lunch3,
-                            food4: request.body.saturday - lunch4,
-                            food5: request.body.saturday - lunch5,
+                },
+            },
+            Domingo: {
+                coment: request.body.sundaycomment,
+                foods: {
+                    food1: request.body.sundaylunch1,
+                    food2: request.body.sundaylunch2,
+                    food3: request.body.sundaylunch3,
+                    food4: request.body.sundaylunch4,
+                    food5: request.body.sundaylunch5,
 
-                        },
-                    },
-                    Domingo: {
-                        coment: request.body.sunday - comment,
-                        foods: {
-                            food1: request.body.sunday - lunch1,
-                            food2: request.body.sunday - lunch2,
-                            food3: request.body.sunday - lunch3,
-                            food4: request.body.sunday - lunch4,
-                            food5: request.body.sunday - lunch5,
+                },
+            },
+        }
+        console.log('EAA NUEVA DIETA newDiet' + newDiet)
 
-                        },
-                    },
-                }
-                if (errors.isEmpty()) {
-                    var dietId = db.ref('Diets').push(newDiet).key;
-                    const patientRef = db.ref("Patient/" + patientId);
-                    patientRef.update({
-                        dietId: dietId,
+        var dietId = db.ref('Diets').push(newDiet).then((snap) => {
+            var newId = snap.key
+            console.log('EAA NUEVA DIETA newId' + newId)
+
+            const patientRef = db.ref("Patient/" + patientId);
+            patientRef.update({
+                dietId: newId,
+            }, (error) => {
+                if (error) {
+                    return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); //refrescamos la vista de index ahora con esos valores
+
+
+                } else {
+                    const dieticianRef = db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId);
+                    dieticianRef.set({
+                        hasDiet: newId,
                     }, (error) => {
                         if (error) {
-                            response.redirect('./dieticianViews/errorView');
+                            return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); //refrescamos la vista de index ahora con esos valores
 
 
                         } else {
-                            const dieticianRef = db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId);
-                            dieticianRef.set({
-                                hasDiet: dietId,
-                            }, (error) => {
-                                if (error) {
-                                    return response.redirect('./dieticianViews/errorView');
+                            db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                                const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                                return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId }); //refrescamos la vista de index ahora con esos valores
 
+                            }).catch(function (error) {
+                                console.log('EAA ERROR1' + error)
+                                return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); //refrescamos la vista de index ahora con esos valores
 
-                                } else {
-                                    db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                                        return response.render('./dieticianViews/seguirProgreso', { patient: data }); //refrescamos la vista de index ahora con esos valores
-
-                                    }).catch(function (error) {
-                                        console.log('EAA ERROR1' + error)
-                                        return response.render('./dieticianViews/errorView');
-
-                                    })
-                                }
-                            });
-
+                            })
                         }
                     });
 
                 }
-                else {
-                    db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
-                        console.log('EAA ' + JSON.stringify(data));
-                        return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: errors.array() }); //refrescamos la vista de index ahora con esos valores
-                    }).catch(function (error) {
-                        console.log('EAA ERROR1' + error)
-                        return response.render('./dieticianViews/errorView');
+            });
+        })
 
-                    })
-
-                }
-            }
     }
+
     else {
         return response.redirect('../noLoggedView');
     }
@@ -492,17 +480,15 @@ function modificarDietaView(request, response) {
             db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (childSnapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
                 if (childSnapshot) {
                     const dataDiet = childSnapshot.val();
-
+                    const dataDietId = childSnapshot.key;
                     console.log('EAA dataDiet' + JSON.stringify(dataDiet));
 
-                    return response.render('./dieticianViews/nuevaDieta', { patient: dataPatient, diet: dataDiet }); //refrescamos la vista de index ahora con esos valores
+                    return response.render('./dieticianViews/modificarDieta', { patient: dataPatient, diet: dataDiet, dietId: dataDietId, idPatient: patientId }); //refrescamos la vista de index ahora con esos valores
 
                 }
                 else return response.render('./dieticianViews/errorView');
 
             })
-            return response.render('./dieticianViews/errorView');
-
         }).catch(function (error) {
             console.log('EAA ERROR1' + error)
             return response.render('./dieticianViews/errorView');
@@ -521,219 +507,212 @@ function modificarDieta(request, response) {
 
     var user = firebase.auth().currentUser;
     if (user) {
+        console.log('EAA MODIFICAR DIETA');
 
+        var dietId = request.params.dietId;
         var patientId = request.params.idPatient;
         var dieticianId = user.uid;
-
-        body('monday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('monday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('monday-lunch3', '').trim().escape(),
-            body('monday-lunch4', '').trim().escape(),
-            body('monday-lunch5', '').trim().escape(),
-            body('monday-comment', 'El comentario sobre el día lunes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('tuesday-lunch3', '').trim().escape(),
-            body('tuesday-lunch4', '').trim().escape(),
-            body('tuesday-lunch5', '').trim().escape(),
-            body('tuesday-comment', 'El comentario sobre el día martes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('wednesday-lunch3', '').trim().escape(),
-            body('wednesday-lunch4', '').trim().escape(),
-            body('wednesday-lunch5', '').trim().escape(),
-            body('wednesday-comment', 'El comentario sobre el día miércoles está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('thursday-lunch3', '').trim().escape(),
-            body('thursday-lunch4', '').trim().escape(),
-            body('thursday-lunch5', '').trim().escape(),
-            body('thursday-comment', 'El comentario sobre el día jueves está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('friday-lunch3', '').trim().escape(),
-            body('friday-lunch4', '').trim().escape(),
-            body('friday-lunch5', '').trim().escape(),
-            body('friday-comment', 'El comentario sobre el día viernes está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('saturday-lunch3', '').trim().escape(),
-            body('saturday-lunch4', '').trim().escape(),
-            body('saturday-lunch5', '').trim().escape(),
-            body('saturday-comment', 'El comentario sobre el día sábado está vacío.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
-            body('sunday-lunch3', '').trim().escape(),
-            body('sunday-lunch4', '').trim().escape(),
-            body('sunday-lunch5', '').trim().escape(),
-            body('sunday-comment', 'El comentario sobre el día domingo está vacío.').trim().isLength({ min: 1 }).escape(),
-            (req, res, next) => {
-                const errors = validationResult(req);
-
-                const patientRef = db.ref("Diets/" + patientId);
-                patientRef.update({
-                    dietId: dietId,
-                }, (error) => {
-                    if (error) {
-                        response.redirect('./dieticianViews/errorView');
+        console.log('EAA VARS MODIFICAR DIETA dietId: ' + dietId + " patientId: " + patientId + " dieticianId: " + dieticianId + " ");
+        // body('mondaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('mondaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('mondaylunch3', '').trim().escape(),
+        //     body('mondaylunch4', '').trim().escape(),
+        //     body('mondaylunch5', '').trim().escape(),
+        //     body('mondaycomment', 'El comentario sobre el día lunes está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('tuesdaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('tuesdaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('tuesdaylunch3', '').trim().escape(),
+        //     body('tuesdaylunch4', '').trim().escape(),
+        //     body('tuesdaylunch5', '').trim().escape(),
+        //     body('tuesdaycomment', 'El comentario sobre el día martes está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('wednesdaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('wednesdaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('wednesdaylunch3', '').trim().escape(),
+        //     body('wednesdaylunch4', '').trim().escape(),
+        //     body('wednesdaylunch5', '').trim().escape(),
+        //     body('wednesdaycomment', 'El comentario sobre el día miércoles está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('thursdaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('thursdaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('thursdaylunch3', '').trim().escape(),
+        //     body('thursdaylunch4', '').trim().escape(),
+        //     body('thursdaylunch5', '').trim().escape(),
+        //     body('thursdaycomment', 'El comentario sobre el día jueves está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('fridaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('fridaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('fridaylunch3', '').trim().escape(),
+        //     body('fridaylunch4', '').trim().escape(),
+        //     body('fridaylunch5', '').trim().escape(),
+        //     body('fridaycomment', 'El comentario sobre el día viernes está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('saturdaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('saturdaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('saturdaylunch3', '').trim().escape(),
+        //     body('saturdaylunch4', '').trim().escape(),
+        //     body('saturdaylunch5', '').trim().escape(),
+        //     body('saturdaycomment', 'El comentario sobre el día sábado está vacío.').trim().isLength({ min: 1 }).escape(),
+        //     body('sundaylunch1', 'La comida 1 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('sundaylunch2', 'La comida 2 está vacía.').trim().isLength({ min: 1 }).escape(),
+        //     body('sundaylunch3', '').trim().escape(),
+        //     body('sundaylunch4', '').trim().escape(),
+        //     body('sundaylunch5', '').trim().escape(),
+        //     body('sundaycomment', 'El comentario sobre el día domingo está vacío.').trim().isLength({ min: 1 }).escape(),
+        // (req, res, next) => {
+        //     const errors = validationResult(req);
+        // if (errors.isEmpty()) {
 
 
-                    } else {
-                        const dieticianRef = db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId);
-                        dieticianRef.set({
-                            hasDiet: dietId,
-                        }, (error) => {
-                            if (error) {
-                                return response.redirect('./dieticianViews/errorView');
 
 
-                            } else {
-                                db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                                    const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                                    return response.render('./dieticianViews/seguirProgreso', { patient: data }); //refrescamos la vista de index ahora con esos valores
 
-                                }).catch(function (error) {
-                                    console.log('EAA ERROR1' + error)
-                                    return response.render('./dieticianViews/errorView');
 
-                                })
-                            }
-                        });
 
-                    }
-                });
-                var newDiet = {
-                    dieticianId: dieticianId,
-                    patientId: patientId,
-                    Lunes: {
-                        coment: request.body.monday - comment,
-                        foods: {
-                            food1: request.body.monday - lunch1,
-                            food2: request.body.monday - lunch2,
-                            food3: request.body.monday - lunch3,
-                            food4: request.body.monday - lunch4,
-                            food5: request.body.monday - lunch5,
 
-                        },
+
+        var dietRef = db.ref("Diets/" + dietId);
+
+        if (dietRef) {
+            dietRef.set({
+                "dieticianId": dieticianId,
+                "patientId": patientId,
+                Lunes: {
+                    coment: request.body.mondaycomment,
+                    foods: {
+                        food1: request.body.mondaylunch1,
+                        food2: request.body.mondaylunch2,
+                        food3: request.body.mondaylunch3,
+                        food4: request.body.mondaylunch4,
+                        food5: request.body.mondaylunch5,
+
                     },
-                    Martes: {
-                        coment: request.body.tuesday - comment,
-                        foods: {
-                            food1: request.body.tuesday - lunch1,
-                            food2: request.body.tuesday - lunch2,
-                            food3: request.body.tuesday - lunch3,
-                            food4: request.body.tuesday - lunch4,
-                            food5: request.body.tuesday - lunch5,
+                },
+                Martes: {
+                    coment: request.body.tuesdaycomment,
+                    foods: {
+                        food1: request.body.tuesdaylunch1,
+                        food2: request.body.tuesdaylunch2,
+                        food3: request.body.tuesdaylunch3,
+                        food4: request.body.tuesdaylunch4,
+                        food5: request.body.tuesdaylunch5,
 
-                        },
                     },
-                    Miercoles: {
-                        coment: request.body.wednesday - comment,
-                        foods: {
-                            food1: request.body.wednesday - lunch1,
-                            food2: request.body.wednesday - lunch2,
-                            food3: request.body.wednesday - lunch3,
-                            food4: request.body.wednesday - lunch4,
-                            food5: request.body.wednesday - lunch5,
+                },
+                Miercoles: {
+                    coment: request.body.wednesdaycomment,
+                    foods: {
+                        food1: request.body.wednesdaylunch1,
+                        food2: request.body.wednesdaylunch2,
+                        food3: request.body.wednesdaylunch3,
+                        food4: request.body.wednesdaylunch4,
+                        food5: request.body.wednesdaylunch5,
 
-                        },
                     },
-                    Jueves: {
-                        coment: request.body.thursday - comment,
-                        foods: {
-                            food1: request.body.thursday - lunch1,
-                            food2: request.body.thursday - lunch2,
-                            food3: request.body.thursday - lunch3,
-                            food4: request.body.thursday - lunch4,
-                            food5: request.body.thursday - lunch5,
+                },
+                Jueves: {
+                    coment: request.body.thursdaycomment,
+                    foods: {
+                        food1: request.body.thursdaylunch1,
+                        food2: request.body.thursdaylunch2,
+                        food3: request.body.thursdaylunch3,
+                        food4: request.body.thursdaylunch4,
+                        food5: request.body.thursdaylunch5,
 
-                        },
                     },
-                    Viernes: {
-                        coment: request.body.friday - comment,
-                        foods: {
-                            food1: request.body.friday - lunch1,
-                            food2: request.body.friday - lunch2,
-                            food3: request.body.friday - lunch3,
-                            food4: request.body.friday - lunch4,
-                            food5: request.body.friday - lunch5,
+                },
+                Viernes: {
+                    coment: request.body.fridaycomment,
+                    foods: {
+                        food1: request.body.fridaylunch1,
+                        food2: request.body.fridaylunch2,
+                        food3: request.body.fridaylunch3,
+                        food4: request.body.fridaylunch4,
+                        food5: request.body.fridaylunch5,
 
-                        },
                     },
-                    Sabado: {
-                        coment: request.body.saturday - comment,
-                        foods: {
-                            food1: request.body.saturday - lunch1,
-                            food2: request.body.saturday - lunch2,
-                            food3: request.body.saturday - lunch3,
-                            food4: request.body.saturday - lunch4,
-                            food5: request.body.saturday - lunch5,
+                },
+                Sabado: {
+                    coment: request.body.saturdaycomment,
+                    foods: {
+                        food1: request.body.saturdaylunch1,
+                        food2: request.body.saturdaylunch2,
+                        food3: request.body.saturdaylunch3,
+                        food4: request.body.saturdaylunch4,
+                        food5: request.body.saturdaylunch5,
 
-                        },
                     },
-                    Domingo: {
-                        coment: request.body.sunday - comment,
-                        foods: {
-                            food1: request.body.sunday - lunch1,
-                            food2: request.body.sunday - lunch2,
-                            food3: request.body.sunday - lunch3,
-                            food4: request.body.sunday - lunch4,
-                            food5: request.body.sunday - lunch5,
+                },
+                Domingo: {
+                    coment: request.body.sundaycomment,
+                    foods: {
+                        food1: request.body.sundaylunch1,
+                        food2: request.body.sundaylunch2,
+                        food3: request.body.sundaylunch3,
+                        food4: request.body.sundaylunch4,
+                        food5: request.body.sundaylunch5,
 
-                        },
                     },
                 }
-                if (errors.isEmpty()) {
-                    var dietId = db.ref('Diets').push(newDiet).key;
-                    const patientRef = db.ref("Patient/" + patientId);
-                    patientRef.update({
-                        dietId: dietId,
-                    }, (error) => {
-                        if (error) {
-                            response.redirect('./dieticianViews/errorView');
+            }, (error) => {
+                if (error) {
+                    response.redirect('./dieticianViews/errorView');
 
 
-                        } else {
-                            const dieticianRef = db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId);
-                            dieticianRef.set({
-                                hasDiet: dietId,
-                            }, (error) => {
-                                if (error) {
-                                    return response.redirect('./dieticianViews/errorView');
-
-
-                                } else {
-                                    db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                                        return response.render('./dieticianViews/seguirProgreso', { patient: data }); //refrescamos la vista de index ahora con esos valores
-
-                                    }).catch(function (error) {
-                                        console.log('EAA ERROR1' + error)
-                                        return response.render('./dieticianViews/errorView');
-
-                                    })
-                                }
-                            });
-
-                        }
-                    });
-
-                }
-                else {
+                } else {
                     db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
-                        console.log('EAA ' + JSON.stringify(data));
-                        return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: errors.array() }); //refrescamos la vista de index ahora con esos valores
+                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                        return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId }); //refrescamos la vista de index ahora con esos valores
+
                     }).catch(function (error) {
-                        console.log('EAA ERROR1' + error)
                         return response.render('./dieticianViews/errorView');
 
                     })
 
                 }
-            }
+            });
+        }
+        else {
+            return response.render('./dieticianViews/errorView');
 
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // }
+        // else {
+        //     db.ref('Patient/' + patientId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+        //         const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
+        //         console.log('EAA ' + JSON.stringify(data));
+        //         return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: errors.array() }); //refrescamos la vista de index ahora con esos valores
+        //     }).catch(function (error) {
+        //         console.log('EAA ERROR1' + error)
+        //         return response.render('./dieticianViews/errorView');
+
+        //     })
+
+        // }
     }
+
+    // }
     else {
         return response.redirect('../noLoggedView');
     }
@@ -753,11 +732,11 @@ function seguirProgreso(request, response) {
             console.log(data);
             console.log('EAAurl ');
             console.log(request.originalUrl);
-            return response.render('./dieticianViews/seguirProgreso', { patient: data }); //refrescamos la vista de index ahora con esos valores
+            return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId }); //refrescamos la vista de index ahora con esos valores
 
         }).catch(function (error) {
             console.log('EAA ERROR1' + error)
-            return response.render('./dieticianViews/errorView');
+            return response.redirect('./dieticianViews/errorView');
 
         })
 

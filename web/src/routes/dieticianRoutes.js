@@ -21,8 +21,8 @@ router.get('/deregister/:idDietician',dieticianRouterController.darseDeBaja);
 
 
 //POST
-router.post('/nuevaDieta',dieticianRouterController.nuevaDieta);
-router.post('/modificarDieta',dieticianRouterController.modificarDieta);
+router.post('/nuevaDieta/:idPatient',dieticianRouterController.nuevaDieta);
+router.post('/modificarDieta/:dietId/paciente/:idPatient',dieticianRouterController.modificarDieta);
 
 
 
