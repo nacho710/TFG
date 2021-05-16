@@ -57,8 +57,8 @@ public class ProfileMenu extends AppCompatActivity {
     private Button midietabutton;
     private Button followdietaButton;
     private List<String> picIds;
-
-
+    private String idDietista;
+    private String idDiet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +115,8 @@ public class ProfileMenu extends AppCompatActivity {
                     String pesoValue = snapshot.child("weight").getValue().toString();
                     String alturaValue = snapshot.child("height").getValue().toString();
                     String nameValue = snapshot.child("username").getValue().toString();
-                    String idDietista = snapshot.child("dieticianId").getValue().toString();
+                    idDietista = snapshot.child("dieticianId").getValue().toString();
+                    idDiet= snapshot.child("dietId").getValue().toString();
                     if(!idDietista.equals("null")){
                         solicitarDietista.setEnabled(false);
                         followdietaButton.setEnabled(true);
@@ -174,6 +175,12 @@ public class ProfileMenu extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String id = mAuth.getCurrentUser().getUid();
+                if(idDietista!="null") {
+                    mydb.child("Dietician").child(idDietista).child("patientsList").child(id).removeValue();
+                }
+                if(idDiet!="null") {
+                    mydb.child("Diet").child(idDiet).removeValue();
+                }
                 mydb.child("Patient").child(id).removeValue();
                 storageReference.child(id).delete();
                 mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {

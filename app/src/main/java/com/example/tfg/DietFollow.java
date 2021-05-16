@@ -115,7 +115,8 @@ public class DietFollow  extends AppCompatActivity {
                 if(snapshot.exists()) {
                     String dietId = snapshot.child("dietId").getValue().toString();
                     String dia =  Utils.dayParser(currentTime.getTime().getDay());
-                    mydb.child("Diets").child(dietId).child("0").addValueEventListener(new ValueEventListener() {
+                    String day = Utils.DaytoDia(dia);
+                    mydb.child("Diets").child(dietId).child(day).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 

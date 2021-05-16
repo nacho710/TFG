@@ -81,15 +81,14 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-
         ll = (LinearLayout) findViewById(R.id.followLayout);
         id = mAuth.getCurrentUser().getUid();
-         comida1View = (TextView) findViewById(R.id.comida1);
-          comida2View = (TextView) findViewById(R.id.comida2);
-          comida3View = (TextView) findViewById(R.id.comida3);
-         comida4View = (TextView) findViewById(R.id.comida4);
-         comida5View = (TextView) findViewById(R.id.comida5);
-         currentTime =Calendar.getInstance();
+        comida1View = (TextView) findViewById(R.id.comida1);
+        comida2View = (TextView) findViewById(R.id.comida2);
+        comida3View = (TextView) findViewById(R.id.comida3);
+        comida4View = (TextView) findViewById(R.id.comida4);
+        comida5View = (TextView) findViewById(R.id.comida5);
+        currentTime =Calendar.getInstance();
         dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
         comida1Check = (CheckBox) findViewById(R.id.comida1Check);
         comida2Check = (CheckBox) findViewById(R.id.comida2Check);

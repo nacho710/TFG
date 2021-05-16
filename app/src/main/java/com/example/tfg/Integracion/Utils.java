@@ -18,10 +18,10 @@ public class Utils {
             case "sunday": return "Domingo";
             case "monday": return "Lunes";
             case "tuesday": return "Martes";
-            case "wednesday": return "Miércoles";
+            case "wednesday": return "Miercoles";
             case "thursday": return "Jueves";
             case "friday": return "Viernes";
-            case "saturday": return "Sábado";
+            case "saturday": return "Sabado";
             default: return null;
         }
     }

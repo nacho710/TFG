@@ -114,7 +114,11 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                             comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem4);
                             comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.dietItem5);
                             comentView = (TextView) popupWindow.getContentView().findViewById(R.id.ComentDietDay);
-                            mydb.child("Diets").child(dietId).child("0").addListenerForSingleValueEvent(new ValueEventListener() {
+                            System.out.println(dia);
+
+                            // CAMBIAR POR DIA
+                            String day = Utils.DaytoDia(value);
+                            mydb.child("Diets").child(dietId).child(day).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
