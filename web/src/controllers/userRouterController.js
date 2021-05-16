@@ -3,6 +3,7 @@ const admin = require('firebase-admin'); //llamar el modulo
 const db = admin.database(); //variable de nuestra base de datos
 const auth = admin.auth();
 let alert = require('alert');
+const { body,validationResult } = require('express-validator');
 
 //const toast = require('toast-notification-alert');
 

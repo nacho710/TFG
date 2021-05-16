@@ -1,0 +1,433 @@
+{{> navbarLoggedDietician }}
+
+<link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+<link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+<!-- Font special for pages-->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+    rel="stylesheet">
+
+<!-- Vendor CSS-->
+<link href="/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+<link href="/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+<!-- Main CSS-->
+<link href="/css/mainRegister.css" rel="stylesheet" media="all">
+<link href="/main.css" rel="stylesheet" media="all">
+<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
+    <div class="wrapper wrapper--w960">
+        <div class="card">
+            <div class="card-header">
+                <h1>Paciente al que modificar la dieta</h1>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
+                        <p class="info-patient">Nombre: <br></br>{{patient.username}}</p>
+                        <p class="info-patient">Email: <br></br> {{patient.email}} </p>
+                        <p class="info-patient">Telefono: <br></br>{{patient.phone}} </p>
+                        <p class="info-patient">Edad: <br></br>{{patient.age}} </p>
+                        <p class="info-patient">Altura: {{patient.height}} <br></br></p>
+                        <p class="info-patient">Peso: <br></br>{{patient.weight}} </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+        <div class="card card-2">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <h2 class="title">Modificar la dieta</h2>
+                <form action="/modificarDieta/{{dietId}}/paciente/{{idPatient}}" id="dietForm" method="POST">
+                    <div class="card-day monday-day">
+                        <div class="card-day-title">
+                            <p class="day-title monday-day-title">Lunes</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="mondaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    autofocus>{{diet.Lunes.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="mondaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Lunes.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="mondaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Lunes.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="mondaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Lunes.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="mondaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Lunes.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del lunes:</p>
+                            <p><textarea class="form-control" name="mondaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el lunes"
+                                    required="true">{{diet.Lunes.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day tuesday-day">
+                        <div class="card-day-title">
+
+                            <p class="day-title tuesday-day-title">Martes</p>
+                        </div>
+                        <div class="form-group">
+
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="tuesdaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    >{{diet.Martes.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="tuesdaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Martes.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="tuesdaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Martes.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="tuesdaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Martes.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="tuesdaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Martes.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del martes:</p>
+                            <p><textarea class="form-control" name="tuesdaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el martes"
+                                    required="true">{{diet.Martes.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day wednesday-day">
+                        <div class="card-day-title">
+
+                            <p class="day-title wednesday-day-title">Miércoles</p>
+                        </div>
+                        <div class="form-group">
+
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="wednesdaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    >{{diet.Miercoles.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="wednesdaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Miercoles.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="wednesdaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Miercoles.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="wednesdaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Miercoles.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="wednesdaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Miercoles.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del miércoles:</p>
+                            <p><textarea class="form-control" name="wednesdaycomment" cols="50" rows="5"
+                                    form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el miércoles"
+                                    required="true">{{diet.Miercoles.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day thursday-day">
+                        <div class="card-day-title">
+
+                            <p class="day-title thursday-day-title">Jueves</p>
+                        </div>
+                        <div class="form-group">
+
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="thursdaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    >{{diet.Jueves.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="thursdaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Jueves.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="thursdaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Jueves.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="thursdaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Jueves.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="thursdaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Jueves.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del jueves:</p>
+                            <p><textarea class="form-control" name="thursdaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el jueves"
+                                    required="true">{{diet.Jueves.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day friday-day">
+                        <div class="card-day-title">
+
+                            <p class="day-title friday-day-title">Viernes</p>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="fridaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    >{{diet.Viernes.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="fridaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Viernes.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="fridaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Viernes.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="fridaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Viernes.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="fridaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Viernes.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del viernes:</p>
+                            <p><textarea class="form-control" name="fridaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el viernes"
+                                    required="true">{{diet.Viernes.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day saturday-day">
+                        <div class="card-day-title">
+
+                            <p class="day-title saturday-day-title">Sábado</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="saturdaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    >{{diet.Sabado.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="saturdaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Sabado.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="saturdaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Sabado.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="saturdaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Sabado.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="saturdaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Sabado.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del sábado:</p>
+                            <p><textarea class="form-control" name="saturdaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el sábado"
+                                    required="true">{{diet.Sabado.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <div class="card-day sunday-day">
+                        <div class="card-day-title">
+                            <p class="day-title sunday-day-title">Domingo</p>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="food-title">Comida 1</p>
+                            <p><textarea class="form-control" name="sundaylunch1" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la primera comida (o posibles comidas)" required="true"
+                                    autofocus>{{diet.Domingo.foods.food1}}</textarea></p>
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 2:</p>
+                            <p><textarea class="form-control" name="sundaylunch2" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la segunda comida (o posibles comidas)"
+                                    required="true">{{diet.Domingo.foods.food2}}</textarea></p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 3:</p>
+                            <p><textarea class="form-control" name="sundaylunch3" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la tercera comida (no es obligatorio rellenar este campo)">{{diet.Domingo.foods.food3}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 4:</p>
+                            <p><textarea class="form-control" name="sundaylunch4" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la cuarta comida (no es obligatorio rellenar este campo)">{{diet.Domingo.foods.food4}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comida 5:</p>
+                            <p><textarea class="form-control" name="sundaylunch5" cols="50" rows="4" form="dietForm"
+                                    placeholder="Escribe aquí la quinta comida (no es obligatorio rellenar este campo)">{{diet.Domingo.foods.food5}}</textarea>
+                            </p>
+
+
+                        </div>
+                        <div class="form-group">
+                            <p class="food-title">Comentario para las comidas del domingo:</p>
+                            <p><textarea class="form-control" name="sundaycomment" cols="50" rows="5" form="dietForm"
+                                    placeholder="Escribe aquí los comentarios que tengas sobre el domingo"
+                                    required="true">{{diet.Domingo.coment}}</textarea></p>
+
+                        </div>
+
+                    </div>
+                    <button class="btn btn-primary btn-block">
+                        Modificar dieta 
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Jquery JS-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<!-- Vendor JS-->
+<script src="/vendor/select2/select2.min.js"></script>
+<script src="/vendor/datepicker/moment.min.js"></script>
+<script src="/vendor/datepicker/daterangepicker.js"></script>
+<!-- Main JS-->
+<script src="/js/global.js"></script

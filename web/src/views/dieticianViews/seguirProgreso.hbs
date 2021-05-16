@@ -1,84 +1,90 @@
 {{> navbarLoggedDietician }}
 
 <div class="col-md-6 offset-md-3">
-    <div class="card">
-        <div class="card-header">
-            <h1>Seguimiento del paciente</h1>
-        </div>
-        <div class="card-body">
-            {{#if patient}}
-            <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
-                    <p class="info-patient">Nombre y apellidos: <br></br>{{username}}</p>
-                    <p class="info-patient">Email: <br></br> {{email}} </p>
-                    <p class="info-patient">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-patient">Edad: <br></br>{{age}} </p>
-                    <p class="info-patient">Altura: {{height}} <br></br></p>
-                    <p class="info-patient">Peso: <br></br>{{weight}} </p>
-                    <a href="/modify-patient-diet/{{@key}}" class="btn myButtonMarron">Modificar dieta</a>
-
-
-                </li>
-                {{#if patient.Follow}}
-                <ul class="list-group">
-                    {{#each patient.Follow}}
-                    <li class="list-group-item d-flex justify-content-between align-items-center list-registro">
-                        <p class="info-registro">Día: <br></br>{{@key}}</p>
-                        <p class="info-registro">Comentario: <br></br> {{coment}} </p>
-                        <p class="info-registro">Descripción: <br></br>{{descripcion}} </p>
-                        <div>
-                               {{#ifeq food1.[1] "true" }}
-                             <p class="info-registro">Comida 1: <br></br>Cumplida</p>
-                               {{/ifeq}}  
-                            {{#ifeq food1.[1] "false" }}
-                             <p class="info-registro">Comida 1: <br></br>No cumplida</p>
-                               {{/ifeq}}  
-                        </div>
-                        <div>
-                               {{#ifeq food2.[1] "true" }}
-                             <p class="info-registro">Comida 2: <br></br>Cumplida</p>
-                               {{/ifeq}}  
-                            {{#ifeq food2.[1] "false" }}
-                             <p class="info-registro">Comida 2: <br></br>No cumplida</p>
-                               {{/ifeq}}  
-                        </div>
-                        <div>
-                               {{#ifeq food3.[1] "true" }}
-                             <p class="info-registro">Comida 3: <br></br>Cumplida</p>
-                               {{/ifeq}}  
-                            {{#ifeq food3.[1] "false" }}
-                             <p class="info-registro">Comida 3: <br></br>No cumplida</p>
-                               {{/ifeq}}  
-                        </div>
-                        <div>
-                               {{#ifeq food4.[1] "true" }}
-                             <p class="info-registro">Comida 4: <br></br>Cumplida</p>
-                               {{/ifeq}}  
-                            {{#ifeq food4.[1] "false" }}
-                             <p class="info-registro">Comida 4: <br></br>No cumplida</p>
-                               {{/ifeq}}  
-                        </div>
-                        <div>
-                               {{#ifeq food5.[1] "true" }}
-                             <p class="info-registro">Comida 5: <br></br>Cumplida</p>
-                               {{/ifeq}}  
-                            {{#ifeq food5.[1] "false" }}
-                             <p class="info-registro">Comida 5: <br></br>No cumplida</p>
-                               {{/ifeq}}  
-                        </div>
-                       
-                    </li>
-                    {{/each}}
-                </ul>
-                {{else}}
-                <p>El paciente no tiene ningún registro</p>
-                {{/if}}
-            </ul>
-            {{else}}
-            <p>No tienes pacientes asignados</p>
-            {{/if}}
-        </div>
-        <div class="card-footer">
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <h1>Seguimiento del paciente</h1>
     </div>
+    <div class="card-body">
+      {{#if patient}}
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
+          <p class="info-patient">Nombre y apellidos: <br></br>{{patient.username}}</p>
+          <p class="info-patient">Email: <br></br> {{patient.email}} </p>
+          <p class="info-patient">Telefono: <br></br>{{patient.phone}} </p>
+          <p class="info-patient">Edad: <br></br>{{patient.age}} </p>
+          <p class="info-patient">Altura: {{patient.height}} <br></br></p>
+          <p class="info-patient">Peso: <br></br>{{patient.weight}} </p>
+          <a href="/modificarDieta/{{patientId}}" class="btn myButtonMarron">Modificar dieta</a>
+
+
+        </li>
+        {{#if patient.Follow}}
+        <ul class="list-group">
+          {{#each patient.Follow}}
+          <li class="list-group-item d-flex justify-content-between align-items-center list-registro">
+            <p class="info-registro">Día: <br></br>{{@key}}</p>
+            <p class="info-registro">Comentario: <br></br> {{coment}} </p>
+            <p class="info-registro">Descripción: <br></br>{{descripcion}} </p>
+            <div>
+              {{#ifeq food1.[1] "true" }}
+              <p class="info-registro">Comida 1: <br></br>Cumplida</p>
+              {{/ifeq}}
+              {{#ifeq food1.[1] "false" }}
+              <p class="info-registro">Comida 1: <br></br>No cumplida</p>
+              {{/ifeq}}
+            </div>
+            <div>
+              {{#ifeq food2.[1] "true" }}
+              <p class="info-registro">Comida 2: <br></br>Cumplida</p>
+              {{/ifeq}}
+              {{#ifeq food2.[1] "false" }}
+              <p class="info-registro">Comida 2: <br></br>No cumplida</p>
+              {{/ifeq}}
+            </div>
+            <div>
+              {{#ifeq food3.[1] "true" }}
+              <p class="info-registro">Comida 3: <br></br>Cumplida</p>
+              {{/ifeq}}
+              {{#ifeq food3.[1] "false" }}
+              <p class="info-registro">Comida 3: <br></br>No cumplida</p>
+              {{/ifeq}}
+            </div>
+            <div>
+              {{#ifeq food4.[1] "true" }}
+              <p class="info-registro">Comida 4: <br></br>Cumplida</p>
+              {{/ifeq}}
+              {{#ifeq food4.[1] "false" }}
+              <p class="info-registro">Comida 4: <br></br>No cumplida</p>
+              {{/ifeq}}
+            </div>
+            <div>
+              {{#ifeq food5.[1] "true" }}
+              <p class="info-registro">Comida 5: <br></br>Cumplida</p>
+              {{/ifeq}}
+              {{#ifeq food5.[1] "false" }}
+              <p class="info-registro">Comida 5: <br></br>No cumplida</p>
+              {{/ifeq}}
+            </div>
+            {{!-- <div class="imagenesUsuario">
+              <div class="imagen1"><img src="" /></div>
+              <div class="imagen2"><img src="" /></div>
+              <div class="imagen3"><img src="" /></div>
+
+            </div> --}}
+
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p>El paciente no tiene ningún registro</p>
+        {{/if}}
+      </ul>
+      {{else}}
+      <p>No tienes pacientes asignados</p>
+      {{/if}}
+    </div>
+    <div class="card-footer">
+    </div>
+  </div>
 </div>

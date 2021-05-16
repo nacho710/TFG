@@ -4,33 +4,13 @@ const db = admin.database(); //variable de nuestra base de datos
 const auth = admin.auth();
 let alert = require('alert');
 const { response } = require("express");
-
-
-// function comprobarSesion() {
-//     firebase.auth().onAuthStateChanged(function(user) {
-//         if (user) {
-
-
-//             if (user.email == "personaldiet@admin.es") {
-//                 return true;
-
-//             }
-//             else {
-//                 response.redirect('noAdminView'); //si se está logueado pero no es admin
-//             }
-//         }
-//         else {
-//             response.redirect('noLoggedView');//si no se está logueado
-//         }
-//     })
-// }
-
+const { body,validationResult } = require('express-validator');
 
 
 //SACAR LA VISTA DEL INDEX DEL ADMIN
 function indexAdmin(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -47,14 +27,13 @@ function indexAdmin(request, response) {
             response.redirect('noLoggedView');
 
         }
-    })
 
 
 }
 
 //SACAR LA VISTA DEL FORMULARIO DE NUEVO DIETISTA POR PARTE DEL ADMIN
 function nuevoDietistaView(request, response) {
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
             // User is signed in, see docs for a list of available properties
@@ -68,14 +47,13 @@ function nuevoDietistaView(request, response) {
             });
 
         }
-    });
 
 
 }
 
 //FUNCION QUE AÑADE UN NUEVO DIETISTA TRAS PULSAR EL BOTON DE AÑADIR DIETISTA DEL FORM DEL ADMIN
 function nuevoDietista(request, response) {
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
             // User is signed in, see docs for a list of available properties
@@ -91,7 +69,6 @@ function nuevoDietista(request, response) {
                     })
                     .then((userDietista) => {
                         var worthStars = 3;
-                        if (request.body.worthStars !== undefined) worthStars = request.body.worthStars;
                         //console.log('EAA userdietista'+JSON.stringify(userDietista.uid));
                         db.ref('Dietician/' + userDietista.uid).set({
                             username: request.body.nombre + " " + request.body.apellidos,
@@ -138,7 +115,6 @@ function nuevoDietista(request, response) {
             });
 
         }
-    });
 
 
 
@@ -146,19 +122,31 @@ function nuevoDietista(request, response) {
 
 function modificarDietistaView(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
-
 
             if (user.email == "personaldiet@admin.es") {
 
-                console.log('EAA MODIFICARDIETISTAVIEW: ' + JSON.stringify(request));
+                var dieticianId = request.params.id;
 
-                db.ref('/Dietician/' + request.body.id).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                    const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                    response.render('./adminViews/modificarDietista', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                // db.ref('/Dietician/' + request.body.id).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                //     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                //     return response.render('./adminViews/modificarDietista', { dietician: data }); //refrescamos la vista de index ahora con esos valores
 
+                // })
+                db.ref('Dietician/' + dieticianId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                    const dataDietician = snapshot.val(); //me devuelve los valores de firebase y los guardamos en dataç
+
+                    console.log('EAA dataDietician ' + JSON.stringify(dataDietician));
+                    return response.render('./adminViews/modificarDietista', { dietician: dataDietician,dieticianId:dieticianId }); //refrescamos la vista de index ahora con esos valores
+        
+                }).catch(function (error) {
+                    console.log('EAA ERROR1' + error)
+                    return response.render('./adminViews/errorView');
+        
                 })
+
+
             }
             else response.render('noAdminView');
         }
@@ -168,76 +156,38 @@ function modificarDietistaView(request, response) {
             });
 
         }
-    });
 
 
 }
 
 function modificarDietista(request, response) {
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
-
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
             if (user.email == "personaldiet@admin.es") {
-                var email = request.body.email;
-                var password = request.body.password;
-                admin
-                    .auth()
-                    .createUser({
-                        email: email,
-                        password: password,
-                    })
-                    .then((userDietista) => {
-                        console.log('EAA userdietista' + JSON.stringify(userDietista.uid));
-                        db.ref('Dietician/' + userDietista.uid).set({
-                            username: request.body.nombre + " " + request.body.apellidos,
-                            email: request.body.email,
-                            password: request.body.password,
-                            phone: request.body.phone,
-                            description: request.body.description,
-                            status: "Aprobado",
-                            worth: request.body.worthStars
-                        });
-                        // const newDietician = {
-                        //     username: request.body.nombre + " " + request.body.apellidos,
-                        //     email: request.body.email,
-                        //     password: request.body.password,
-                        //     phone: request.body.phone,
-                        //     description: request.body.description,
-                        //     rol: "dietista",
-                        //     status: "Aprobado",
-                        //     worth: request.body.worthStars
-                        // }
-                        // db.ref('Dietician').push(newDietician); //nombre de la tabla --db.ref('Dietician')
-                        db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                            const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                            response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                var dieticianId = request.params.id;
+                var dieticianRef = db.ref("Dietician/" + dieticianId);
+                if (dieticianRef) {
+                    dieticianRef.update({
+                        "username": request.body.nombre,
+                        "description": request.body.description,
+                        "phone": request.body.phone
 
-                        })
-
-                    })
-                    .catch((error) => {
-                        // alert("ERROR EN createuser:"+error);
-                        var errorCode = error.code;
-                        var errorMessage = error.message;
-                        var msg;
-                        if (errorCode == 'auth/weak-password') {
-                            msg = 'La contraseña es demasiado debil-->Tiene que tener más de 6 caracteres.';
+                    }, (error) => {
+                        if (error) {
+                          return  response.redirect('./adminViews/errorView');
+        
+        
+                        } else {
+                            db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                                const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                                console.log('EAA GETDietician:' + JSON.stringify(snapshot.val()));
+                                response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+            
+                            })
+        
                         }
-                        else if (errorCode == 'auth/invalid-email') {
-                            msg = 'El email que has introducido no es correcto';
-                        }
-                        else if (errorCode == 'auth/email-already-in-use') {
-                            msg = 'El email que has introducido ya está en uso';
-                        }
-                        else {
-                            msg = errorMessage;
-                        }
-                        alert(msg);
-                        response.render('./adminViews/nuevoDietista');
-
                     });
+                }
             }
             else response.render('noAdminView');
         }
@@ -247,7 +197,6 @@ function modificarDietista(request, response) {
             });
 
         }
-    });
 
 
 
@@ -256,7 +205,7 @@ function modificarDietista(request, response) {
 //FUNCION QUE BORRA UN USUARIO DE LA BASE DE DATOS
 function borrarDietista(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -309,149 +258,15 @@ function borrarDietista(request, response) {
                 msg: null
             });
         }
-    });
+ 
 }
 
-
-//COGEMOS TODOS LOS DIETISTAS PARA LA VISTA DE DIETISTAS DEL ADMIN
-
-// function getDietistasAprobados() {
-
-//     // db.ref('/Dietician/'+'Aprobado').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-//     //     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//     //     return data;
-
-//     // })
-//     var ref = db.ref("Dietician");
-//     ref.orderByChild("status").equalTo('Aprobado').on("child_added", function (snapshot) { //me devuelve cada fila que tiene status aprobado pero sin la clave
-
-//         var data = JSON.stringify(snapshot.key + snapshot.val());
-
-//         //console.log('EAAgetDietistasAprobados '+data);
-//         return data;
-
-//     });
-// }
-
-// function getDietistasPendientes() {
-
-//     // db.ref('/Dietician/'+'Pendiente de aprobar').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-//     //     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//     //     return data;
-
-//     // })
-//     var ref = db.ref("Dietician");
-
-//     ref.orderByChild("status").equalTo('Pendiente de aprobar').on("child_added", function (snapshot) { //me devuelve cada fila que tiene status pendiente de aprobar pero sin la clave
-//         var data = snapshot.key + snapshot.val();
-//         //data= JSON.parse(data);
-//         console.log('getDietistasPendientes ' + JSON.stringify(data));
-
-//         return data;
-
-
-//     });
-
-// }
-// function getDietistas(request, response) {
-
-
-
-//     //console.log('EAA: getDietistas: ');
-//     firebase.auth().onAuthStateChanged(function(user) {
-//         if (user) {
-//             if (user.email == "personaldiet@admin.es") {
-
-
-//                 //console.log('EAA: getDietistas2: ');
-
-//                 // db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-//                 //     //const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//                 //     console.log('EAA: getDietistas3: '+JSON.stringify(snapshot.val()));
-//                 //     snapshot.forEach(function(childSnapshot) {
-//                 //         console.log('EAA: getDietistas4: '+JSON.stringify(childSnapshot));
-
-//                 //         if (childSnapshot.val().status == "Aprobado") {
-
-
-//                 //             dataAprobado.set('dieticianAprobado',snapshot.val());
-//                 //             console.log('EAA: dataAprobadoForEACH: '+dataAprobado.values());
-
-//                 //         }
-//                 //         else if (childSnapshot.val().status == "Pendiente de aprobar") {  
-
-//                 //             dataPendiente.set(snapshot.key,childSnapshot);
-//                 //             console.log('EAA: dataPendienteForEACH: '+dataPendiente.values());
-
-
-//                 //         }
-
-//                 // var dataAprobado = getDietistasAprobados();
-//                 // var dataPendiente = getDietistasPendientes();
-//                 var dataAprobado;
-//                 var dataPendiente;
-//                 db.ref('/Dietician/'+'Pendiente de aprobar').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-//                     const dataPendiente = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//                     console.log('EAA dataPendiente' + dataPendiente);
-
-//                     return dataPendiente;
-
-//                 })
-//                 db.ref('/Dietician/'+'Aprobado').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-//                     const dataAprobado = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//                     console.log('EAA dataAprobado' + dataAprobado);
-
-//                     return dataAprobado;
-
-//                 })
-//                 console.log('EAA dataAprobado' + dataAprobado);
-//                 console.log('EAA dataPendiente' + dataPendiente);
-//                 response.render('./adminViews/manejarDietistas', { dieticianAprobado: dataAprobado, dieticianPendiente: dataPendiente }); //refrescamos la vista de index ahora con esos valores
-
-//                 // });
-
-//                 // console.log('EAA: getDietistasDataA: '+JSON.stringify(dataAprobado));
-//                 // console.log('EAA: getDietistasDataP: '+JSON.stringify(dataPendiente));
-
-//                 // });
-//                 //   ref.orderByChild("status").equalTo("Pendiente de aprobar").on("child_added", function(snapshot) {
-//                 //     dataPendiente=snapshot.val();
-//                 //     //console.log(dataAprobado.length);
-//                 // });
-//                 // db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
-
-//                 //     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-//                 //     console.log('EAA dietistadata: '+snapshot.val());
-
-//                 //     response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
-
-//                 // })
-
-//             }
-//             else {
-//                 response.render("noAdminView", {
-//                     msg: null
-//                 });
-//             }
-//         }
-//         else {
-//             response.render("noLoggedView", {
-//                 msg: null
-//             });
-//         }
-//     })
-
-
-
-
-
-// }
 
 //SACAR LA VISTA DE TODOS LOS PACIENTES QUE EXISTEN EN LA BD
 function getDietistas(request, response) {
 
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -475,7 +290,7 @@ function getDietistas(request, response) {
                 msg: null
             });
         }
-    })
+
 
 
 
@@ -483,7 +298,7 @@ function getDietistas(request, response) {
 function getAllDietistas(request, response) {
 
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
             
 
@@ -507,14 +322,14 @@ function getAllDietistas(request, response) {
                 msg: null
             });
         }
-    })
+
 
 
 
 }
 function modificarEstadoDietistaAprobado(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -545,11 +360,11 @@ function modificarEstadoDietistaAprobado(request, response) {
                 msg: null
             });
         }
-    })
+ 
 }
 
 function modificarEstadoDietistaDenegado(request, response) {
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -580,7 +395,7 @@ function modificarEstadoDietistaDenegado(request, response) {
                 msg: null
             });
         }
-    })
+
 
 }
 
@@ -588,7 +403,7 @@ function modificarEstadoDietistaDenegado(request, response) {
 //SACAR LA VISTA DEL FORMULARIO DE NUEVO PACIENTE POR PARTE DEL ADMIN
 function nuevoPacienteView(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -607,7 +422,6 @@ function nuevoPacienteView(request, response) {
                 msg: null
             });
         }
-    })
 
 
 
@@ -616,7 +430,7 @@ function nuevoPacienteView(request, response) {
 //CUANDO SE PULSA EL BOTON DEL FORMULARIO DE AÑADIR NUEVO PACIENTE CREAMOS EL PACIENTE
 function nuevoPaciente(request, response) {
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -684,7 +498,6 @@ function nuevoPaciente(request, response) {
         else {
             response.render('noLoggedView');
         }
-    })
 
 
 
@@ -694,7 +507,7 @@ function nuevoPaciente(request, response) {
 function getPacientesAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -718,7 +531,6 @@ function getPacientesAdmin(request, response) {
                 msg: null
             });
         }
-    })
 
 
 
@@ -728,7 +540,7 @@ function getPacientesAdmin(request, response) {
 function borrarPacientesAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -777,7 +589,6 @@ function borrarPacientesAdmin(request, response) {
                 msg: null
             });
         }
-    })
 
 
 
@@ -790,7 +601,7 @@ function borrarPacientesAdmin(request, response) {
 function perfilAdmin(request, response) {
 
 
-    firebase.auth().onAuthStateChanged(function(user) {
+    var user = firebase.auth().currentUser;
         if (user) {
 
 
@@ -818,7 +629,6 @@ function perfilAdmin(request, response) {
                 msg: null
             });
         }
-    })
 
 
 

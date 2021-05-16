@@ -26,6 +26,7 @@ router.get('/delete-patient-admin/:id',adminRouterController.borrarPacientesAdmi
 
 //POST DIETISTAS
 router.post('/nuevoDietista',adminRouterController.nuevoDietista);
+router.post('/modificarDietista/:id',adminRouterController.modificarDietista);
 
 //POST PACIENTES
 
