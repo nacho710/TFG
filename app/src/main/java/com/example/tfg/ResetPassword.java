@@ -39,15 +39,18 @@ public class ResetPassword extends AppCompatActivity {
     public void sendReset(View view) {
         final EditText emailRegister = (EditText) findViewById(R.id.emailReset);
         String email = emailRegister.getText().toString();
-    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-            if(task.isSuccessful())
-            Toast.makeText(ResetPassword.this,"Contraseña restablecida, revisa tu correo.",Toast.LENGTH_LONG).show();
-            else  Toast.makeText(ResetPassword.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+        if(email.length()>0) {
+            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful())
+                        Toast.makeText(ResetPassword.this, "Contraseña restablecida, revisa tu correo.", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(ResetPassword.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
-    });
-
+        else  Toast.makeText(ResetPassword.this, "Debes introducir un email ", Toast.LENGTH_LONG).show();
 
 
 

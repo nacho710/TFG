@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -49,6 +51,7 @@ import java.util.UUID;
 public class DietFollow  extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private ImageView imageView ;
+    private final int PICK_IMAGE_REQUEST = 22;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -69,7 +72,7 @@ public class DietFollow  extends AppCompatActivity {
     private CheckBox comida5Check;
     private TextView dayIdView;
     private List<String> picsIDs = new ArrayList<String>();
-
+    private Uri filePath;
     private Calendar currentTime;
     private  String dayID;
     private String id;
@@ -157,42 +160,114 @@ public class DietFollow  extends AppCompatActivity {
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+//    {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+//        {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+//            {
+//                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+//
+//            Bitmap photo = (Bitmap) data.getExtras().get("data");
+//            LinearLayout ll = (LinearLayout) findViewById(R.id.layoutFollowPhotos);
+//            imageView = new ImageView(DietFollow.this);
+//
+//            imagenes.add(photo);
+//            imageView.setImageBitmap(photo);
+//            ll.addView(imageView);
+//        }
+//    }
+    public void SelectImageDietFollow( View view)
     {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-            else
-            {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
+
+        // Defining Implicit Intent to mobile gallery
+        Intent intent = new Intent();
+
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
 
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            LinearLayout ll = (LinearLayout) findViewById(R.id.layoutFollowPhotos);
-            imageView = new ImageView(DietFollow.this);
+                System.out.println(" filePath");
+                System.out.println(filePath);
+                imageView = new ImageView(DietFollow.this);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageView.setImageBitmap(bitmap);
 
-            imagenes.add(photo);
-            imageView.setImageBitmap(photo);
-            ll.addView(imageView);
-
-
+                LinearLayout ll = (LinearLayout) findViewById(R.id.layoutFollowPhotos);
+                imagenes.add(bitmap);
+                imageView.setImageBitmap(bitmap);
+                ll.addView(imageView);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
+
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+//
+//            Bitmap photo = (Bitmap) data.getExtras().get("data");
+//            LinearLayout ll = (LinearLayout) findViewById(R.id.layoutFollowPhotos);
+//            imageView = new ImageView(DietFollow.this);
+//
+//            imagenes.add(photo);
+//            imageView.setImageBitmap(photo);
+//            ll.addView(imageView);
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public  void uploadFollow(View view){
         AlertDialog.Builder  dialog = new AlertDialog.Builder(DietFollow.this);
         dialog.setTitle("¿La informacion es correcta?");

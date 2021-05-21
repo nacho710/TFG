@@ -83,21 +83,14 @@ public class MyDietician extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if(snapshot.exists()) {
-
-
                                             lista = (ArrayList<String>)(snapshot.child("worthList").getValue());
                                             suma=0.0;
                                             for(String item : lista){
                                                 if(item!="0")
-
-                                                suma += Double.parseDouble(item);
-
+                                                    suma += Double.parseDouble(item);
                                             }
-
                                             suma = suma / (lista.size()+1);
-                                            sumaString = String.valueOf(suma);
-
-
+                                            sumaString = String.valueOf(Math.floor(suma * 100) / 100);
                                         }
                                     }
 
@@ -105,8 +98,6 @@ public class MyDietician extends AppCompatActivity {
                                     public void onCancelled(@NonNull DatabaseError error) {
 
                                     }
-
-
                                     });
                                 }
                                 else {
@@ -138,7 +129,6 @@ public class MyDietician extends AppCompatActivity {
 
                                 nameView.setText(snapshot.child("username").getValue().toString());
                                 SpannableString content = new SpannableString(snapshot.child("email").getValue().toString()); content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-
 
                                 emailView.setText(content);
                                 email = snapshot.child("email").getValue().toString();

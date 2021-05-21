@@ -77,14 +77,18 @@ public class AlarmSet extends AppCompatActivity  implements View.OnClickListener
     }
     public void establecerAlarma( View view)
     {
-        System.out.println(minutoFormateado);
-        System.out.println(horaFormateada);
-        Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Es hora de pesarte!");
-        i.putExtra(AlarmClock.EXTRA_HOUR, Integer.valueOf(horaFormateada));
-        i.putExtra(AlarmClock.EXTRA_MINUTES, Integer.valueOf(minutoFormateado));
-       // i.putExtra(AlarmClock. EXTRA_DAYS, hora);
-        startActivity(i);
+        if(minutoFormateado!=null && horaFormateada!=null) {
+            System.out.println(minutoFormateado);
+            System.out.println(horaFormateada);
+            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+            i.putExtra(AlarmClock.EXTRA_MESSAGE, "Es hora de pesarte!");
+            i.putExtra(AlarmClock.EXTRA_HOUR, Integer.valueOf(horaFormateada));
+            i.putExtra(AlarmClock.EXTRA_MINUTES, Integer.valueOf(minutoFormateado));
+            // i.putExtra(AlarmClock. EXTRA_DAYS, hora);
+            startActivity(i);
+        }
+        else Toast.makeText(AlarmSet.this,"Debe rellenar una hora del día",Toast.LENGTH_LONG).show();
+
     }
 
     @Override
