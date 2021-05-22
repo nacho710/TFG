@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -48,8 +49,14 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
     private TextView titulo;
     public Calendar currentTime ;
     private  String dayID;
-
-
+    private String idDiet;
+    private Button lunes;
+    private Button martes;
+    private Button miercoles;
+    private Button jueves;
+    private Button viernes;
+    private Button sabado;
+    private Button domingo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,53 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.my_diet);
+        String id = mAuth.getCurrentUser().getUid();
+        lunes = findViewById(R.id.monday);
+        martes = findViewById(R.id.tuesday);
+        miercoles = findViewById(R.id.wednesday);
+        jueves = findViewById(R.id.thursday);
+        viernes = findViewById(R.id.friday);
+        sabado = findViewById(R.id.saturday);
+        domingo = findViewById(R.id.sunday);
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    String pesoValue = snapshot.child("weight").getValue().toString();
+                    String alturaValue = snapshot.child("height").getValue().toString();
+                    String nameValue = snapshot.child("username").getValue().toString();
+                    idDiet= snapshot.child("dietId").getValue().toString();
+                    if(!idDiet.equals("null")){
 
+                        lunes.setEnabled(true);
+                        martes   .setEnabled(true);
+                        miercoles.setEnabled(true);
+                        jueves   .setEnabled(true);
+                        viernes  .setEnabled(true);
+                        sabado   .setEnabled(true);
+                        domingo  .setEnabled(true);
+
+
+
+                    }
+                    else { lunes.setEnabled(false);
+                        martes.setEnabled(false);
+                        miercoles.setEnabled(false);
+                        jueves.setEnabled(false);
+                        viernes.setEnabled(false);
+                        sabado.setEnabled(false);
+                        domingo.setEnabled(false);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 

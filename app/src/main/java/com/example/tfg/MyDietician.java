@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.tfg.Integracion.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -78,27 +79,8 @@ public class MyDietician extends AppCompatActivity {
                                 if((boolean)snapshot.child("dieticianValorated").getValue()==false){
                                     getRating.setEnabled(true);
                                     ratingBar.setEnabled(true);
-                                idDietista = snapshot.child("dieticianId").getValue().toString();
-                                mydb.child("Dietician").child(idDietista).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(snapshot.exists()) {
-                                            lista = (ArrayList<String>)(snapshot.child("worthList").getValue());
-                                            suma=0.0;
-                                            for(String item : lista){
-                                                if(item!="0")
-                                                    suma += Double.parseDouble(item);
-                                            }
-                                            suma = suma / (lista.size()+1);
-                                            sumaString = String.valueOf(Math.floor(suma * 100) / 100);
-                                        }
-                                    }
+                                    idDietista = snapshot.child("dieticianId").getValue().toString();
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                    });
                                 }
                                 else {
                                     getRating.setEnabled(false);
@@ -130,11 +112,13 @@ public class MyDietician extends AppCompatActivity {
                                 nameView.setText(snapshot.child("username").getValue().toString());
                                 SpannableString content = new SpannableString(snapshot.child("email").getValue().toString()); content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 
+
                                 emailView.setText(content);
                                 email = snapshot.child("email").getValue().toString();
                                 descriptionView.setText(snapshot.child("description").getValue().toString());
                                 phone = snapshot.child("phone").getValue().toString();
                                 phoneView.setText(snapshot.child("phone").getValue().toString());
+
 
                             }
                         }
@@ -169,18 +153,40 @@ public class MyDietician extends AppCompatActivity {
     public void getRating(View view) {
 
         String id = mAuth.getCurrentUser().getUid();
-
         String rating = "Muchas gracias por enviar tu valoración";
-                Toast.makeText(MyDietician.this, rating, Toast.LENGTH_LONG).show();
-                Map<String,Object> map = new HashMap<>();
-                lista.add(String.valueOf( ratingBar.getRating()));
-                map.put("worthList", lista);
-                map.put("worth",sumaString);
-                mydb.child("Dietician").child(idDietista).updateChildren(map);
-            Map<String,Object> map_user = new HashMap<>();
-            lista.add(String.valueOf( ratingBar.getRating()));
-            map_user.put("dieticianValorated", true);
-        mydb.child("Patient").child(id).updateChildren(map_user);
+        Toast.makeText(MyDietician.this, rating, Toast.LENGTH_LONG).show();
+        mydb.child("Dietician").child(idDietista).child("worthList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    lista = (ArrayList<String>)(snapshot.getValue());
+                    lista.add(String.valueOf(ratingBar.getRating()));
+                    suma=0.0;
+                    for(String item : lista){
+                        if(item!="0.0")
+                            suma += (Double.valueOf(item));
+                    }
+                    suma = suma / (lista.size());
+
+                    sumaString = String.valueOf(Math.floor(suma * 100) / 100);
+                    System.out.println(sumaString);
+                    System.out.println(suma);
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("worthList", lista);
+                    map.put("worth",sumaString);
+                    mydb.child("Dietician").child(idDietista).updateChildren(map);
+                    Map<String,Object> map_user = new HashMap<>();
+                    lista.add(String.valueOf( ratingBar.getRating()));
+                    map_user.put("dieticianValorated", true);
+                    mydb.child("Patient").child(id).updateChildren(map_user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

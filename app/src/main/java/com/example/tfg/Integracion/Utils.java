@@ -18,11 +18,34 @@ public class Utils {
             case "sunday": return "Domingo";
             case "monday": return "Lunes";
             case "tuesday": return "Martes";
-            case "wednesday": return "Miercoles";
+            case "wednesday": return "Miércoles";
             case "thursday": return "Jueves";
             case "friday": return "Viernes";
-            case "saturday": return "Sabado";
+            case "saturday": return "Sábado";
             default: return null;
         }
     }
+    public static Double rating(Long day){
+        if(day ==0){
+            return 0.0;
+        }
+        else if(day ==1){
+            return 1.0;
+        }
+        else if(day ==2){
+            return 2.0;
+        }
+        else if(day ==3){
+            return 3.0;
+        }
+        else if(day ==4){
+            return 4.0;
+        }
+        else if(day ==5){
+            return 5.0;
+        }
+        else return Double.valueOf(day);
+
+        }
+
 }

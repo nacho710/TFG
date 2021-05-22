@@ -44,7 +44,7 @@ import java.util.Map;
 
 import javax.xml.transform.sax.TemplatesHandler;
 
-public class MyPics extends AppCompatActivity implements View.OnClickListener {
+public class MyPics extends AppCompatActivity implements View.OnLongClickListener {
     FirebaseStorage storage;
     StorageReference storageReference;
     FirebaseAuth mAuth;
@@ -83,7 +83,8 @@ public class MyPics extends AppCompatActivity implements View.OnClickListener {
                     for( int i = 0 ; i < numpic ;i++){
                         ImageView imagen = new ImageView(MyPics.this);
                         imagen.setId(i);
-                        imagen.setOnClickListener(MyPics.this);
+//                        imagen.setOnTouchListener(new ImageMatrixTouchHandler(MyPics.this));
+                        imagen.setOnLongClickListener(MyPics.this);
                         ll.addView(imagen);
                         storageReference.child(id+"/images/bodyimages/"+picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
@@ -116,10 +117,16 @@ public class MyPics extends AppCompatActivity implements View.OnClickListener {
         Intent i =  new Intent(this,UploadPhoto.class);
         startActivity(i);
     }
-    @Override
-    public void onClick(View v) {
+//    @Override
+//    public void onlongClick(View v) {
+//
+//    }
 
-        AlertDialog.Builder  dialog = new AlertDialog.Builder(MyPics.this);
+
+    @Override
+    public boolean onLongClick(View v) {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MyPics.this);
         dialog.setTitle("¿Desea eliminar la foto de nuestra base de datos?");
         dialog.setMessage("Esta accion eliminara tu imagen para siempre");
         dialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
@@ -129,19 +136,19 @@ public class MyPics extends AppCompatActivity implements View.OnClickListener {
                 mydb.child("Patient").child(id).child("picIds").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()) {
-                            picIds =  (List<String>) snapshot.getValue();
+                        if (snapshot.exists()) {
+                            picIds = (List<String>) snapshot.getValue();
                             String value = String.valueOf(snapshot.child(String.valueOf(v.getId())).getValue().toString());
                             Integer numPicsNw = numpic - 1;
-                            if(numPicsNw!=0){
-                                picIds.remove(v.getId())  ;
+                            if (numPicsNw != 0) {
+                                picIds.remove(v.getId());
                                 mydb.child("Patient").child(id).child("picIds").child(String.valueOf(v.getId())).removeValue();
                             }
                             Map<String, Object> map = new HashMap<>();
                             map.put("numpics", numPicsNw);
                             map.put("picIds", picIds);
                             mydb.child("Patient").child(id).updateChildren(map);
-                            storageReference.child(id+"/images/bodyimages/"+value).delete();
+                            storageReference.child(id + "/images/bodyimages/" + value).delete();
                             finish();
 
                         }
@@ -161,15 +168,6 @@ public class MyPics extends AppCompatActivity implements View.OnClickListener {
         });
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
+        return false;
     }
-
-
-
-
-
-
-
-
-
-
 }

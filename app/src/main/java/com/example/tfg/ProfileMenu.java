@@ -75,38 +75,6 @@ public class ProfileMenu extends AppCompatActivity {
         solicitarDietista = findViewById(R.id.solicitarDietistaButton);
         followdietaButton = findViewById(R.id.followDietaButton);
         midietabutton = findViewById(R.id.midietaButton);
-        getInfoUser();
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                cerrarSesion();
-                return true;
-            case R.id.darseDeBaja:
-                darseDeBaja();
-                return true;
-            case R.id.misFotos:
-                misFotos();
-                return true;
-            case R.id.AlarmSet:
-                setAlarm();
-                return true;
-            case R.id.Refresh:
-               refresh();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    private void getInfoUser(){
         String id = mAuth.getCurrentUser().getUid();
         mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,10 +87,16 @@ public class ProfileMenu extends AppCompatActivity {
                     idDiet= snapshot.child("dietId").getValue().toString();
                     if(!idDietista.equals("null")){
                         solicitarDietista.setEnabled(false);
-                        followdietaButton.setEnabled(true);
+                        if(!idDiet.equals("null")){
+                            followdietaButton.setEnabled(true);
+                        }
+                        else
+                            followdietaButton.setEnabled(false);
                         midietabutton.setEnabled(true);
                     }
-                    else   {solicitarDietista.setEnabled(true);
+
+                    else  {
+                        solicitarDietista.setEnabled(true);
                         followdietaButton.setEnabled(false);
                         midietabutton.setEnabled(false);
                     }
@@ -156,11 +130,37 @@ public class ProfileMenu extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                cerrarSesion();
+                return true;
+            case R.id.darseDeBaja:
+                darseDeBaja();
+                return true;
+            case R.id.misFotos:
+                misFotos();
+                return true;
+            case R.id.AlarmSet:
+                setAlarm();
+                return true;
+            case R.id.Refresh:
+               refresh();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void refresh(){
         finish();
         overridePendingTransition(0, 0);
@@ -247,25 +247,9 @@ public class ProfileMenu extends AppCompatActivity {
     }
     public void goToChooseDietician(View view){
 
-        String id = mAuth.getCurrentUser().getUid();
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    String nameValue = snapshot.child("dieticianId").getValue().toString();
-                    if(nameValue.equals("null")){
-                        Intent i =  new Intent(ProfileMenu.this,ChooseDietist.class);
-                        startActivity(i);
-                    }
-                    else Toast.makeText(ProfileMenu.this,"Ya tienes asignado un dietista, refresca la página", Toast.LENGTH_LONG).show();
-                }
-            }
+        Intent i =  new Intent(ProfileMenu.this,ChooseDietist.class);
+        startActivity(i);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
 
