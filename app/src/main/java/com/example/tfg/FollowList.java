@@ -81,15 +81,14 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-
         ll = (LinearLayout) findViewById(R.id.followLayout);
         id = mAuth.getCurrentUser().getUid();
-         comida1View = (TextView) findViewById(R.id.comida1);
-          comida2View = (TextView) findViewById(R.id.comida2);
-          comida3View = (TextView) findViewById(R.id.comida3);
-         comida4View = (TextView) findViewById(R.id.comida4);
-         comida5View = (TextView) findViewById(R.id.comida5);
-         currentTime =Calendar.getInstance();
+        comida1View = (TextView) findViewById(R.id.comida1);
+        comida2View = (TextView) findViewById(R.id.comida2);
+        comida3View = (TextView) findViewById(R.id.comida3);
+        comida4View = (TextView) findViewById(R.id.comida4);
+        comida5View = (TextView) findViewById(R.id.comida5);
+        currentTime =Calendar.getInstance();
         dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
         comida1Check = (CheckBox) findViewById(R.id.comida1Check);
         comida2Check = (CheckBox) findViewById(R.id.comida2Check);
@@ -150,129 +149,121 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
 
 
+                    HashMap<String, List<String>> mapa = (HashMap<String, List<String>>) snapshot.child("Follow").getValue();
+                    ArrayList<String> lista = new ArrayList<>(mapa.keySet());
+
+                    LayoutInflater inflater = (LayoutInflater)
+                            getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = inflater.inflate(R.layout.popup_follow, null);
+                    int ide = v.getId();
+                    String value = lista.get(ide);
+                    // create the popup window
+                    int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    int height = LinearLayout.LayoutParams.MATCH_PARENT;
+                    boolean focusable = true;
+                    popupWindow = new PopupWindow(popupView, width, height, focusable);
+                    // lets taps outside the popup also dismiss it
+                    comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.comida1);
+                    comida2View = (TextView) popupWindow.getContentView().findViewById(R.id.comida2);
+                    comida3View = (TextView) popupWindow.getContentView().findViewById(R.id.comida3);
+                    comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.comida4);
+                    comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.comida5);
+                    dayIdView = (TextView) popupWindow.getContentView().findViewById(R.id.day);
+
+                    comida1Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida1Check);
+                    comida2Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida2Check);
+                    comida3Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida3Check);
+                    comida4Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida4Check);
+                    comida5Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida5Check);
+
+                    comentView = (TextView) popupWindow.getContentView().findViewById(R.id.comentario);
+                    descripcionView = (TextView) popupWindow.getContentView().findViewById(R.id.descripcion);
+                    String id = mAuth.getCurrentUser().getUid();
 
 
-                                HashMap<String, List<String>> mapa = (HashMap<String, List<String>>) snapshot.child("Follow").getValue();
-                                ArrayList<String> lista = new ArrayList<>(mapa.keySet());
+                    mydb.child("Patient").child(id).child("Follow").child(value).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshots) {
+                            if (snapshots.exists()) {
 
-                                LayoutInflater inflater = (LayoutInflater)
-                                        getSystemService(LAYOUT_INFLATER_SERVICE);
-                                View popupView = inflater.inflate(R.layout.popup_follow, null);
-                                int ide = v.getId();
-                                String value = lista.get(ide);
-                                // create the popup window
-                                int width = LinearLayout.LayoutParams.MATCH_PARENT;
-                                int height = LinearLayout.LayoutParams.MATCH_PARENT;
-                                boolean focusable = true;
-                                 popupWindow = new PopupWindow(popupView, width, height, focusable);
-                                // lets taps outside the popup also dismiss it
-                                comida1View = (TextView) popupWindow.getContentView().findViewById(R.id.comida1);
-                                comida2View = (TextView) popupWindow.getContentView().findViewById(R.id.comida2);
-                                comida3View = (TextView) popupWindow.getContentView().findViewById(R.id.comida3);
-                                comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.comida4);
-                                comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.comida5);
-                                dayIdView = (TextView) popupWindow.getContentView().findViewById(R.id.day);
-
-                                comida1Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida1Check);
-                                comida2Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida2Check);
-                                comida3Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida3Check);
-                                comida4Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida4Check);
-                                comida5Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida5Check);
-
-                                comentView = (TextView) popupWindow.getContentView().findViewById(R.id.comentario);
-                                descripcionView = (TextView) popupWindow.getContentView().findViewById(R.id.descripcion);
-                                String id = mAuth.getCurrentUser().getUid();
+                                String valor = snapshots.child("food1").child("0").getValue().toString();
+                                System.out.println(valor);
+                                comida1View.setText(valor);
+                                comida1Check.setChecked(Boolean.valueOf(snapshots.child("food1").child("1").getValue().toString()));
+                                comida2View.setText(snapshots.child("food2").child("0").getValue().toString());
+                                comida2Check.setChecked(Boolean.valueOf(snapshots.child("food2").child("1").getValue().toString()));
+                                comida3View.setText(snapshots.child("food3").child("0").getValue().toString());
+                                comida3Check.setChecked(Boolean.valueOf(snapshots.child("food3").child("1").getValue().toString()));
+                                comida4View.setText(snapshots.child("food4").child("0").getValue().toString());
+                                comida4Check.setChecked(Boolean.valueOf(snapshots.child("food4").child("1").getValue().toString()));
+                                comida5View.setText(snapshots.child("food5").child("0").getValue().toString());
+                                comida5Check.setChecked(Boolean.valueOf(snapshots.child("food5").child("1").getValue().toString()));
+                                comentView.setText((String) snapshots.child("coment").getValue());
+                                descripcionView.setText((String) snapshots.child("descripcion").getValue());
+                                dayIdView.setText(value);
 
 
-                                mydb.child("Patient").child(id).child("Follow").child(value).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshots) {
-                                        if (snapshots.exists()) {
+                                picIds = (List<String>) snapshots.child("photosIds").getValue();
+                                llphotos = (LinearLayout) popupWindow.getContentView().findViewById(R.id.listaPhotos);
+                                final long ONE_MEGABYTE = 2048 * 2048;
+                                for (int i = 0; i < picIds.size(); i++) {
+                                    ImageView imagen = new ImageView(FollowList.this);
 
-                                            String valor = snapshots.child("food1").child("0").getValue().toString();
-                                            System.out.println(valor);
-                                            comida1View.setText(valor);
-                                            comida1Check.setChecked(Boolean.valueOf(snapshots.child("food1").child("1").getValue().toString()));
-                                            comida2View.setText(snapshots.child("food2").child("0").getValue().toString());
-                                            comida2Check.setChecked(Boolean.valueOf(snapshots.child("food2").child("1").getValue().toString()));
-                                            comida3View.setText(snapshots.child("food3").child("0").getValue().toString());
-                                            comida3Check.setChecked(Boolean.valueOf(snapshots.child("food3").child("1").getValue().toString()));
-                                            comida4View.setText(snapshots.child("food4").child("0").getValue().toString());
-                                            comida4Check.setChecked(Boolean.valueOf(snapshots.child("food4").child("1").getValue().toString()));
-                                            comida5View.setText(snapshots.child("food5").child("0").getValue().toString());
-                                            comida5Check.setChecked(Boolean.valueOf(snapshots.child("food5").child("1").getValue().toString()));
-                                            comentView.setText((String) snapshots.child("coment").getValue());
-                                            descripcionView.setText((String) snapshots.child("descripcion").getValue());
-                                            dayIdView.setText(value);
-
-
-                                            picIds = (List<String>) snapshots.child("photosIds").getValue();
-                                            llphotos = (LinearLayout) popupWindow.getContentView().findViewById(R.id.listaPhotos);
-                                            final long ONE_MEGABYTE = 2048 * 2048;
-                                            for (int i = 0; i < picIds.size(); i++) {
-                                                ImageView imagen = new ImageView(FollowList.this);
-
-                                                storageReference.child(id + "/images/follow/" + value + "/" + picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                                    @Override
-                                                    public void onSuccess(byte[] bytes) {
-                                                        System.out.println("HOLA");
-                                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                        imagen.setImageBitmap(bmp);
-                                                        imagen.setOnTouchListener(new ImageMatrixTouchHandler(popupView.getContext()));
+                                    storageReference.child(id + "/images/follow/" + value + "/" + picIds.get(i)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                        @Override
+                                        public void onSuccess(byte[] bytes) {
+                                            System.out.println("HOLA");
+                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                            imagen.setImageBitmap(bmp);
+                                            imagen.setOnTouchListener(new ImageMatrixTouchHandler(popupView.getContext()));
 //                                                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
 //                                                                LinearLayout.LayoutParams.MATCH_PARENT,
 //                                                                LinearLayout.LayoutParams.MATCH_PARENT,
 //                                                                1.0f
 //                                                        );
 //                                                        imagen.setLayoutParams(param);
-                                                        llphotos.addView(imagen);
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception exception) {
-                                                        // Handle any errors
-                                                    }
-                                                });
-                                            }
+                                            llphotos.addView(imagen);
                                         }
-
-
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-
-
-                                // show the popup windowt
-                                // which view you pass in doesn't matter, it is only used for the window tolken
-                                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-
-
-                                // dismiss the popup window when touched
-                                popupView.setOnTouchListener(new View.OnTouchListener() {
-                                    @Override
-                                    public boolean onTouch(View v, MotionEvent event) {
-                                        popupWindow.dismiss();
-                                        return true;
-                                    }
-                                });
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Handle any errors
+                                        }
+                                    });
+                                }
+                            }
 
 
                         }
-                    }
 
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
 
+                    // show the popup windowt
+                    // which view you pass in doesn't matter, it is only used for the window tolken
+                    popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 
 
+                    // dismiss the popup window when touched
+                    popupView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            popupWindow.dismiss();
+                            return true;
+                        }
+                    });
+
+
+                }
+            }
 
 
             @Override
@@ -282,15 +273,6 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
         });
 
 
-}
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
-            popupWindow.dismiss();
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
     }
+
 }

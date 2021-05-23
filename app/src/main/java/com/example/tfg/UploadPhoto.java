@@ -99,7 +99,6 @@ public class UploadPhoto extends AppCompatActivity {
             try {
 
                 System.out.println(" filePath");System.out.println(filePath);
-
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imagen.setImageBitmap(bitmap);
             }
@@ -113,7 +112,6 @@ public class UploadPhoto extends AppCompatActivity {
     public void uploadImage(View view) {
         AlertDialog.Builder  dialog = new AlertDialog.Builder(UploadPhoto.this);
         dialog.setTitle("¿Es correcta la foto?");
-        dialog.setMessage("Si la subes y decides eliminarla ponte en contacto con el servicio tecnico");
         dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

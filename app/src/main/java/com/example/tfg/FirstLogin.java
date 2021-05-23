@@ -109,7 +109,7 @@ public class FirstLogin extends AppCompatActivity {
         else {
 
             String id = mAuth.getCurrentUser().getUid();
-            mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+            mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
@@ -130,11 +130,11 @@ public class FirstLogin extends AppCompatActivity {
                             map.put("dieticianId","null");
                             map.put("dieticianValorated",false);
 
-                        //TYPE 1 = PACIENTE
+                            //TYPE 1 = PACIENTE
                             // TYPE 2 = DIETISTA
 
                             mydb.child("Patient").child(id).updateChildren(map);
-                        startActivity(new Intent(FirstLogin.this, ChooseDietist.class));
+                        startActivity(new Intent(FirstLogin.this, ProfileMenu.class));
                         finish();
 
 

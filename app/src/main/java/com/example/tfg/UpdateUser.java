@@ -123,6 +123,7 @@ public class UpdateUser extends AppCompatActivity {
 
 
 
+
         }
 
 
@@ -177,7 +178,8 @@ public class UpdateUser extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(UpdateUser.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateUser.this,"Pulsa el botón de refrescar para ver todos los cambios",Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

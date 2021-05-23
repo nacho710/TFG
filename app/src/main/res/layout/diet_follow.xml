@@ -155,36 +155,29 @@
                 android:hint="Descripcion del dia"
                 android:inputType="textMultiLine" />
 
-            <LinearLayout
-                android:layout_width="287dp"
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="285dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_weight="0.570"
+                android:onClick="SelectImageDietFollow"
+                android:visibility="visible"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="78dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.570"
-                    android:onClick="subirFoto"
-                    android:visibility="visible"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+            <ScrollView
+                android:id="@+id/botonCamera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.570">
 
-                <HorizontalScrollView
-                    android:id="@+id/botonCamera"
-                    android:layout_width="227dp"
-                    android:layout_height="78dp"
-                    android:layout_gravity="center">
+                <LinearLayout
+                    android:id="@+id/layoutFollowPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/layoutFollowPhotos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                    </LinearLayout>
-                </HorizontalScrollView>
-
-            </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
 
             <Button
                 android:id="@+id/button9"

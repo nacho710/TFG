@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +52,7 @@ public class ChooseDietist extends AppCompatActivity {
         nombre = (TextView) findViewById(R.id.nombreDietician);
         valoracion  = (TextView) findViewById(R.id.valoracionDietician);
         descripcion = (TextView) findViewById(R.id.comentarioDietician);
-        mydb.child("Dietician").addValueEventListener(new ValueEventListener() {
+        mydb.child("Dietician").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
@@ -75,7 +76,7 @@ public class ChooseDietist extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
             {
 //                Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
-                mydb.child("Dietician").child(nameID_dietician.get(position)).addValueEventListener(new ValueEventListener() {
+                mydb.child("Dietician").child(nameID_dietician.get(position)).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()) {
@@ -117,11 +118,14 @@ public class ChooseDietist extends AppCompatActivity {
             map.put("idPatient", id);
             map.put("idDietician", nameID_dietician.get(posMap));
             map.put("state", "0");
+            mydb.child("Request").push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    startActivity(new Intent(ChooseDietist.this, ProfileMenu.class));
+                    finish();
+                }
+            });
 
-            DatabaseReference dba = FirebaseDatabase.getInstance().getReference().child("Request");
-            dba.push().setValue(map);
-            startActivity(new Intent(ChooseDietist.this, ProfileMenu.class));
-            finish();
 //            mydb.child("Request").child(idRequest).addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(@NonNull DataSnapshot snapshot) {
