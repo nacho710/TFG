@@ -514,6 +514,11 @@ input {
   padding-bottom: 88px;
 }
 
+.cardIndex{
+  padding:  0% 18%; 
+}
+
+
 @media (max-width: 767px) {
   .card-2 {
     display: block;

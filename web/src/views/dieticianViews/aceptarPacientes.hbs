@@ -1,32 +1,96 @@
-{{> navbarLoggedDietician }} 
+{{> navbarLoggedDietician }}
 
 <div class="col-md-6 offset-md-3">
     <div class="card">
         <div class="card-header">
             <h1>Pacientes que requieren tus servicios</h1>
         </div>
+
+
         <div class="card-body">
             {{#if patient}}
-            <ul class="list-group">
-                {{#each patient}}
-                <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
-                    <p class="info-patient">Nombre y apellidos: <br></br>{{username}}</p> 
-                    <p class="info-patient">Email: <br></br> {{email}} </p>
-                    <p class="info-patient">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-patient">Edad: <br></br>{{age}} </p> 
-                    <p class="info-patient">Altura: {{height}} <br></br></p> 
-                    <p class="info-patient">Peso: <br></br>{{weight}} </p>
-                    <a href="/rechazarPaciente/{{@key}}" class="btn btn-danger">Rechazar paciente</a>
-                    <a href="/aceptarPaciente/{{@key}}" class="btn myButtonVerde">Aceptar paciente</a>
 
-                </li>
+            <div class="slds-scrollable_y-ManejarPaciente scroll-ManejarPaciente">
+                {{#each patient}}
+                <!-- <lightning-card class="carta"> -->
+
+                <div class="card-Paciente-ManejarPaciente">
+                    <div class="columnaFilas-ManejarPaciente">
+
+
+                        <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente">Nombre y apellidos:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{username}}</span></p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Teléfono: </br><span
+                                        class="notas-text-abajo-ManejarPaciente">{{phone}}</span>
+                                </p>
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Altura: </br><span
+                                        class="notas-text-abajo-ManejarPaciente">{{height}}</span></p>
+                            </div>
+
+                        </div>
+                        <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Email:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{email}}</span>
+                                </p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Edad:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{age}}</span></p>
+                            </div>
+                            <div class="columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Peso:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{weight}}</span></p>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="columnaBotones-ManejarPaciente">
+                        <a href="/rechazarPaciente/{{@key}}" class="btn btn-danger">Rechazar paciente</a>
+                        <a href="/aceptarPaciente/{{@key}}" class="btn myButtonVerde">Aceptar paciente</a>
+                    </div>
+
+                </div>
+
+                <!-- </lightning-card> -->
+
                 {{/each}}
-            </ul>
+            </div>
+
             {{else}}
-                <p>No tienes solicitudes nuevas de pacientes</p>
-            {{/if}}
-        </div>
-        <div class="card-footer">
+
+            <div class="slds-scrollable_y-ManejarPaciente scroll-ManejarPaciente">
+                <div class="card-Paciente-ManejarPaciente">
+                    <div class="columnaFilas-ManejarPaciente">
+
+
+                        <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente">No tienes ninguna solicitud</br> </p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- </lightning-card> -->
+
+                {{/if}}
+            </div>
+
+            <div class="card-footer">
+            </div>
         </div>
     </div>
-</div>

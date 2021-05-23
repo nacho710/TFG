@@ -3,10 +3,7 @@ const admin = require('firebase-admin'); //llamar el modulo
 const db = admin.database(); //variable de nuestra base de datos
 const auth = admin.auth();
 let alert = require('alert');
-const { body,validationResult } = require('express-validator');
-
-//const toast = require('toast-notification-alert');
-
+const { body, validationResult } = require('express-validator');
 
 
 function root(request, response) {
@@ -14,11 +11,7 @@ function root(request, response) {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
 
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
-
             var uid = user.uid;
-            console.log('EAA emailroot:' + user.email);
             if (user.email == "personaldiet@admin.es") return response.render('./adminViews/indexAdmin');
             else return response.render('./dieticianViews/indexDietician');
         }
@@ -56,20 +49,6 @@ function registroDietician(request, response) {
     var password = request.body.password;
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
-            // const newDietician = {
-            //     username: request.body.nombre + " " + request.body.apellidos,
-            //     email: request.body.email,
-            //     password: request.body.password,
-            //     phone: request.body.phone,
-            //     description: request.body.description,
-            //     rol: "dietista",
-            //     status: "Pendiente de aprobar",
-            //     worth: "3.5"
-            // }
-            // console.log('EAA USER: '+JSON.stringify(user));
-            // console.log('EAA ID: '+user.user.uid);
-
-            // db.ref('Dietician').push(newDietician); //nombre de la tabla --db.ref('Dietician')
             db.ref('Dietician/' + user.user.uid).set({
                 username: request.body.nombre + " " + request.body.apellidos,
                 email: request.body.email,
@@ -78,7 +57,10 @@ function registroDietician(request, response) {
                 description: request.body.description,
                 rol: "dietista",
                 status: "Pendiente de aprobar",
-                worth: "3.5"
+                worth: "3.5",
+                worthList: {
+                    0: "3.5"
+                },
             });
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
@@ -88,7 +70,6 @@ function registroDietician(request, response) {
 
                 })
                 .catch((error) => {
-                    // alert("ERROR EN login:"+error);
                     var errorCode = error.code;
                     var errorMessage = error.message;
 
@@ -98,7 +79,6 @@ function registroDietician(request, response) {
 
         })
         .catch((error) => {
-            // alert("ERROR EN createuser:"+error);
             var errorCode = error.code;
             var errorMessage = error.message;
             var msg;
@@ -129,7 +109,6 @@ function loginView(request, response) {
 
 function loginUser(request, response) {
 
-    //console.log(request);
     var email = request.body.email;
     var password = request.body.password;
     try {
@@ -147,30 +126,29 @@ function loginUser(request, response) {
 
         }).catch((error) => {
 
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var msg;
-                if (errorCode == 'auth/wrong-password') {
-                    msg = 'El correo o la contraseña es incorrecta.';
-                }
-                else if (errorCode == 'auth/invalid-email') {
-                    msg = 'El email que has introducido no es correcto.';
-                }
-                else if (errorCode == 'auth/user-disabled') {
-                    msg = 'El usuario está inhabilitado.';
-                }
-                else if (errorCode == 'auth/user-not-found') {
-                    msg = 'El usuario no existe.';
-                }
-                else {
-                    msg = errorMessage;
-                }
-                alert(msg);
-                return response.redirect("login");
-            });
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var msg;
+            if (errorCode == 'auth/wrong-password') {
+                msg = 'El correo o la contraseña es incorrecta.';
+            }
+            else if (errorCode == 'auth/invalid-email') {
+                msg = 'El email que has introducido no es correcto.';
+            }
+            else if (errorCode == 'auth/user-disabled') {
+                msg = 'El usuario está inhabilitado.';
+            }
+            else if (errorCode == 'auth/user-not-found') {
+                msg = 'El usuario no existe.';
+            }
+            else {
+                msg = errorMessage;
+            }
+            alert(msg);
+            return response.redirect("login");
+        });
     }
     catch (error) {
-        console.log('EAA errorTRY ' + error);
         return response.render('errorViewUsers');
 
     }

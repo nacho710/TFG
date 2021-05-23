@@ -1,118 +1,112 @@
 {{> navbarLoggedAdmin }}
+{{!-- BOOTSTRAP REGISTER --}}
+<link href="/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+<link href="/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+<!-- Font special for pages-->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+    rel="stylesheet">
 
+<!-- Vendor CSS-->
+<link href="/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+<link href="/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+<!-- Main CSS-->
 <div class="col-md-6 offset-md-3">
     <div class="card">
         <div class="card-header">
-            <h1>Dietistas registrados con estado 'Aprobado'</h1>
+            <h1>Aprobación de dietistas</h1>
         </div>
+
+
         <div class="card-body">
             {{#if dietician}}
-            <ul class="list-group">
-                {{#each dietician}}
-                {{#ifeq status "Aprobado" }}
-                <li class="list-group-item d-flex justify-content-between align-items-center list-dieticians">
-                    <p class="info-dietician">Nombre y apellidos: <br></br>{{username}}</p>
-                    <p class="info-dietician">Email: <br></br> {{email}} </p>
-                    <p class="info-dietician">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-dietician">Descripción: <br></br>{{description}} </p>
-                    <p class="info-dietician">Valoración: {{worth}} <br></br></p>
-                    <p class="info-dietician">Estado: <br></br>{{status}} </p>
-                    <a href="/modify-dietician-stateDenegado/{{@key}}" class="btn myButtonMarron">Estado 'Denegado'</a>
-                    {{!-- <a href="/delete-dietician/{{@key}}" class="btn myButtonRojo">Borrar dietista</a> --}}
 
-                </li>
+            <div class="slds-scrollable_y-ManejarPaciente scroll-ManejarPaciente">
+                {{#each dietician}}
+                 {{#ifeq status "Pendiente de aprobar" }}
+                <!-- <lightning-card class="carta"> -->
+
+                <div class="card-Paciente-ManejarPaciente">
+                    <div class="columnaFilas-ManejarPaciente">
+
+
+                        <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente">Nombre y apellidos:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{username}}</span></p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Email: </br><span
+                                        class="notas-text-abajo-ManejarPaciente">{{email}}</span>
+                                </p>
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Estado: </br><span
+                                        class="notas-text-abajo-ManejarPaciente">{{status}}</span></p>
+                            </div>
+
+                            
+                        </div>
+                        <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Descripción:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{description}}</span>
+                                </p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Teléfono:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{phone}}</span></p>
+                            </div>
+                            <div class="columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Valoración:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{worth}}</span></p>
+
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <div class="columnaBotones-ManejarPaciente">
+                        <a href="/modify-dietician-stateAprobado/{{@key}}" class="btn myButtonVerde botonDietistaAdmin">Aceptar dietista</a>
+                    <a href="/delete-dietician/{{@key}}" class="btn myButtonRojo botonBorrarDietista">Borrar dietista</a>
+
+
+                    </div>
+
+
+                  
+
+
+                </div>
+
+                <!-- </lightning-card> -->
+
                 {{/ifeq}}
-                {{!-- {{#ifnoteq status "Aprobado"}} 
-                    No existen dietistas registrados con estado 'Aprobado'
-                {{/ifnoteq}} --}}
                 {{/each}}
-            </ul>
+            </div>
+
+
+
+
+
+
             {{else}}
-            <p>No existen dietistas registrados</p>
+            <p>No hay ningún dietista en la aplicación</p>
             {{/if}}
         </div>
-        <div class="card-footer">
 
-        </div>
+
     </div>
 </div>
-<div class="col-md-6 offset-md-3">
-    <div class="card">
-        <div class="card-header">
-            <h1>Dietistas registrados con estado 'Pendiente de aprobar'</h1>
-        </div>
-        <div class="card-body">
-            {{#if dietician}}
-            <ul class="list-group">
-                {{#each dietician}}
 
-
-                {{#ifeq status "Pendiente de aprobar" }}
-                <li class="list-group-item d-flex justify-content-between align-items-center list-dieticians">
-                    <p class="info-dietician">Nombre y apellidos: <br></br>{{username}}</p>
-                    <p class="info-dietician">Email: <br></br> {{email}} </p>
-                    <p class="info-dietician">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-dietician">Descripción: <br></br>{{description}} </p>
-                    <p class="info-dietician">Valoración: {{worth}} <br></br></p>
-                    <p class="info-dietician">Estado: <br></br>{{status}} </p>
-                    <a href="/modify-dietician-stateAprobado/{{@key}}" class="btn myButtonVerde">Estado 'Aprobado'</a>
-                    <a href="/modify-dietician-stateDenegado/{{@key}}" class="btn myButtonMarron">Estado 'Denegado'</a>
-                    {{!-- <a href="/delete-dietician/{{@key}}" class="btn myButtonRojo">Borrar dietista</a> --}}
-
-
-
-                </li>
-                {{/ifeq}}
-                {{!-- {{#ifnoteq status "Pendiente de aprobar"}} 
-                    No existen dietistas registrados con estado 'Pendiente de aprobar'
-                {{/ifnoteq}} --}}
-                {{/each}}
-            </ul>
-            {{else}}
-            <p>No existen dietistas registrados'</p>
-            {{/if}}
-        </div>
-        <div class="card-footer">
-
-        </div>
-    </div>
-</div>
-<div class="col-md-6 offset-md-3">
-    <div class="card">
-        <div class="card-header">
-            <h1>Dietistas registrados con estado 'Denegado'</h1>
-        </div>
-        <div class="card-body">
-            {{#if dietician}}
-            <ul class="list-group">
-                {{#each dietician}}
-
-
-                {{#ifeq status "Denegado" }}
-                <li class="list-group-item d-flex justify-content-between align-items-center list-dieticians">
-                    <p class="info-dietician">Nombre y apellidos: <br></br>{{username}}</p>
-                    <p class="info-dietician">Email: <br></br> {{email}} </p>
-                    <p class="info-dietician">Telefono: <br></br>{{phone}} </p>
-                    <p class="info-dietician">Descripción: <br></br>{{description}} </p>
-                    <p class="info-dietician">Valoración: {{worth}} <br></br></p>
-                    <p class="info-dietician">Estado: <br></br>{{status}} </p>
-                    <a href="/modify-dietician-stateAprobado/{{@key}}" class="btn myButtonVerde">Estado 'Aprobado'</a>
-                    <a href="/modify-dietician-stateDenegado/{{@key}}" class="btn myButtonAmarillo">Estado 'Pendiente'</a>
-                    {{!-- <a href="/delete-dietician/{{@key}}" class="btn myButtonRojo">Borrar dietista</a> --}}
-
-                </li>
-                {{/ifeq}}
-                {{!-- {{#ifnoteq status "Denegado"}} 
-                    No existen dietistas registrados con estado 'Denegado'
-                {{/ifnoteq}} --}}
-                {{/each}}
-            </ul>
-            {{else}}
-            <p>No existen dietistas registrados </p>
-            {{/if}}
-        </div>
-        <div class="card-footer">
-
-        </div>
-    </div>
-</div>
+<!-- Jquery JS-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<!-- Vendor JS-->
+<script src="/vendor/select2/select2.min.js"></script>
+<script src="/vendor/datepicker/moment.min.js"></script>
+<script src="/vendor/datepicker/daterangepicker.js"></script>
+<!-- Main JS-->
+<script src="/js/global.js"></script

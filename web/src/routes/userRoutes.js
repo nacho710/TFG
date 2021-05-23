@@ -3,6 +3,7 @@ const router = Router();
 const admin= require('firebase-admin'); //llamar el modulo
 const auth = admin.auth();
 const db = admin.database(); //variable de nuestra base de datos
+
 const userRouterController= require('../controllers/userRouterController');
 
 
