@@ -76,6 +76,7 @@ public class DietFollow  extends AppCompatActivity {
     private Calendar currentTime;
     private  String dayID;
     private String id;
+    private String peso;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class DietFollow  extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     String dietId = snapshot.child("dietId").getValue().toString();
+                     peso = snapshot.child("weight").getValue().toString();
                     String dia =  Utils.dayParser(currentTime.getTime().getDay());
                     String day = Utils.DaytoDia(dia);
                     mydb.child("Diets").child(dietId).child(day).addValueEventListener(new ValueEventListener() {
@@ -305,6 +307,7 @@ public class DietFollow  extends AppCompatActivity {
                             map.put("food5", e);
                             map.put("descripcion", descripcionView.getText().toString());
                             map.put("coment",  comentView.getText().toString());
+                            map.put("weight",peso);
                             System.out.println("imagenes");
                             System.out.println(imagenes);
                             for(Bitmap bmp : imagenes) {

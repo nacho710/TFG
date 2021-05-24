@@ -148,20 +148,33 @@
             <EditText
                 android:id="@+id/descripcion"
                 android:layout_width="313dp"
-                android:layout_height="86dp"
+                android:layout_height="74dp"
                 android:ems="10"
                 android:enabled="false"
                 android:fontFamily="@font/gorditas"
                 android:gravity="start|top"
                 android:hint="Descripcion del dia"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#040404"
+                android:textColorHint="#070707" />
+
+            <TextView
+                android:id="@+id/pesoFollow"
+                android:layout_width="315dp"
+                android:layout_height="32dp"
+                android:fontFamily="@font/gorditas"
+                android:text="Peso este día"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/listaPhotos"
                 android:layout_width="382dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical" />
+                android:orientation="vertical" >
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
