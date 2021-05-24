@@ -36,7 +36,7 @@
                         <div class="col-sm-8">
                             <div class="card-block">
                                 <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Tú información</h6>
-                                <div class="row">
+                                <div class="row filaPerfilDietician">
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Email</p>
                                         <h6 class="text-muted f-w-400">{{dietician.email}}</h6>
@@ -46,7 +46,7 @@
                                         <h6 class="text-muted f-w-400">{{dietician.phone}}</h6>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row filaPerfilDietician">
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Descripción</p>
                                         <h6 class="text-muted f-w-400">{{dietician.description}}</h6>
@@ -56,23 +56,24 @@
                                         <h6 class="text-muted f-w-400">{{dietician.worth}}</h6>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <p class="m-b-10 f-w-600">Grupo pacientes en Telegram:</p>
-                                        <a href={{dietician.telegram}}>Telegram</a>
+                                <div class="row filaPerfilDietician">
+                                    <div class="col-sm-12">
+                                        <p class="m-b-10 f-w-600">Estado</p>
+                                        <h6 class="text-muted f-w-400">{{dietician.status}}</h6>
                                     </div>
                                     <div class="col-sm-6">
 
 
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
+                                <div class="row filaBotones filaPerfilDietician">
+                                    <div class="columnaBoton">
                                         <a href="/changePassword/{{dietician.email}}"
-                                            class="btn myButtonAmarillo">Reestablecer contraseña</a>
+                                            class="btn myButtonAmarillo botonReset">Reestablecer contraseña</a>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <a href="/deregister/{{@key}}" class="btn myButtonRojo">Darse de baja</a>
+                                    <div class="columnaBoton">
+                                        <a href="/deregister/{{dieticianId}}"
+                                            class="btn myButtonRojo botonDeregister">Darse de baja</a>
                                     </div>
                                 </div>
                             </div>

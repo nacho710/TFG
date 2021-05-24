@@ -13,22 +13,52 @@
 <!-- Main CSS-->
 <link href="/css/mainRegister.css" rel="stylesheet" media="all">
 <link href="/main.css" rel="stylesheet" media="all">
-<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
+<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo page-wrapper-SeguirProgreso">
     <div class="wrapper wrapper--w960">
         <div class="card">
             <div class="card-header">
-                <h1>Paciente al que modificar la dieta</h1>
+                <h1>Modificar la dieta de {{patient.username}}</h1>
             </div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
-                        <p class="info-patient">Nombre: <br></br>{{patient.username}}</p>
-                        <p class="info-patient">Email: <br></br> {{patient.email}} </p>
-                        <p class="info-patient">Telefono: <br></br>{{patient.phone}} </p>
-                        <p class="info-patient">Edad: <br></br>{{patient.age}} </p>
-                        <p class="info-patient">Altura: {{patient.height}} <br></br></p>
-                        <p class="info-patient">Peso: <br></br>{{patient.weight}} </p>
-                    </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center list-patient">
+          <div class="row m-l-0 m-r-0 informacionUser">
+            <div class="col-sm-4 bg-c-lite-green user-profile">
+              <div class="card-block text-center text-white">
+                <div class="m-b-25"> <img src={{fotoPerfil}} class="img-radius imagenPerfil"
+                    alt="User-Profile-Image"> </div>
+                <h6 class="f-w-600"></h6>
+                <p> {{patient.email}}</p> <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="card-block">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600 descripcionPaciente">Telefono</p>
+                    <h6 class="text-muted f-w-400 detallePaciente">{{patient.phone}}</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600 descripcionPaciente">Edad</p>
+                    <h6 class="text-muted f-w-400 detallePaciente">{{patient.age}}</h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600 descripcionPaciente">Altura</p>
+                    <h6 class="text-muted f-w-400 detallePaciente">{{patient.height}} cm</h6>
+                  </div>
+                  <div class="col-sm-6">
+                    <p class="m-b-10 f-w-600 descripcionPaciente">Peso</p>
+                    <h6 class="text-muted f-w-400 detallePaciente">{{patient.weight}} kg</h6>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </li>
                 </ul>
             </div>
             <div class="card-footer">

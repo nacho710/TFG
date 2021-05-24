@@ -20,16 +20,18 @@ var firebase = require("firebase/app");
 // Add the Firebase products that you want to use
 require("firebase/auth");
 require("firebase/firestore");
+
 var firebaseConfig = {
     apiKey: "AIzaSyDwQ_xg8NmGEmPwj3Oj0sRrE_R_8qhC2cc",
     authDomain: "tfg-bed5d.firebaseapp.com",
     databaseURL: "https://tfg-bed5d.firebaseio.com",
     projectId: "tfg-bed5d",
-    storageBucket: "tfg-bed5d.appspot.com",
+    storageBucket: "gs://tfg-bed5d.appspot.com/",
     messagingSenderId: "1081286364712",
     appId: "1:1081286364712:web:3782a5e9c03bc46bde6f1d",
     measurementId: "G-TNC92QC113"
   };
+  
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();

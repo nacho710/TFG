@@ -15,16 +15,16 @@ function indexAdmin(request, response) {
 
 
             if (user.email == "personaldiet@admin.es") {
-                response.render('./adminViews/indexAdmin');
+                return response.render('./adminViews/indexAdmin');
 
 
             }
             else {
-                response.redirect('noAdminView');
+                return  response.redirect('noAdminView');
             }
         }
         else {
-            response.redirect('noLoggedView');
+            return response.redirect('noLoggedView');
 
         }
 
@@ -38,11 +38,11 @@ function nuevoDietistaView(request, response) {
 
             // User is signed in, see docs for a list of available properties
             // https://firebase.google.com/docs/reference/js/firebase.User
-            if (user.email == "personaldiet@admin.es") response.render('./adminViews/nuevoDietista');
-            else response.render('noAdminView');
+            if (user.email == "personaldiet@admin.es") return response.render('./adminViews/nuevoDietista');
+            else  return response.render('noAdminView');
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
 
@@ -68,7 +68,6 @@ function nuevoDietista(request, response) {
                         password: password,
                     })
                     .then((userDietista) => {
-                        var worthStars = 3;
                         //console.log('EAA userdietista'+JSON.stringify(userDietista.uid));
                         db.ref('Dietician/' + userDietista.uid).set({
                             username: request.body.nombre + " " + request.body.apellidos,
@@ -77,11 +76,14 @@ function nuevoDietista(request, response) {
                             phone: request.body.phone,
                             description: request.body.description,
                             status: "Aprobado",
-                            worth: worthStars
+                            worth: "3.5",
+                            worthList: {
+                                0: "3.5"
+                            },
                         });
                         db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                             const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                            response.render('./adminViews/manejarDietistas', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                            return response.render('./adminViews/manejarDietistas', { patient: data });
 
                         })
 
@@ -103,14 +105,14 @@ function nuevoDietista(request, response) {
                             msg = errorMessage;
                         }
                         alert(msg);
-                        response.render('./adminViews/nuevoDietista');
+                        return response.render('./adminViews/nuevoDietista');
 
                     });
             }
-            else response.render('noAdminView');
+            else return response.render('noAdminView');
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
 
@@ -148,10 +150,10 @@ function modificarDietistaView(request, response) {
 
 
             }
-            else response.render('noAdminView');
+            else return response.render('noAdminView');
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
 
@@ -181,7 +183,7 @@ function modificarDietista(request, response) {
                             db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                                 const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                                 console.log('EAA GETDietician:' + JSON.stringify(snapshot.val()));
-                                response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                                return response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
             
                             })
         
@@ -189,10 +191,10 @@ function modificarDietista(request, response) {
                     });
                 }
             }
-            else response.render('noAdminView');
+            else return response.render('noAdminView');
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
 
@@ -211,41 +213,76 @@ function borrarDietista(request, response) {
 
             if (user.email == "personaldiet@admin.es") {
 
-                var userId = request.params.id;
-                var email;
-                db.ref('Dietician/' + userId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
-                    const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                    email = data.email;
-                    console.log('EAA dataEmail:' + data.email);
+                try {
 
-                    db.ref('Dietician/' + request.params.id).remove();
-                    admin
-                        .auth()
-                        .getUserByEmail(email)
-                        .then((userRecord) => {
-                            admin
-                                .auth()
-                                .deleteUser(userRecord.uid)
-                                .then(() => {
-                                    console.log('EAA: Successfully deleted user');
-                                })
-                                .catch((error) => {
-                                    console.log('EAA: Error deleting user:', error);
-                                });
-                            response.redirect('/manejarDietistas');
-                            console.log(`EAA: Successfully fetched user data: ${userRecord.toJSON()}`);
-                        })
-                        .catch((error) => {
-                            console.log('EAA: Error fetching user data:', error);
+                    var dieticianId = request.params.id;
+                     //recoger todos los pacientes de la lista de pacientes y hacer un foreach que para cada uno de ellos les updatee los datos suyos
+                    db.ref('Dietician/' + dieticianId + '/patientsList').on('value', function (snapshot) {
+                        snapshot.forEach(function (childSnapshot) {
+                            var key = childSnapshot.key;
+                            db.ref('Patient/' + key).remove();
+                            var patientRef = db.ref("Patient/" + key);
+                            patientRef.update({
+                                dietId: "null",
+                                dieticianId: "null",
+                                dieticianValorated: "false"
+                            }, (error) => {
+                                if (error) {
+                                    return response.render('./dieticianViews/errorView');
+                                }
+                            });
                         });
-                    response.redirect('/manejarDietistas');
-
-                });
+                    })
+        
+                   // recoger todas las diets que tenga el dietista y borrarlas
+                   db.ref('Diet').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var key = childSnapshot.key;
+                        db.ref('Request/' + key).remove();
+                    });
+                })
+                    //recoger todas las request que tenga el dietista y borrarlas
+                    db.ref('Request').orderByChild('idDietician').equalTo(dieticianId).on('value', function (snapshot) {
+                        snapshot.forEach(function (childSnapshot) {
+                            var key = childSnapshot.key;
+                            db.ref('Request/' + key).remove();
+                        });
+                    })
+                    //borrar su usuario
+                    var email;
+                    db.ref('Dietician/' + dieticianId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
+                        const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
+                        email = data.email;
+                        console.log('EAA dataEmail:' + data.email);
+        
+                        db.ref('Dietician/' + dieticianId).remove();
+                        admin
+                            .auth()
+                            .getUserByEmail(email)
+                            .then((userRecord) => {
+                                admin
+                                    .auth()
+                                    .deleteUser(userRecord.uid)
+                                    .then(() => {
+                                        console.log('EAA: Successfully deleted user');
+                                    })
+                                    .catch((error) => {
+                                        console.log('EAA: Error deleting user:', error);
+                                    });
+                            })
+                            .catch((error) => {
+                                console.log('EAA: Error fetching user data:', error);
+                            });
+                    });    
+                }
+                catch (error) {
+                    return response.render('./dieticianViews/errorView');
+                }
             }
 
 
             else {
-                response.render("noAdminView", {
+                return     response.render("noAdminView", {
                     msg: null
                 });
             }
@@ -254,7 +291,7 @@ function borrarDietista(request, response) {
 
         }
         else {
-            response.render("noLoggedView", {
+            return   response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -275,18 +312,18 @@ function getDietistas(request, response) {
                 db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                     console.log('EAA GETDietician:' + JSON.stringify(snapshot.val()));
-                    response.render('./adminViews/estadoDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                    return    response.render('./adminViews/estadoDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
 
                 })
             }
             else {
-                response.render("noAdminView", {
+                return   response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return   response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -307,18 +344,18 @@ function getAllDietistas(request, response) {
                 db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                     console.log('EAA GETDietician:' + JSON.stringify(snapshot.val()));
-                    response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
+                    return  response.render('./adminViews/manejarDietistas', { dietician: data }); //refrescamos la vista de index ahora con esos valores
 
                 })
             }
             else {
-                response.render("noAdminView", {
+                return  response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return  response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -339,24 +376,24 @@ function modificarEstadoDietistaAprobado(request, response) {
                 }, (error) => {
                     if (error) {
                         console.group('EAA error modificar estado');
-                        response.redirect('/manejarDietistas');
+                        return response.redirect('/manejarDietistas');
 
 
                     } else {
-                        response.redirect('/manejarDietistas');
+                        return  response.redirect('/manejarDietistas');
                     }
                 });
 
 
             }
             else {
-                response.render("noAdminView", {
+                return  response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -374,24 +411,24 @@ function modificarEstadoDietistaDenegado(request, response) {
                 }, (error) => {
                     if (error) {
                         console.group('EAA error modificar estado');
-                        response.redirect('/manejarDietistas');
+                        return  response.redirect('/manejarDietistas');
 
 
                     } else {
-                        response.redirect('/manejarDietistas');
+                        return response.redirect('/manejarDietistas');
                     }
                 });
 
 
             }
             else {
-                response.render("noAdminView", {
+                return response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return  response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -409,16 +446,16 @@ function nuevoPacienteView(request, response) {
 
             if (user.email == "personaldiet@admin.es") {
 
-                response.render('./adminViews/nuevoPaciente');
+                return response.render('./adminViews/nuevoPaciente');
             }
             else {
-                response.render("noAdminView", {
+                return  response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -453,14 +490,13 @@ function nuevoPaciente(request, response) {
                             age: request.body.age,
                             weight: request.body.weight,
                             height: request.body.age,
-                            userType: '1',
 
 
                         }
                         db.ref('Patient').push(newPatient); //nombre de la tabla --db.ref('Users')
                         db.ref('Patient').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                             const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                            response.render('./adminViews/manejarPacientesAdmin', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                            return  response.render('./adminViews/manejarPacientesAdmin', { patient: data }); //refrescamos la vista de index ahora con esos valores
 
                         })
 
@@ -486,17 +522,17 @@ function nuevoPaciente(request, response) {
                         console.log('EAA msg nuevoPaciente: ' + msg);
                         console.log('EAA errorCode nuevoPaciente: ' + errorCode);
                         console.log('EAA errorMessage nuevoPaciente: ' + errorMessage);
-                        response.render('./adminViews/nuevoPaciente');
+                        return  response.render('./adminViews/nuevoPaciente');
 
 
                     });
             }
             else {
-                response.render('noAdminView');
+                return response.render('noAdminView');
             }
         }
         else {
-            response.render('noLoggedView');
+            return response.render('noLoggedView');
         }
 
 
@@ -516,18 +552,18 @@ function getPacientesAdmin(request, response) {
                 db.ref('Patient').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                     console.log('EAA GETPACIENTES:' + JSON.stringify(snapshot.val()));
-                    response.render('./adminViews/manejarPacientesAdmin', { patient: data }); //refrescamos la vista de index ahora con esos valores
+                    return  response.render('./adminViews/manejarPacientesAdmin', { patient: data }); //refrescamos la vista de index ahora con esos valores
 
                 })
             }
             else {
-                response.render("noAdminView", {
+                return  response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return  response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -568,24 +604,23 @@ function borrarPacientesAdmin(request, response) {
                                 .catch((error) => {
                                     console.log('EAA: Error deleting user:', error);
                                 });
-                            response.redirect('/manejarPacientesAdmin');
-                            console.log(`EAA: Successfully fetched user data: ${userRecord.toJSON()}`);
+                                return  response.redirect('/manejarPacientesAdmin');
                         })
                         .catch((error) => {
                             console.log('EAA: Error fetching user data:', error);
                         });
-                    response.redirect('/manejarPacientesAdmin');
+                        return  response.redirect('/manejarPacientesAdmin');
 
                 });
             }
             else {
-                response.render("noAdminView", {
+                return response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return response.render("noLoggedView", {
                 msg: null
             });
         }
@@ -608,24 +643,21 @@ function perfilAdmin(request, response) {
             if (user.email == "personaldiet@admin.es") {
 
                 console.log('EAA user: ' + JSON.stringify(user));
-                //var statusDietician=getEstadoDietista(user.uid);
                 var userId =user.uid;
-                // var dataDietician=getDataDietista(user.uid);
-                //console.log('EAAinfo: '+JSON.stringify(dataDietician));
                 db.ref('Administrador/' + userId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
                     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
-                    response.render('./adminViews/perfilAdmin', { admin: data });
+                    return  response.render('./adminViews/perfilAdmin', { admin: data });
                 })
                 
             }
             else {
-                response.render("noAdminView", {
+                return  response.render("noAdminView", {
                     msg: null
                 });
             }
         }
         else {
-            response.render("noLoggedView", {
+            return  response.render("noLoggedView", {
                 msg: null
             });
         }
