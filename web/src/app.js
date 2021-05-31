@@ -68,6 +68,10 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false})); // es para aceptar los datos de un formualrio html
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+// app.use(function(req, res, next) {
+//   res.status(404);
+//   res.send('404: File Not Found');
+// });
 //routes
 
 app.use(require('./routes/index'));

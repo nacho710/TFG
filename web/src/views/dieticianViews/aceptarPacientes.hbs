@@ -53,10 +53,28 @@
                             </div>
 
                         </div>
+                                                 <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Actividad:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{activity}}</span>
+                                </p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Sexo:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{sex}}</span></p>
+                            </div>
+                            <div class="columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente "></br> <span
+                                        class="notas-text-abajo-ManejarPaciente"></span></p>
+
+                            </div>
+
+                        </div>
                     </div>
 
                     <div class="columnaBotones-ManejarPaciente">
-                        <a href="/rechazarPaciente/{{@key}}" class="btn btn-danger">Rechazar paciente</a>
+                        <a href="/rechazarPaciente/{{@key}}" class="btn myButtonRojo">Rechazar paciente</a>
                         <a href="/aceptarPaciente/{{@key}}" class="btn myButtonVerde">Aceptar paciente</a>
                     </div>
 
@@ -75,8 +93,9 @@
 
 
                         <div class="filaDatos-ManejarPaciente">
-                            <div class="columnaDatos-ManejarPaciente">
-                                <p class="notas-text-primera-ManejarPaciente">No tienes ninguna solicitud</br> </p>
+                            <div class="">
+                               <p class="notas-text-primera"><span
+                                        class="notas-text-abajo-ManejarPaciente">No tienes ninguna solicitud</span></p>
 
                             </div>
                         </div>
