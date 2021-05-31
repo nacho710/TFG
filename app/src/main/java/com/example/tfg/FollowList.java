@@ -62,6 +62,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
     private TextView comida4View       ;
     private TextView comida5View       ;
     private TextView  comentView;
+    private TextView  pesoText;
     private TextView  descripcionView;
     private Calendar currentTime;
     private  String dayID;
@@ -171,6 +172,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
                     comida3View = (TextView) popupWindow.getContentView().findViewById(R.id.comida3);
                     comida4View = (TextView) popupWindow.getContentView().findViewById(R.id.comida4);
                     comida5View = (TextView) popupWindow.getContentView().findViewById(R.id.comida5);
+                    pesoText = (TextView) popupWindow.getContentView().findViewById(R.id.pesoFollow);
                     dayIdView = (TextView) popupWindow.getContentView().findViewById(R.id.day);
 
                     comida1Check = (CheckBox) popupWindow.getContentView().findViewById(R.id.comida1Check);
@@ -201,6 +203,7 @@ public class FollowList  extends AppCompatActivity implements View.OnClickListen
                                 comida4Check.setChecked(Boolean.valueOf(snapshots.child("food4").child("1").getValue().toString()));
                                 comida5View.setText(snapshots.child("food5").child("0").getValue().toString());
                                 comida5Check.setChecked(Boolean.valueOf(snapshots.child("food5").child("1").getValue().toString()));
+                                pesoText.setText("Peso del día: "+snapshots.child("weight").getValue().toString());
                                 comentView.setText((String) snapshots.child("coment").getValue());
                                 descripcionView.setText((String) snapshots.child("descripcion").getValue());
                                 dayIdView.setText(value);

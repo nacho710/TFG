@@ -171,6 +171,7 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
 
                             // CAMBIAR POR DIA
                             String day = Utils.DaytoDia(value);
+
                             mydb.child("Diets").child(dietId).child(day).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -181,7 +182,15 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
                                 comida4View.setText(snapshot.child("foods").child("food4").getValue().toString());
                                 comida5View.setText( snapshot.child("foods").child("food5").getValue().toString());
                                 comentView.setText( snapshot.child("coment").getValue().toString());
-                                titulo.setText(Utils.DaytoDia(value));
+                                if(Utils.DaytoDia(value)=="Sabado"){
+
+                                    titulo.setText("Sábado");
+
+                                }else if (Utils.DaytoDia(value)=="Miercoles"){
+
+                                    titulo.setText("Miércoles");
+                                }
+                                else  titulo.setText(Utils.DaytoDia(value));
                             }
 
                             @Override

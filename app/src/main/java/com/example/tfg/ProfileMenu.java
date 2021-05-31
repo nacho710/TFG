@@ -126,7 +126,7 @@ public class ProfileMenu extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                imagen.setImageResource(R.drawable.fotoperfil);
+                imagen.setImageResource(R.drawable.user);
             }
         });
 
