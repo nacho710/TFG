@@ -51,18 +51,39 @@
                             </div>
 
                         </div>
+                         <div class="filaDatos-ManejarPaciente">
+                            <div class="columnaDatos-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Actividad:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{activity}}</span>
+                                </p>
+
+                            </div>
+                            <div class=" columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente ">Sexo:</br> <span
+                                        class="notas-text-abajo-ManejarPaciente">{{sex}}</span></p>
+                            </div>
+                            <div class="columnainfoCorta-ManejarPaciente">
+                                <p class="notas-text-primera-ManejarPaciente "></br> <span
+                                        class="notas-text-abajo-ManejarPaciente"></span></p>
+
+                            </div>
+
+                        </div>
                     </div>
 
                     <div class="columnaBotones-ManejarPaciente">
-                        <a href="/rechazarPacienteAceptado/{{@key}}" class="btn btn-danger">Borrar paciente</a>
+                        <a href="/rechazarPacienteAceptado/{{@key}}" class="btn myButtonRojo">Borrar paciente</a>
 
                         {{#ifeq dietId "null" }}
                         <a href="/nuevaDieta/{{@key}}" class="btn myButtonAmarillo">Crear Dieta</a>
                         {{/ifeq}}
                         {{#ifnoteq dietId "null" }}
                         <a href="/modificarDieta/{{@key}}" class="btn myButtonMarron">Modificar dieta</a>
-                        <a href="/seguirPaciente/{{@key}}" class="btn myButtonVerde">Seguir progreso</a>
                         {{/ifnoteq}}
+                        {{#if Follow}}
+                          <a href="/seguirPaciente/{{@key}}" class="btn myButtonVerde">Seguir progreso</a>
+
+                        {{/if}}
                     </div>
 
                 </div>
@@ -77,9 +98,26 @@
 
 
 
-            
+
             {{else}}
-            <p>No tienes pacientes asignados</p>
+            <div class="slds-scrollable_y scroll cardsListaPaciente">
+                <!-- <lightning-card class="carta"> -->
+
+                <div class="card-Paciente">
+                    <div class="columnaFilas">
+                        <div class="filaDatos">
+                            <div class="">
+                                <p class="notas-text-primera"><span
+                                        class="notas-text-abajo-ManejarPaciente">No tienes pacientes asignados</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </lightning-card> -->
+
+
+            </div>
             {{/if}}
         </div>
         <div class="card-footer">

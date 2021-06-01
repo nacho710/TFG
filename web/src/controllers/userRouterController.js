@@ -62,6 +62,11 @@ function registroDietician(request, response) {
                     0: "3.5"
                 },
             });
+            db.ref('Request/Request'+" " + request.body.nombre+ request.body.apellidos).set({
+                idDietician: user.user.uid,
+                idPatient: 'patient0'
+
+            });
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((user) => {
                     response.status(200);

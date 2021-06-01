@@ -14,8 +14,8 @@ function getEstadoDietista(userId) { //es para que no pueda ver ciertas cosas si
     }
     else {
 
-        db.ref('/Dietician/' + userId).once('value', (snapshot) => {  
-            const data = snapshot.val(); 
+        db.ref('/Dietician/' + userId).once('value', (snapshot) => {
+            const data = snapshot.val();
             if (data.status == 'Aprobado') estadoDietista = true;
             else estadoDietista = false;
 
@@ -101,19 +101,24 @@ function aceptarPacienteView(request, response, next) {
 
             var ref = db.ref('Request');
             ref.orderByChild('idDietician').equalTo(user.uid).on('child_added', function (snapshot) {
+                if (snapshot.exists()) {
+                    db.ref('/Request/' + snapshot.key).once('value', (childSnapshot) => {
+                        if (childSnapshot.exists()) {
 
-                if (snapshot) {
-                    db.ref('/Request/' + snapshot.key).once('value', (childSnapshot) => {  
-                        var refPatient = db.ref('Patient');
-                        refPatient.orderByKey().equalTo(childSnapshot.val().idPatient).once('value', (patientSnapshot) => { 
-                            var data = patientSnapshot.val();
-                            return response.render('./dieticianViews/aceptarPacientes', { patient: data }); 
-                        })
-                            .catch(function (error) {
-                                return response.render('./dieticianViews/errorView');
-
+                            var refPatient = db.ref('Patient');
+                            refPatient.orderByKey().equalTo(childSnapshot.val().idPatient).once('value', (patientSnapshot) => {
+                                var data = patientSnapshot.val();
+                                return response.render('./dieticianViews/aceptarPacientes', { patient: data });
                             })
+                                .catch(function (error) {
+                                    return response.render('./dieticianViews/errorView');
 
+                                })
+                        }
+                        else {
+                            return response.render('./dieticianViews/aceptarPacientes');
+
+                        }
 
                     })
                         .catch(function (error) {
@@ -122,8 +127,7 @@ function aceptarPacienteView(request, response, next) {
                         })
                 }
                 else {
-                    return response.render('./dieticianViews/errorView');
-
+                    return response.render('./dieticianViews/aceptarPacientes');
                 }
             })
         }
@@ -168,9 +172,11 @@ function aceptarPaciente(request, response) {
 
                             } else {
 
-                                db.ref('Patient/' + patientId).once('value', (snapshot) => {  
-                                    const data = snapshot.val(); ç
-                                    return response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId }); 
+                                db.ref('Patient/' + patientId).once('value', (snapshot) => {
+                                    const data = snapshot.val();
+                                    var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+
+                                    return response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId,fotoPerfil:fotoPerfil });
 
                                 }).catch(function (error) {
                                     return response.render('./dieticianViews/errorView');
@@ -211,7 +217,7 @@ function aceptarPaciente(request, response) {
 function rechazarPaciente(request, response) {
     var user = firebase.auth().currentUser;
     if (user) {
-        if (estadoDietista==false)getEstadoDietista(user.uid)
+        if (estadoDietista == false) getEstadoDietista(user.uid)
         if (estadoDietista) {
 
             try {
@@ -242,7 +248,7 @@ function rechazarPaciente(request, response) {
 
 
                     } else {
-                        return response.redirect('/manejarPacientes'); 
+                        return response.redirect('/manejarPacientes');
                     }
                 });
 
@@ -275,47 +281,73 @@ function rechazarPaciente(request, response) {
 //BUSCAR EN LA LISTA DE PACIENTES DEL DIETISTA Y QUITAR AL PACIENTE
 function rechazarPacienteAceptado(request, response) {
     var user = firebase.auth().currentUser;
+
     if (user) {
 
-        if (estadoDietista==false)getEstadoDietista(user.uid)
-        if (estadoDietista) {
 
-            var dieticianId = user.uid;
-            var patientId = request.params.idPatient;
-            db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (snapshot) {
+        try {
+            if (estadoDietista == false) getEstadoDietista(user.uid)
+            if (estadoDietista) {
 
-                if (snapshot) {
-                    db.ref('Diets/' + snapshot.key).remove();
-                    const patientRef = db.ref("Patient/" + patientId);
-                    patientRef.update({
-                        dietId: "null",
-                        dieticianId: "null",
-                        dieticianValorated: "false"
-                    }, (error) => {
-                        if (error) {
-                            return response.render('./dieticianViews/errorView');
+                var dieticianId = user.uid;
+                var patientId = request.params.idPatient;
+                db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (snapshot) {
+                    console.log('EAA ENTRO1');
+                    if (snapshot.exists()) {
+                        console.log('EAA ENTRO2');
+
+                        db.ref('Diets/' + snapshot.key).remove();
+                        db.ref('Patient/' + patientId+'/Follow').remove();
+                        const patientRef = db.ref("Patient/" + patientId);
+                        patientRef.update({
+                            dietId: "null",
+                            dieticianId: "null",
+                            dieticianValorated: "false"
+                        }, (error) => {
+                            if (error) {
+                                console.log('EAA ENTRO2');
+
+                                return response.render('./dieticianViews/errorView');
 
 
-                        } else {
-                            db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId).remove();
-                            db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) { 
-                                const data = snapshot.val(); 
-                                return response.render('./dieticianViews/manejarPacientes', { patient: data }); 
-                            })
+                            } else {
+                                console.log('EAA ENTRO3');
 
-                        }
-                    });
-                }
+                                db.ref("Dietician/" + dieticianId + "/patientsList/" + patientId).remove();
+                                console.log('EAA ENTRO4');
 
-                db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) { 
-                    const data = snapshot.val(); 
-                    return response.render('./dieticianViews/manejarPacientes', { patient: data }); 
-                })
-            });
+                                db.ref('Patient').orderByChild('dieticianId').equalTo(user.uid).on('value', function (snapshot) {
+                                    const data = snapshot.val();
+                                    console.log('EAA ENTRO5');
 
+                                    return response.render('./dieticianViews/manejarPacientes', { patient: data });
+                                })
+
+                            }
+                        });
+                    }
+
+                    db.ref('Patient').orderByChild('dieticianId').equalTo(dieticianId).on('value', function (snapshot) {
+                        console.log('EAA ENTRO6');
+
+                        const data = snapshot.val();
+                        return response.render('./dieticianViews/manejarPacientes', { patient: data });
+                    })
+                });
+
+            }
+            else {
+                console.log('EAA ENTRO7');
+
+                return response.render('./dieticianViews/noStatusDietician');
+
+            }
         }
-        else {
-            return response.render('./dieticianViews/noStatusDietician');
+
+
+
+        catch (error) {
+            return response.redirect('./dieticianViews/errorView');
 
         }
     }
@@ -335,11 +367,13 @@ function nuevaDietaView(request, response) {
         if (estadoDietista) {
 
             var patientId = request.params.idPatient;
-            db.ref('Patient/' + patientId).once('value', (snapshot) => {  
+            db.ref('Patient/' + patientId).once('value', (snapshot) => {
                 if (snapshot.exists()) {
 
-                    const data = snapshot.val(); ç
-                    response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId }); 
+                    const data = snapshot.val();
+                    var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+
+                    response.render('./dieticianViews/nuevaDieta', { patient: data, patientId: patientId,fotoPerfil:fotoPerfil });
                 }
                 else {
                     return response.render('./dieticianViews/errorView');
@@ -467,7 +501,9 @@ function nuevaDieta(request, response) { //LA DIETA SIEMPRE VA A ESTAR ASIGNADA 
                     dietId: newId,
                 }, (error) => {
                     if (error) {
-                        return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); 
+                        var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+
+                        return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error,fotoPerfil:fotoPerfil });
 
 
                     } else {
@@ -476,18 +512,20 @@ function nuevaDieta(request, response) { //LA DIETA SIEMPRE VA A ESTAR ASIGNADA 
                             hasDiet: newId,
                         }, (error) => {
                             if (error) {
-                                return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); 
+                                var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+
+                                return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error ,fotoPerfil:fotoPerfil});
 
 
                             } else {
-                                db.ref('Patient/' + patientId).once('value', (snapshot) => {  
-                                    const data = snapshot.val(); 
-                                    var fotoPerfil="https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/"+patientId+"%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+                                db.ref('Patient/' + patientId).once('value', (snapshot) => {
+                                    const data = snapshot.val();
+                                    var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
 
-                                    return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId,fotoPerfil:fotoPerfil }); 
+                                    return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId, fotoPerfil: fotoPerfil });
 
                                 }).catch(function (error) {
-                                    return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error }); 
+                                    return response.render('./dieticianViews/nuevaDieta', { patient: data, errors: error,fotoPerfil:fotoPerfil });
 
                                 })
                             }
@@ -522,16 +560,16 @@ function modificarDietaView(request, response) {
 
 
             var patientId = request.params.idPatient;
-            db.ref('Patient/' + patientId).once('value', (snapshot) => {  
+            db.ref('Patient/' + patientId).once('value', (snapshot) => {
                 const dataPatient = snapshot.val();
 
-                db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (childSnapshot) { 
+                db.ref('Diets').orderByChild('patientId').equalTo(patientId).on('child_added', function (childSnapshot) {
                     if (childSnapshot) {
                         const dataDiet = childSnapshot.val();
                         const dataDietId = childSnapshot.key;
-                        var fotoPerfil="https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/"+patientId+"%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+                        var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
 
-                        return response.render('./dieticianViews/modificarDieta', { patient: dataPatient, diet: dataDiet, dietId: dataDietId, idPatient: patientId,fotoPerfil:fotoPerfil }); 
+                        return response.render('./dieticianViews/modificarDieta', { patient: dataPatient, diet: dataDiet, dietId: dataDietId, idPatient: patientId, fotoPerfil: fotoPerfil });
 
                     }
                     else return response.render('./dieticianViews/errorView');
@@ -657,11 +695,11 @@ function modificarDieta(request, response) {
 
 
                     } else {
-                        db.ref('Patient/' + patientId).once('value', (snapshot) => {  
-                            const data = snapshot.val(); 
-                            var fotoPerfil="https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/"+patientId+"%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+                        db.ref('Patient/' + patientId).once('value', (snapshot) => {
+                            const data = snapshot.val();
+                            var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
 
-                            return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId,fotoPerfil:fotoPerfil }); 
+                            return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId, fotoPerfil: fotoPerfil });
 
                         }).catch(function (error) {
                             return response.render('./dieticianViews/errorView');
@@ -698,10 +736,10 @@ function seguirProgreso(request, response) {
         if (estadoDietista) {
 
             var patientId = request.params.idPatient;
-            db.ref('Patient/' + patientId).orderByKey().once('value', (snapshot) => {  
-                const data = snapshot.val(); 
-                var fotoPerfil="https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/"+patientId+"%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
-                return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId,fotoPerfil:fotoPerfil }); 
+            db.ref('Patient/' + patientId).orderByKey().once('value', (snapshot) => {
+                const data = snapshot.val();
+                var fotoPerfil = "https://firebasestorage.googleapis.com/v0/b/tfg-bed5d.appspot.com/o/" + patientId + "%2Fimages%2Fprofilepic?alt=media&token=eedcd6a8-5297-43fb-9e60-5511565798d0"
+                return response.render('./dieticianViews/seguirProgreso', { patient: data, patientId: patientId, fotoPerfil: fotoPerfil });
 
             }).catch(function (error) {
                 return response.redirect('./dieticianViews/errorView');
@@ -766,8 +804,8 @@ function darseDeBaja(request, response) {
             })
             //borrar su usuario
             var email;
-            db.ref('Dietician/' + dieticianId).once('value', (snapshot) => {  
-                const data = snapshot.val(); 
+            db.ref('Dietician/' + dieticianId).once('value', (snapshot) => {
+                const data = snapshot.val();
                 email = data.email;
                 db.ref('Dietician/' + dieticianId).remove();
                 admin

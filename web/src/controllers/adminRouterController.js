@@ -81,6 +81,11 @@ function nuevoDietista(request, response) {
                                 0: "3.5"
                             },
                         });
+                        db.ref('Request/Request' + " "+request.body.nombre+ request.body.apellidos).set({
+                            idDietician: userDietista.uid,
+                            idPatient: 'patient0'
+            
+                        });
                         db.ref('Dietician').once('value', (snapshot) => { //consultamos en firebase la tabla users 
                             const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                             return response.render('./adminViews/manejarDietistas', { patient: data });
@@ -265,6 +270,8 @@ function borrarDietista(request, response) {
                                     .deleteUser(userRecord.uid)
                                     .then(() => {
                                         console.log('EAA: Successfully deleted user');
+                                        return response.redirect('./adminViews/manejarDietistas'); //refrescamos la vista de index ahora con esos valores
+
                                     })
                                     .catch((error) => {
                                         console.log('EAA: Error deleting user:', error);
@@ -584,12 +591,17 @@ function borrarPacientesAdmin(request, response) {
 
                 var userId = request.params.id;
                 var email;
+                var dieta;
+                var dietista;
                 db.ref('Patient/' + userId).once('value', (snapshot) => { //consultamos en firebase la tabla users 
                     const data = snapshot.val(); //me devuelve los valores de firebase y los guardamos en data
                     email = data.email;
+                    dieta=data.dietId;
+                    dietista=data.dieticianId;
                     console.log('EAA data:' + data);
                     console.log('EAA dataEmail:' + data.email);
-
+                    db.ref('Diets/' + dieta).remove();
+                    db.ref('Dietician/' + dietista+'/patientsList/'+userId).remove();
                     db.ref('Patient/' + request.params.id).remove();
                     admin
                         .auth()
