@@ -23,55 +23,55 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login">
+        <activity android:name=".User.Login">
 
         </activity>
-        <activity android:name=".Register">
+        <activity android:name=".User.Register">
 
         </activity>
-        <activity android:name=".FirstLogin">
+        <activity android:name=".User.FirstLogin">
 
         </activity>
-        <activity android:name=".ProfileMenu">
+        <activity android:name=".User.ProfileMenu">
 
         </activity>
-        <activity android:name=".UpdateWeight">
+        <activity android:name=".User.UpdateWeight">
 
         </activity>
-        <activity android:name=".UpdateUser">
+        <activity android:name=".User.UpdateUser">
 
         </activity>
-        <activity android:name=".ChooseDietist">
+        <activity android:name=".Dietician.ChooseDietist">
 
         </activity>
-        <activity android:name=".MyPics">
+        <activity android:name=".User.MyPics">
 
         </activity>
-        <activity android:name=".UploadPhoto">
+        <activity android:name=".User.UploadPhoto">
 
         </activity>
-        <activity android:name=".AlarmSet">
+        <activity android:name=".Utils.AlarmSet">
 
         </activity>
-        <activity android:name=".DietFollow">
+        <activity android:name=".Diet.DietFollow">
 
         </activity>
-        <activity android:name=".FollowList">
+        <activity android:name=".Diet.FollowList">
 
         </activity>
-        <activity android:name=".PopUpFollow">
+        <activity android:name=".Diet.PopUpFollow">
 
         </activity>
-        <activity android:name=".DietMenu">
+        <activity android:name=".Diet.DietMenu">
 
         </activity>
-        <activity android:name=".MyDietician">
+        <activity android:name=".Dietician.MyDietician">
 
         </activity>
-        <activity android:name=".ResetPassword">
+        <activity android:name=".User.ResetPassword">
 
         </activity>
-        <activity android:name=".GuideViewer">
+        <activity android:name=".Utils.GuideViewer">
 
         </activity>
 

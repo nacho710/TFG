@@ -1,11 +1,10 @@
-package com.example.tfg;
+package com.example.tfg.User;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,8 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
-import com.example.tfg.Integracion.Utils;
+import com.example.tfg.Diet.DietFollow;
+import com.example.tfg.Diet.DietMenu;
+import com.example.tfg.Diet.FollowList;
+import com.example.tfg.Dietician.ChooseDietist;
+import com.example.tfg.R;
+import com.example.tfg.Utils.AlarmSet;
+import com.example.tfg.Utils.GuideViewer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,6 +63,7 @@ public class ProfileMenu extends AppCompatActivity {
     private List<String> picIds;
     private String idDietista;
     private String idDiet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +72,11 @@ public class ProfileMenu extends AppCompatActivity {
         setContentView(R.layout.profile_menu);
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-        peso = (TextView) findViewById(R.id.pesoView);
-        imcText = (TextView) findViewById(R.id.imcTextView);
-        imc = (TextView) findViewById(R.id.imcView);
-        nombre = (TextView) findViewById(R.id.nombreView);
-        imagen =  (ImageView) findViewById(R.id.imagenPerfil);
+        peso = findViewById(R.id.pesoView);
+        imcText = findViewById(R.id.imcTextView);
+        imc = findViewById(R.id.imcView);
+        nombre = findViewById(R.id.nombreView);
+        imagen = findViewById(R.id.imagenPerfil);
         solicitarDietista = findViewById(R.id.solicitarDietistaButton);
         followdietaButton = findViewById(R.id.followDietaButton);
         midietabutton = findViewById(R.id.midietaButton);
@@ -79,28 +84,22 @@ public class ProfileMenu extends AppCompatActivity {
         mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
                     String pesoValue = snapshot.child("weight").getValue().toString();
                     String alturaValue = snapshot.child("height").getValue().toString();
                     String nameValue = snapshot.child("username").getValue().toString();
                     idDietista = snapshot.child("dieticianId").getValue().toString();
-                    idDiet= snapshot.child("dietId").getValue().toString();
-                    if(!idDietista.equals("null")){
+                    idDiet = snapshot.child("dietId").getValue().toString();
+                    if (!idDietista.equals("null")) {
                         solicitarDietista.setEnabled(false);
-                        if(!idDiet.equals("null")){
-                            followdietaButton.setEnabled(true);
-                        }
-                        else
-                            followdietaButton.setEnabled(false);
+                        followdietaButton.setEnabled(!idDiet.equals("null"));
                         midietabutton.setEnabled(true);
-                    }
-
-                    else  {
+                    } else {
                         solicitarDietista.setEnabled(true);
                         followdietaButton.setEnabled(false);
                         midietabutton.setEnabled(false);
                     }
-                    imc.setText(calculateIMC(pesoValue,alturaValue));
+                    imc.setText(calculateIMC(pesoValue, alturaValue));
                     peso.setText(pesoValue);
                     nombre.setText(nameValue);
                 }
@@ -113,8 +112,8 @@ public class ProfileMenu extends AppCompatActivity {
         });
 
 
-        final long ONE_MEGABYTE =  2048 * 2048;
-        storageReference.child(id+"/images/profilepic").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        final long ONE_MEGABYTE = 2048 * 2048;
+        storageReference.child(id + "/images/profilepic").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -131,12 +130,14 @@ public class ProfileMenu extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -154,31 +155,32 @@ public class ProfileMenu extends AppCompatActivity {
                 setAlarm();
                 return true;
             case R.id.Refresh:
-               refresh();
+                refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void refresh(){
+    public void refresh() {
         finish();
         overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
     }
-    public  void darseDeBaja(){
-        AlertDialog.Builder  dialog = new AlertDialog.Builder(ProfileMenu.this);
+
+    public void darseDeBaja() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ProfileMenu.this);
         dialog.setTitle("¿Estás seguro?");
         dialog.setMessage("Esta accion eliminara tu cuenta de usuario de nuesta base de datos y borrara todas tu informacion relacionada");
         dialog.setPositiveButton("Darme de baja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String id = mAuth.getCurrentUser().getUid();
-                if(idDietista!="null") {
+                if (idDietista != "null") {
                     mydb.child("Dietician").child(idDietista).child("patientsList").child(id).removeValue();
                 }
-                if(idDiet!="null") {
+                if (idDiet != "null") {
                     mydb.child("Diet").child(idDiet).removeValue();
                 }
                 mydb.child("Patient").child(id).removeValue();
@@ -187,16 +189,16 @@ public class ProfileMenu extends AppCompatActivity {
 
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                            Toast.makeText(ProfileMenu.this , "Cuenta eliminada", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProfileMenu.this, "Cuenta eliminada", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(ProfileMenu.this, Login.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                             startActivity(intent);
                             finish();
-                        }
-                        else  Toast.makeText(ProfileMenu.this , task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(ProfileMenu.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -210,55 +212,63 @@ public class ProfileMenu extends AppCompatActivity {
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
+
     public void gotoFollowList(View view) {
         Intent i = new Intent(this, FollowList.class);
         startActivity(i);
     }
 
-    public void goToRegister(View view){
-        Intent i =  new Intent(this,Register.class);
+    public void goToRegister(View view) {
+        Intent i = new Intent(this, Register.class);
         startActivity(i);
         finish();
     }
-    public void gotoGuide(View view){
-        Intent i =  new Intent(this,GuideViewer.class);
+
+    public void gotoGuide(View view) {
+        Intent i = new Intent(this, GuideViewer.class);
         startActivity(i);
 
     }
-    public void misFotos(){
-        Intent i =  new Intent(this,MyPics.class);
+
+    public void misFotos() {
+        Intent i = new Intent(this, MyPics.class);
         startActivity(i);
 
     }
-    public void setAlarm(){
-        Intent i =  new Intent(this,AlarmSet.class);
+
+    public void setAlarm() {
+        Intent i = new Intent(this, AlarmSet.class);
         startActivity(i);
 
     }
-    public void gotoUpdateUser(View view){
-        Intent i =  new Intent(this,UpdateUser.class);
+
+    public void gotoUpdateUser(View view) {
+        Intent i = new Intent(this, UpdateUser.class);
         startActivity(i);
 
     }
-    public void goToUpdatePeso(View view){
+
+    public void goToUpdatePeso(View view) {
         Intent intent = new Intent(this, UpdateWeight.class);
         startActivity(intent);
 
     }
-    public void goToChooseDietician(View view){
 
-        Intent i =  new Intent(ProfileMenu.this,ChooseDietist.class);
+    public void goToChooseDietician(View view) {
+
+        Intent i = new Intent(ProfileMenu.this, ChooseDietist.class);
         startActivity(i);
 
 
     }
 
 
-public void gotoDietMenu(View view){
-    Intent i =  new Intent(this,DietMenu.class);
-    startActivity(i);
-}
-    public void openHelp(View view){
+    public void gotoDietMenu(View view) {
+        Intent i = new Intent(this, DietMenu.class);
+        startActivity(i);
+    }
+
+    public void openHelp(View view) {
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.help_view, null);
@@ -273,7 +283,7 @@ public void gotoDietMenu(View view){
         // show the popup windowt
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(popupView, Gravity.BOTTOM, 0, 0);
-        ImageView image =  popupWindow.getContentView().findViewById(R.id.helpImage);
+        ImageView image = popupWindow.getContentView().findViewById(R.id.helpImage);
         image.setImageResource(R.drawable.profilehelp);
         // dismiss the popup window when touched
         popupView.setOnTouchListener(new View.OnTouchListener() {
@@ -286,81 +296,76 @@ public void gotoDietMenu(View view){
 
     }
 
-    public void gotoDietFollow(View view){
+    public void gotoDietFollow(View view) {
         final int[] check = {0};
-            String id = mAuth.getCurrentUser().getUid();
-            final boolean[] result = new boolean[1];
-            Intent i =  new Intent(this,DietFollow.class);
-            Calendar currentTime = Calendar.getInstance();
-            String dayID =(currentTime.get(Calendar.DATE) +"-"+ (currentTime.get(Calendar.MONTH)+1)+"-"+ currentTime.get(Calendar.YEAR));
-            mydb.child("Patient").child(id).child("Follow").child(dayID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()) {
-                        if(check[0] ==0) {
-                            Toast.makeText(ProfileMenu.this, "Seguimiento realizado anteriormente, revise sus seguimientos anteriores", Toast.LENGTH_LONG).show();
+        String id = mAuth.getCurrentUser().getUid();
+        final boolean[] result = new boolean[1];
+        Intent i = new Intent(this, DietFollow.class);
+        Calendar currentTime = Calendar.getInstance();
+        String dayID = (currentTime.get(Calendar.DATE) + "-" + (currentTime.get(Calendar.MONTH) + 1) + "-" + currentTime.get(Calendar.YEAR));
+        mydb.child("Patient").child(id).child("Follow").child(dayID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    if (check[0] == 0) {
+                        Toast.makeText(ProfileMenu.this, "Seguimiento realizado anteriormente, revise sus seguimientos anteriores", Toast.LENGTH_LONG).show();
 
-                        }
                     }
-                    else { startActivity(i);
-                        check[0] +=1;
-                        }
-
+                } else {
+                    startActivity(i);
+                    check[0] += 1;
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
 
 
     }
-    private void cerrarSesion(){
+
+    private void cerrarSesion() {
         mAuth.signOut();
         Intent intent = new Intent(ProfileMenu.this, Login.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
-//    public void cerrarSesion(View view){
+
+    //    public void cerrarSesion(View view){
 //        mAuth.signOut();
 //        Intent intent = new Intent(ProfileMenu.this, Login.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        startActivity(intent);
 //        finish();
 //    }
-    private String calculateIMC(String peso,String altura){
+    private String calculateIMC(String peso, String altura) {
 
-        System.out.println((Double.valueOf(altura) /100));
-        Double imcValue = (Double.valueOf(peso) / ((Double.valueOf(altura) /100)*(Double.valueOf(altura)/100)));
+        System.out.println((Double.valueOf(altura) / 100));
+        Double imcValue = (Double.valueOf(peso) / ((Double.valueOf(altura) / 100) * (Double.valueOf(altura) / 100)));
         imcValue = Math.floor(imcValue * 100) / 100;
-        if(imcValue<18.5){
+        if (imcValue < 18.5) {
             imcText.setText("Peso insuficiente");
-        } else  if(imcValue>=18.5 &&imcValue<24.9 ){
+        } else if (imcValue >= 18.5 && imcValue < 24.9) {
             imcText.setText("Normopeso");
-        }else  if(imcValue>=25 &&imcValue<26.9 ){
+        } else if (imcValue >= 25 && imcValue < 26.9) {
             imcText.setText("Sobrepeso grado I");
-        }
-        else  if(imcValue>=27 &&imcValue<29.9 ){
+        } else if (imcValue >= 27 && imcValue < 29.9) {
             imcText.setText("Sobrepeso grado II (preobesidad)");
-        }else  if(imcValue>=30 &&imcValue<34.9 ){
+        } else if (imcValue >= 30 && imcValue < 34.9) {
             imcText.setText("Obesidad de tipo I");
-        }
-        else  if(imcValue>=35 &&imcValue<39.9 ){
+        } else if (imcValue >= 35 && imcValue < 39.9) {
             imcText.setText("Obesidad de tipo II");
-        }
-        else  if(imcValue>=40 &&imcValue<49.9 ){
+        } else if (imcValue >= 40 && imcValue < 49.9) {
             imcText.setText("Obesidad de tipo III (mórbida)");
-        }
-        else  imcText.setText("Obesidad de tipo IV (extrema)");
-
+        } else imcText.setText("Obesidad de tipo IV (extrema)");
 
 
         return imcValue.toString();
     }
-
 
 
 }

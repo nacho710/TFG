@@ -1,10 +1,6 @@
-package com.example.tfg;
+package com.example.tfg.User;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,11 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.tfg.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,18 +22,17 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
 public class Register extends AppCompatActivity {
-     FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
     FirebaseStorage storage;
     StorageReference storageReference;
+    DatabaseReference mydb;
     private ProgressDialog progressDialog;
-     DatabaseReference mydb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,39 +44,39 @@ public class Register extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    public void createUser(View view){
+    public void createUser(View view) {
        /* final EditText userName = (EditText) findViewById(R.id.username);
         String name = userName.getText().toString();*/
-        final EditText emailRegister = (EditText) findViewById(R.id.fieldEmail);
+        final EditText emailRegister = findViewById(R.id.fieldEmail);
         String email = emailRegister.getText().toString();
-        final EditText passText = (EditText) findViewById(R.id.fieldPassword);
+        final EditText passText = findViewById(R.id.fieldPassword);
         String pass = passText.getText().toString();
-        final EditText secondPassText = (EditText) findViewById(R.id.fieldPassword2);
+        final EditText secondPassText = findViewById(R.id.fieldPassword2);
         String pass2 = secondPassText.getText().toString();
         System.out.println(email);
         System.out.println(mAuth);
         System.out.println(FirebaseAuth.getInstance());
-        if(verificarEmail(email,pass,pass2)){
-            signUp(email,pass);
+        if (verificarEmail(email, pass, pass2)) {
+            signUp(email, pass);
         }
     }
 
-private boolean verificarEmail(String email,String pass,String pass2){
-    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    if(!email.matches(emailPattern)){
-        Toast.makeText(this,"El formato de email es incorrecto",Toast.LENGTH_LONG).show();
-        return false;
+    private boolean verificarEmail(String email, String pass, String pass2) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(this, "El formato de email es incorrecto", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (pass.length() < 6) {
+            Toast.makeText(this, "La contraseña tiene que tener mínimo 6 caracteres", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!pass.equals(pass2)) {
+            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
-    if(pass.length()<6) {
-        Toast.makeText(this,"La contraseña tiene que tener mínimo 6 caracteres",Toast.LENGTH_LONG).show();
-        return false;
-    }
-    if(!pass.equals(pass2)){
-        Toast.makeText(this,"Las contraseñas no coinciden",Toast.LENGTH_LONG).show();
-        return false;
-    }
-    return true;
-}
 
 
     private void signUp(String email, String password) {
@@ -114,7 +107,7 @@ private boolean verificarEmail(String email,String pass,String pass2){
                     map.put("height", 0.0);
                     String id = mAuth.getCurrentUser().getUid();
                     mydb.child("Patient").child(id).updateChildren(map);
-                    StorageReference ref = storageReference.child(id+"/images/profilepic");
+                    StorageReference ref = storageReference.child(id + "/images/profilepic");
                     ref.putFile(Uri.parse("android.resource://com.example.tfg/drawable/user"))
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -126,7 +119,7 @@ private boolean verificarEmail(String email,String pass,String pass2){
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(Register.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Register.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -149,8 +142,6 @@ private boolean verificarEmail(String email,String pass,String pass2){
         }
 
     }
-
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.tfg;
+package com.example.tfg.User;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -7,18 +7,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tfg.Integracion.TUsuario;
+import com.example.tfg.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UploadPhoto extends AppCompatActivity {
+    private final int PICK_IMAGE_REQUEST = 22;
     FirebaseStorage storage;
     StorageReference storageReference;
     FirebaseAuth mAuth;
@@ -48,7 +46,6 @@ public class UploadPhoto extends AppCompatActivity {
     private Integer numpic;
     private List<String> picIds;
 
-    private final int PICK_IMAGE_REQUEST = 22;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +55,14 @@ public class UploadPhoto extends AppCompatActivity {
         setContentView(R.layout.upload_photo);
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-        imagen =  (ImageView) findViewById(R.id.imagen_uploadLayout);
+        imagen = findViewById(R.id.imagen_uploadLayout);
         String id = mAuth.getCurrentUser().getUid();
         mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                      numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
-                    picIds =  (List<String>) snapshot.child("picIds").getValue();
+                if (snapshot.exists()) {
+                    numpic = Integer.valueOf(snapshot.child("numpics").getValue().toString());
+                    picIds = (List<String>) snapshot.child("picIds").getValue();
                 }
             }
 
@@ -75,8 +72,8 @@ public class UploadPhoto extends AppCompatActivity {
             }
         });
     }
-    public void SelectImage( View view)
-    {
+
+    public void SelectImage(View view) {
 
         // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent();
@@ -89,40 +86,39 @@ public class UploadPhoto extends AppCompatActivity {
                         "Select Image from here..."),
                 PICK_IMAGE_REQUEST);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
 
-                System.out.println(" filePath");System.out.println(filePath);
+                System.out.println(" filePath");
+                System.out.println(filePath);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imagen.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
     // UploadImage method
     public void uploadImage(View view) {
-        AlertDialog.Builder  dialog = new AlertDialog.Builder(UploadPhoto.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(UploadPhoto.this);
         dialog.setTitle("¿Es correcta la foto?");
         dialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(filePath != null)
-                {
+                if (filePath != null) {
                     final ProgressDialog progressDialog = new ProgressDialog(UploadPhoto.this);
                     progressDialog.setTitle("Uploading...");
                     progressDialog.show();
                     String id = mAuth.getCurrentUser().getUid();
                     String key = UUID.randomUUID().toString();
-                    StorageReference ref = storageReference.child(id+"/images/bodyimages/"+  key);
+                    StorageReference ref = storageReference.child(id + "/images/bodyimages/" + key);
                     ref.putFile(filePath)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -130,13 +126,13 @@ public class UploadPhoto extends AppCompatActivity {
                                     progressDialog.dismiss();
                                     Toast.makeText(UploadPhoto.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
-                                    if(numpic==0){
-                                        picIds.set(0,key);
-                                    }else
+                                    if (numpic == 0) {
+                                        picIds.set(0, key);
+                                    } else
                                         picIds.add(key);
-                                    Integer suma= numpic+1;
+                                    Integer suma = numpic + 1;
 //                        String nombre = snapshot.child("username").getValue().toString();
-                                    Map<String,Object> map = new HashMap<>();
+                                    Map<String, Object> map = new HashMap<>();
                                     map.put("numpics", suma);
                                     map.put("picIds", picIds);
                                     //TYPE 1 = PACIENTE
@@ -146,7 +142,6 @@ public class UploadPhoto extends AppCompatActivity {
                                     //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
 
 
-
                                 }
 
                             })
@@ -154,15 +149,15 @@ public class UploadPhoto extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(UploadPhoto.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadPhoto.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                             .getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                                    progressDialog.setMessage("Uploaded " + (int) progress + "%");
                                 }
                             });
 
@@ -178,7 +173,6 @@ public class UploadPhoto extends AppCompatActivity {
         });
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
-
 
 
     }

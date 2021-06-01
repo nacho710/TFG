@@ -1,9 +1,11 @@
-package com.example.tfg;
+package com.example.tfg.Utils;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.tfg.R;
 
 public class GuideViewer extends AppCompatActivity {
 
@@ -24,7 +26,7 @@ public class GuideViewer extends AppCompatActivity {
         setContentView(R.layout.guide_viewer);
 
         // Initializing the ViewPager Object
-        mViewPager = (ViewPager)findViewById(R.id.viewPagerMain);
+        mViewPager = findViewById(R.id.viewPagerMain);
 
 //         Initializing the ViewPagerAdapter
         mViewPagerAdapter = new ViewPagerAdapter(GuideViewer.this, images);

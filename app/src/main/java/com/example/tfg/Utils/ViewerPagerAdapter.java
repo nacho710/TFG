@@ -1,4 +1,4 @@
-package com.example.tfg;
+package com.example.tfg.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler;
+import com.example.tfg.R;
 
 import java.util.Objects;
 

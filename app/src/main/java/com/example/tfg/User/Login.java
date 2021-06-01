@@ -1,4 +1,4 @@
-package com.example.tfg;
+package com.example.tfg.User;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tfg.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,8 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
-    private ProgressDialog progressDialog;
     DatabaseReference mydb;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +36,32 @@ public class Login extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    public void goToRegister(View view){
-       Intent i =  new Intent(this,Register.class);
-       startActivity(i);
-    }
-    public void goToSendReset(View view){
-        Intent i =  new Intent(this,ResetPassword.class);
+    public void goToRegister(View view) {
+        Intent i = new Intent(this, Register.class);
         startActivity(i);
     }
-    public void loginUser(View view){
-        final EditText emailRegister = (EditText) findViewById(R.id.emailLogin);
-        String email = emailRegister.getText().toString();
-        final EditText passText = (EditText) findViewById(R.id.passLogin);
-        String pass = passText.getText().toString();
-        signIn(email,pass);
+
+    public void goToSendReset(View view) {
+        Intent i = new Intent(this, ResetPassword.class);
+        startActivity(i);
     }
+
+    public void loginUser(View view) {
+        final EditText emailRegister = findViewById(R.id.emailLogin);
+        String email = emailRegister.getText().toString();
+        final EditText passText = findViewById(R.id.passLogin);
+        String pass = passText.getText().toString();
+        signIn(email, pass);
+    }
+
     private void signIn(String email, String password) {
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Se debe ingresar un email",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Se debe ingresar un email", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Falta ingresar la contraseña",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Falta ingresar la contraseña", Toast.LENGTH_LONG).show();
             return;
         }
         progressDialog.setMessage("Realizando registro en linea...");
@@ -67,23 +71,23 @@ public class Login extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
-                            Toast.makeText(Login.this,"Login correcto: "+email,Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this, "Login correcto: " + email, Toast.LENGTH_LONG).show();
                             String id = mAuth.getCurrentUser().getUid();
                             mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.exists()) {
+                                    if (snapshot.exists()) {
                                         String nombre = snapshot.child("username").getValue().toString();
-                                        if (nombre.equals("") ) {
+                                        if (nombre.equals("")) {
                                             Intent intent = new Intent(Login.this, FirstLogin.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             finish();
                                         } else {
                                             Intent intent = new Intent(Login.this, ProfileMenu.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             finish();
                                             //TODO
@@ -98,9 +102,9 @@ public class Login extends AppCompatActivity {
                                 }
                             });
 
-                        }else{
+                        } else {
 
-                            Toast.makeText(Login.this,"Email o contraseña incorrectos",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this, "Email o contraseña incorrectos", Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }
