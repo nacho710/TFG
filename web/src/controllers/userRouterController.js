@@ -55,7 +55,6 @@ function registroDietician(request, response) {
                 password: request.body.password,
                 phone: request.body.phone,
                 description: request.body.description,
-                rol: "dietista",
                 status: "Pendiente de aprobar",
                 worth: "3.5",
                 worthList: {
