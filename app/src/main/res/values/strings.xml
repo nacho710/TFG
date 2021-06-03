@@ -71,12 +71,6 @@
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Email and Password</string>
 
-
-
-
-
-
-
     <string name="enroll_mfa">Enroll MFA</string>
     <string name="unenroll_mfa">Unenroll MFA</string>
     <string name="reload">Reload</string>
@@ -84,8 +78,8 @@
 
     <string name="phone">Teléfono</string>
     <string name="birth">Edad</string>
-    <string name="weight">Peso</string>
-    <string name="height">Altura</string>
+    <string name="weight">Peso (kg) ej. 74.1 </string>
+    <string name="height">Altura (cm) ej. 180 </string>
     <string name="textFirstLogin">Queremos saber más de ti...</string>
     <string name="confirmarButton">Confirmar</string>
 
