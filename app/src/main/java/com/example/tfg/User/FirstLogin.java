@@ -31,10 +31,6 @@ public class FirstLogin extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mydb;
     private ProgressDialog progressDialog;
-
-
-
-
     private EditText name;
     private EditText phone;
     private EditText edad;
@@ -61,7 +57,7 @@ public class FirstLogin extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+
                 sexo = (String) adapterView.getItemAtPosition(position);
             }
 
@@ -76,7 +72,7 @@ public class FirstLogin extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(adapterView.getContext(), (String) adapterView.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+
                 actividad = (String) adapterView.getItemAtPosition(position);
             }
 

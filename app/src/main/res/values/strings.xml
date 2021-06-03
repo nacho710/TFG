@@ -84,8 +84,8 @@
 
     <string name="phone">Teléfono</string>
     <string name="birth">Edad</string>
-    <string name="weight">Peso</string>
-    <string name="height">Altura</string>
+    <string name="weight">Peso (gr) </string>
+    <string name="height">Altura (cm)</string>
     <string name="textFirstLogin">Queremos saber más de ti...</string>
     <string name="confirmarButton">Confirmar</string>
 

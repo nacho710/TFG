@@ -12,8 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tfg.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -93,51 +96,57 @@ public class Register extends AppCompatActivity {
         progressDialog.show();
 
         try {
-            mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(this, authResult -> {
-                if (authResult.getUser() != null) {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
 
-                    Toast.makeText(Register.this, "Se ha registrado el usuario con el email: " + email, Toast.LENGTH_LONG).show();
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("email", email);
-                    map.put("username", "");
-                    map.put("phone", "");
-                    map.put("age", 0);
-                    map.put("weight", 0.0);
-                    map.put("height", 0.0);
-                    String id = mAuth.getCurrentUser().getUid();
-                    mydb.child("Patient").child(id).updateChildren(map);
-                    StorageReference ref = storageReference.child(id + "/images/profilepic");
-                    ref.putFile(Uri.parse("android.resource://com.example.tfg/drawable/user"))
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(Register.this, "Se ha registrado el usuario con el email: " + email, Toast.LENGTH_LONG).show();
 
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(Register.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("email", email);
+                        map.put("username", "");
+                        map.put("phone", "");
+                        map.put("age", 0);
+                        map.put("weight", 0.0);
+                        map.put("height", 0.0);
+                        String id = mAuth.getCurrentUser().getUid();
+                        mydb.child("Patient").child(id).updateChildren(map);
+                        StorageReference ref = storageReference.child(id + "/images/profilepic");
+                        ref.putFile(Uri.parse("android.resource://com.example.tfg/drawable/user"))
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                }
-                            });
-                    finish();
-                } else {
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(Register.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    Toast.makeText(Register.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                        finish();
+                    } else {
+
+                        Toast.makeText(Register.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
+                    }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
+
+
             });
         } catch (Exception e) {
             Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_LONG).show();
-
+            progressDialog.dismiss();
             // [END sign_in_with_email]
         }
 
