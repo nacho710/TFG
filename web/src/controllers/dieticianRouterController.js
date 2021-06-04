@@ -436,7 +436,7 @@ function nuevaDieta(request, response) { //LA DIETA SIEMPRE VA A ESTAR ASIGNADA 
 
                     },
                 },
-                Miércoles: {
+                Miercoles: {
                     coment: request.body.wednesdaycomment,
                     foods: {
                         food1: request.body.wednesdaylunch1,
@@ -469,7 +469,7 @@ function nuevaDieta(request, response) { //LA DIETA SIEMPRE VA A ESTAR ASIGNADA 
 
                     },
                 },
-                Sábado: {
+                Sabado: {
                     coment: request.body.saturdaycomment,
                     foods: {
                         food1: request.body.saturdaylunch1,
@@ -634,7 +634,7 @@ function modificarDieta(request, response) {
 
                         },
                     },
-                    Miércoles: {
+                    Miercoles: {
                         coment: request.body.wednesdaycomment,
                         foods: {
                             food1: request.body.wednesdaylunch1,
@@ -667,7 +667,7 @@ function modificarDieta(request, response) {
 
                         },
                     },
-                    Sábado: {
+                    Sabado: {
                         coment: request.body.saturdaycomment,
                         foods: {
                             food1: request.body.saturdaylunch1,
