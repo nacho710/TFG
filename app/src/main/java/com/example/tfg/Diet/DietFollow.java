@@ -73,7 +73,10 @@ public class DietFollow extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diet_follow);
-
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         currentTime = Calendar.getInstance();

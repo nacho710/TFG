@@ -39,7 +39,10 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
+        setContentView(R.layout.register);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();

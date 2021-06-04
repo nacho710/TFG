@@ -39,9 +39,12 @@ public class ChooseDietist extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.choose_dietist);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         key = 0;
-        setContentView(R.layout.choose_dietist);
+
         List<String> listaNombres = new ArrayList<String>();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();

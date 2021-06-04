@@ -42,7 +42,10 @@ public class FirstLogin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.firstlogin);
+        setContentView(R.layout.firstlogin);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         mydb = FirebaseDatabase.getInstance().getReference();

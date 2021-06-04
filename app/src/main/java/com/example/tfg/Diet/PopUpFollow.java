@@ -49,7 +49,10 @@ public class PopUpFollow extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup_follow);
+        setContentView(R.layout.popup_follow);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();

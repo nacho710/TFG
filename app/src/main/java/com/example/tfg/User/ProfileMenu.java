@@ -67,9 +67,13 @@ public class ProfileMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.profile_menu);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        setContentView(R.layout.profile_menu);
+
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         peso = findViewById(R.id.pesoView);

@@ -23,15 +23,17 @@ public class UpdateWeight extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_weight);
+        setContentView(R.layout.update_weight);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         peso = findViewById(R.id.newWeightEditText);
 
     }
-
     public void actualizarPeso(View view) {
-        String pesoo = peso.getText().toString();
+        Double pesoo = Double.valueOf(peso.getText().toString());
         if (!pesoo.equals("")) {
             String id = mAuth.getCurrentUser().getUid();
             Map<String, Object> map = new HashMap<>();

@@ -43,11 +43,15 @@ public class MyPics extends AppCompatActivity implements View.OnLongClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.mypics);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-        setContentView(R.layout.mypics);
+
         ll = findViewById(R.id.layoutfotos);
         id = mAuth.getCurrentUser().getUid();
 

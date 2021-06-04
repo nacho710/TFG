@@ -49,7 +49,10 @@ public class UpdateUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_user);
+        setContentView(R.layout.update_user);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
 
         mydb = FirebaseDatabase.getInstance().getReference();
@@ -163,7 +166,7 @@ public class UpdateUser extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(UpdateUser.this, "Pulsa el botón de refrescar para ver todos los cambios", Toast.LENGTH_LONG).show();
+                            Toast.makeText(UpdateUser.this, "Cambios realizados con éxito", Toast.LENGTH_LONG).show();
                             finish();
                         }
                     })
