@@ -176,7 +176,7 @@ public class ProfileMenu extends AppCompatActivity {
     public void darseDeBaja() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(ProfileMenu.this);
         dialog.setTitle("¿Estás seguro?");
-        dialog.setMessage("Esta accion eliminara tu cuenta de usuario de nuesta base de datos y borrara todas tu informacion relacionada");
+        dialog.setMessage("Esta acción eliminará tu cuenta de usuario de nuesta base de datos y borrará toda tu información relacionada");
         dialog.setPositiveButton("Darme de baja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

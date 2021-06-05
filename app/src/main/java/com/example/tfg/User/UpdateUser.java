@@ -49,7 +49,8 @@ public class UpdateUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_user);}
+        setContentView(R.layout.update_user);
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,7 +65,7 @@ public class UpdateUser extends AppCompatActivity {
         altura = findViewById(R.id.editTextNumberDecimalUpdate);
         image = findViewById(R.id.imagenperfil);
         String id = mAuth.getCurrentUser().getUid();
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
