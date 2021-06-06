@@ -49,10 +49,13 @@ public class UploadPhoto extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.upload_photo);
+    } @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        setContentView(R.layout.upload_photo);
+
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         imagen = findViewById(R.id.imagen_uploadLayout);
@@ -75,7 +78,6 @@ public class UploadPhoto extends AppCompatActivity {
 
     public void SelectImage(View view) {
 
-        // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent();
 
         intent.setType("image/*");
@@ -105,7 +107,7 @@ public class UploadPhoto extends AppCompatActivity {
         }
     }
 
-    // UploadImage method
+
     public void uploadImage(View view) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(UploadPhoto.this);
         dialog.setTitle("¿Es correcta la foto?");
@@ -125,23 +127,15 @@ public class UploadPhoto extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     progressDialog.dismiss();
                                     Toast.makeText(UploadPhoto.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
                                     if (numpic == 0) {
                                         picIds.set(0, key);
                                     } else
                                         picIds.add(key);
                                     Integer suma = numpic + 1;
-//                        String nombre = snapshot.child("username").getValue().toString();
                                     Map<String, Object> map = new HashMap<>();
                                     map.put("numpics", suma);
                                     map.put("picIds", picIds);
-                                    //TYPE 1 = PACIENTE
-                                    // TYPE 2 = DIETISTA
                                     mydb.child("Patient").child(id).updateChildren(map);
-
-                                    //  startActivity(new Intent(UpdateUser.this, ProfileMenu.class));
-
-
                                 }
 
                             })
@@ -149,7 +143,7 @@ public class UploadPhoto extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(UploadPhoto.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadPhoto.this, "Failed " +  e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

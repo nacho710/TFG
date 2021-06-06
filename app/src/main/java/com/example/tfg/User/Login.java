@@ -30,7 +30,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.login);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         progressDialog = new ProgressDialog(this);
@@ -72,7 +75,6 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             Toast.makeText(Login.this, "Login correcto: " + email, Toast.LENGTH_LONG).show();
                             String id = mAuth.getCurrentUser().getUid();
                             mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
@@ -90,12 +92,9 @@ public class Login extends AppCompatActivity {
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             finish();
-
-
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -110,6 +109,5 @@ public class Login extends AppCompatActivity {
                     }
                 });
 
-        // [END sign_in_with_email]
     }
 }

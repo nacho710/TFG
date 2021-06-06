@@ -54,8 +54,10 @@ public class DietMenu extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        storage = FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance();}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();

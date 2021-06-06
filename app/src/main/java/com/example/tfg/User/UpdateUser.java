@@ -50,6 +50,10 @@ public class UpdateUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_user);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
         mAuth = FirebaseAuth.getInstance();
 
         mydb = FirebaseDatabase.getInstance().getReference();
@@ -61,7 +65,7 @@ public class UpdateUser extends AppCompatActivity {
         altura = findViewById(R.id.editTextNumberDecimalUpdate);
         image = findViewById(R.id.imagenperfil);
         String id = mAuth.getCurrentUser().getUid();
-        mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
+        mydb.child("Patient").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -163,7 +167,7 @@ public class UpdateUser extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(UpdateUser.this, "Pulsa el botón de refrescar para ver todos los cambios", Toast.LENGTH_LONG).show();
+                            Toast.makeText(UpdateUser.this, "Cambios realizados con éxito", Toast.LENGTH_LONG).show();
                             finish();
                         }
                     })

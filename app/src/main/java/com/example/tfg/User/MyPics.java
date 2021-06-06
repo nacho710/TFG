@@ -43,12 +43,17 @@ public class MyPics extends AppCompatActivity implements View.OnLongClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.mypics);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
-        setContentView(R.layout.mypics);
+
         ll = findViewById(R.id.layoutfotos);
+        ll.removeAllViews();
         id = mAuth.getCurrentUser().getUid();
 
         mydb.child("Patient").child(id).addValueEventListener(new ValueEventListener() {
@@ -104,7 +109,7 @@ public class MyPics extends AppCompatActivity implements View.OnLongClickListene
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(MyPics.this);
         dialog.setTitle("¿Desea eliminar la foto de nuestra base de datos?");
-        dialog.setMessage("Esta accion eliminara tu imagen para siempre");
+        dialog.setMessage("Esta acción eliminará tu imagen para siempre");
         dialog.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

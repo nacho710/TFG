@@ -67,9 +67,13 @@ public class ProfileMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.profile_menu);}
+    @Override
+    protected void onStart() {
+        super.onStart();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        setContentView(R.layout.profile_menu);
+
         mAuth = FirebaseAuth.getInstance();
         mydb = FirebaseDatabase.getInstance().getReference();
         peso = findViewById(R.id.pesoView);
@@ -172,7 +176,7 @@ public class ProfileMenu extends AppCompatActivity {
     public void darseDeBaja() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(ProfileMenu.this);
         dialog.setTitle("¿Estás seguro?");
-        dialog.setMessage("Esta accion eliminara tu cuenta de usuario de nuesta base de datos y borrara todas tu informacion relacionada");
+        dialog.setMessage("Esta acción eliminará tu cuenta de usuario de nuesta base de datos y borrará toda tu información relacionada");
         dialog.setPositiveButton("Darme de baja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
