@@ -1,17 +1,17 @@
 //script en package.json llamado dev --> es para que, si hago uso el comando NPM RUN DEV cada vez que guarde un archivo se va a reiniciar el servidor 
 
 
-//archivoi que arranca la app  
-const express = require('express'); //importar el modulo
-const morgan= require('morgan'); //middleware
-const hbs = require('express-handlebars'); //modulo express handlebars que es apra que el html tenga condicionales y cosas asi HBS
-const path= require('path');//permite trabajr con los directorios
+//archivo que arranca -->  app.js
+
+const express = require('express'); //importar el modulo express
+const morgan= require('morgan'); //middleware morgan
+const hbs = require('express-handlebars'); //modulo express handlebars
+const path= require('path');//permite trabajar con los directorios
 const app = express(); //ejecutar el modulo
 const bodyParser = require('body-parser');
 
 
 //FIREBASE
-
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 

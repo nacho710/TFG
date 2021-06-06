@@ -63,13 +63,10 @@ function perfilDietician(request, response) {
 
 }
 
-//DEVUELVE TODOS LOS PACIENTES QUE EXISTEN EN LA BD
+//DEVUELVE TODOS LOS PACIENTES QUE TIENE EL DIETISTA A SU CARGO EN LA BD
 function getPacientes(request, response) {
     var user = firebase.auth().currentUser;
-
-
     if (user) {
-
         getEstadoDietista(user.uid);
         var dieticianId = user.uid;
         if (estadoDietista) {
@@ -80,15 +77,11 @@ function getPacientes(request, response) {
         }
         else {
             return response.render('./dieticianViews/noStatusDietician');
-
         }
-
     }
-
     else {
         return response.redirect('../noLoggedView');
     }
-
 }
 
 
