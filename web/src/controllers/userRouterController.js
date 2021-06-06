@@ -52,7 +52,7 @@ function registroDietician(request, response) {
             db.ref('Dietician/' + user.user.uid).set({
                 username: request.body.nombre + " " + request.body.apellidos,
                 email: request.body.email,
-                password: request.body.password,
+                // password: request.body.password,
                 phone: request.body.phone,
                 description: request.body.description,
                 status: "Pendiente de aprobar",
@@ -180,7 +180,6 @@ function resetPassword(request, response) {
 
     //console.log(request);
     var email = request.body.email;
-    if (email != 'personaldiet@admin.es') {
         firebase
             .auth()
             .sendPasswordResetEmail(email)
@@ -192,8 +191,7 @@ function resetPassword(request, response) {
                 console.log(error);
                 return response.render("errorViewUsers");
             });
-    }
-    else return response.render("errorViewUsers");
+   
 }
 
 

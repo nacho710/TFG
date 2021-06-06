@@ -694,8 +694,6 @@ module.exports = {
     borrarPacientesAdmin,
     perfilAdmin,
     indexAdmin
-
-
 }
 
 
