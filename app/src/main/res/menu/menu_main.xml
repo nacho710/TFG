@@ -27,6 +27,4 @@
         android:orderInCategory="100"
         android:title="Refrescar"
         app:showAsAction="never" />
-
-
 </menu>
