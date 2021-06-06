@@ -180,7 +180,6 @@ function resetPassword(request, response) {
 
     //console.log(request);
     var email = request.body.email;
-    if (email != 'personaldiet@admin.es') {
         firebase
             .auth()
             .sendPasswordResetEmail(email)
@@ -192,8 +191,7 @@ function resetPassword(request, response) {
                 console.log(error);
                 return response.render("errorViewUsers");
             });
-    }
-    else return response.render("errorViewUsers");
+   
 }
 
 
